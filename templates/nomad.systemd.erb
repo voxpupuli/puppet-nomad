@@ -1,0 +1,18 @@
+[Unit]
+Description=Nomad Agent
+Wants=basic.target
+After=basic.target network.target
+
+[Service]
+User=<%= scope.lookupvar('nomad::user') %>
+Group=<%= scope.lookupvar('nomad::group') %>
+ExecStart=<%= scope.lookupvar('nomad::bin_dir') %>/nomad agent \
+  -config-dir <%= scope.lookupvar('nomad::config_dir') %> <%= scope.lookupvar('nomad::extra_options') %>
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+RestartSec=42s
+LimitNOFILE=131072
+
+[Install]
+WantedBy=multi-user.target
