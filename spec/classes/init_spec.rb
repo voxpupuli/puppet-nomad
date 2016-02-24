@@ -84,7 +84,7 @@ describe 'nomad' do
   end
 
   context "When installing via URL by default" do
-    it { should contain_staging__file('nomad-0.5.2.zip').with(:source => 'https://releases.hashicorp.com/nomad/0.5.2/nomad_0.5.2_linux_amd64.zip') }
+    it { should contain_staging__file('nomad-0.2.3.zip').with(:source => 'https://releases.hashicorp.com/nomad/0.2.3/nomad_0.2.3_linux_amd64.zip') }
     it { should contain_file('/usr/local/bin/nomad').that_notifies('Class[nomad::run_service]') }
     #it { should contain_notify(['Class[nomad::run_service]']) }
   end
@@ -101,7 +101,7 @@ describe 'nomad' do
     let(:params) {{
       :download_url   => 'http://myurl',
     }}
-    it { should contain_staging__file('nomad-0.5.2.zip').with(:source => 'http://myurl') }
+    it { should contain_staging__file('nomad-0.2.3.zip').with(:source => 'http://myurl') }
     it { should contain_file('/usr/local/bin/nomad').that_notifies('Class[nomad::run_service]') }
   end
 
@@ -228,11 +228,6 @@ describe 'nomad' do
   context "When a reload_service is triggered with service_ensure stopped" do
     let (:params) {{
       :service_ensure => 'stopped',
-      :services => {
-        'test_service1' => {
-          'port' => '5'
-        }
-      }
     }}
     it { should_not contain_exec('reload nomad service')  }
   end
@@ -240,11 +235,6 @@ describe 'nomad' do
   context "When a reload_service is triggered with manage_service false" do
     let (:params) {{
       :manage_service => false,
-      :services => {
-        'test_service1' => {
-          'port' => '5'
-        }
-      }
     }}
     it { should_not contain_exec('reload nomad service')  }
   end
@@ -274,11 +264,6 @@ describe 'nomad' do
   end
 
   context "When nomad is reloaded" do
-    let (:params) {{
-      :services => {
-        'test_service1' => {}
-      }
-    }}
     let (:facts) {{
       :ipaddress_lo => '127.0.0.1'
     }}
@@ -290,9 +275,6 @@ describe 'nomad' do
 
   context "When nomad is reloaded on a custom port" do
     let (:params) {{
-      :services => {
-        'test_service1' => {}
-      },
       :config_hash => {
         'ports' => {
           'rpc' => '9999'
@@ -310,9 +292,6 @@ describe 'nomad' do
 
   context "When nomad is reloaded with a default client_addr" do
     let (:params) {{
-      :services => {
-        'test_service1' => {}
-      },
       :config_hash => {
         'client_addr' => '192.168.34.56',
       }
@@ -321,19 +300,6 @@ describe 'nomad' do
       should contain_exec('reload nomad service').
         with_command('nomad reload -rpc-addr=192.168.34.56:8400')
     }
-  end
-
-  context "When the user provides a hash of services" do
-    let (:params) {{
-      :services => {
-        'test_service1' => {
-          'port' => '5'
-        }
-      }
-    }}
-    it { should contain_nomad__service('test_service1').with_port('5') }
-    it { should have_nomad__service_resource_count(1) }
-    it { should contain_exec('reload nomad service')  }
   end
 
   context "When using sysv" do
@@ -571,7 +537,7 @@ describe 'nomad' do
     let(:params) {{
       :extra_options => '-some-extra-argument'
     }}
-    it { should contain_file('/etc/init/nomad.conf').with_content(/\$CONSUL -S -- agent .*-some-extra-argument$/) }
+    it { should contain_file('/etc/init/nomad.conf').with_content(/\$NOMAD -S -- agent .*-some-extra-argument$/) }
   end
   # Service Stuff
 

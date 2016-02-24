@@ -1,64 +1,74 @@
-# puppet-consul
-
-## Compatibility
-
-| Consul Version   | Recommended Puppet Module Version   |
-| ---------------- | ----------------------------------- |
-| >= 0.6.0         | latest                              |
-| 0.5.x            | 1.0.3                               |
-| 0.4.x            | 0.4.6                               |
-| 0.3.x            | 0.3.0                               |
+# puppet-nomad
 
 ### What This Module Affects
 
-* Installs the consul daemon (via url or package)
+* Installs the nomad daemon (via url or package)
   * If installing from zip, you *must* ensure the unzip utility is available.
 * Optionally installs a user to run it under
-* Installs a configuration file (/etc/consul/config.json)
+* Installs a configuration file (/etc/nomad/config.json)
 * Manages the consul service via upstart, sysv, or systemd
-* Optionally installs the Web UI
 
 ## Usage
 
-To set up a single consul server, with several agents attached:
+To set up a single nomad server, with several agents attached:
 On the server:
 ```puppet
-class { '::consul':
-  config_hash => {
-    'bootstrap_expect' => 1,
-    'data_dir'         => '/opt/consul',
-    'datacenter'       => 'east-aws',
-    'log_level'        => 'INFO',
-    'node_name'        => 'server',
-    'server'           => true,
+class { '::nomad':
+	config_hash = {
+    'region'     => 'us-west',
+    'datacenter' => 'ptk',
+    'log_level'  => 'INFO',
+    'bind_addr'  => '0.0.0.0',
+    'data_dir'   => '/opt/nomad',
+    'server'     => {
+      'enabled'          => true,
+      'bootstrap_expect' => 3,
+    }
   }
 }
 ```
 On the agent(s):
 ```puppet
-class { '::consul':
-  config_hash => {
-    'data_dir'   => '/opt/consul',
-    'datacenter' => 'east-aws',
+class { 'nomad':
+  config_hash   => {
+    'region'     => 'us-west',
+    'datacenter' => 'ptk',
     'log_level'  => 'INFO',
-    'node_name'  => 'agent',
-    'retry_join' => ['172.16.0.1'],
-  }
+    'bind_addr'  => '0.0.0.0',
+    'data_dir'   => '/opt/nomad',
+    'client'     => {
+      'enabled'    => true,
+      'servers'    => [
+        "nomad01.your-org.pvt4647",
+        "nomad02.your-org.pvt:4647",
+        "nomad03.your-org.pvt:4647"
+      ]
+    }
+  },
 }
+
 ```
 Disable install and service components:
 ```puppet
-class { '::consul':
+class { '::nomad':
   install_method => 'none',
   init_style     => false,
   manage_service => false,
-  config_hash => {
-    'data_dir'   => '/opt/consul',
-    'datacenter' => 'east-aws',
+  config_hash   => {
+    'region'     => 'us-west',
+    'datacenter' => 'ptk',
     'log_level'  => 'INFO',
-    'node_name'  => 'agent',
-    'retry_join' => ['172.16.0.1'],
-  }
+    'bind_addr'  => '0.0.0.0',
+    'data_dir'   => '/opt/nomad',
+    'client'     => {
+      'enabled'    => true,
+      'servers'    => [
+        "nomad01.your-org.pvt4647",
+        "nomad02.your-org.pvt:4647",
+        "nomad03.your-org.pvt:4647"
+      ]
+    }
+  },
 }
 ```
 
@@ -67,6 +77,10 @@ class { '::consul':
 Depends on the JSON gem, or a modern ruby. (Ruby 1.8.7 is not officially supported)
 
 ## Development
-Open an [issue](https://github.com/solarkennedy/puppet-consul/issues) or
-[fork](https://github.com/solarkennedy/puppet-consul/fork) and open a
-[Pull Request](https://github.com/solarkennedy/puppet-consul/pulls)
+Open an [issue](https://github.com/dudemcbacon/puppet-nomad/issues) or
+[fork](https://github.com/dudemcbacon/puppet-nomad/fork) and open a
+[Pull Request](https://github.com/dudemcbacon/puppet-nomad/pulls)
+
+## Acknowledgement
+
+Must of this module was refactored from Kyle Anderson's great [consul](https://github.com/solarkennedy/puppet-consul) module available on the puppet forge. Go give him stars and likes and what not -- he deserves them!

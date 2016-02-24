@@ -74,10 +74,6 @@ class nomad (
   $manage_service        = true,
   $restart_on_change     = true,
   $init_style            = $nomad::params::init_style,
-  $services              = {},
-  $watches               = {},
-  $checks                = {},
-  $acls                  = {},
 ) inherits nomad::params {
 
   $real_download_url    = pick($download_url, "${download_url_base}${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
@@ -91,10 +87,6 @@ class nomad (
   validate_hash($config_defaults)
   validate_bool($pretty_config)
   validate_integer($pretty_config_indent)
-  validate_hash($services)
-  validate_hash($watches)
-  validate_hash($checks)
-  validate_hash($acls)
 
   $config_hash_real = deep_merge($config_defaults, $config_hash)
   validate_hash($config_hash_real)
@@ -118,22 +110,6 @@ class nomad (
     $rpc_addr = $config_hash_real['client_addr']
   } else {
     $rpc_addr = $::ipaddress_lo
-  }
-
-  if $services {
-    create_resources(nomad::service, $services)
-  }
-
-  if $watches {
-    create_resources(nomad::watch, $watches)
-  }
-
-  if $checks {
-    create_resources(nomad::check, $checks)
-  }
-
-  if $acls {
-    create_resources(nomad_acl, $acls)
   }
 
   $notify_service = $restart_on_change ? {

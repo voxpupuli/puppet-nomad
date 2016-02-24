@@ -1,6 +1,6 @@
 {
   "name": "dudemcbacon-consul",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "author": "Kyle Anderson <kyle@xkyle.com>",
   "summary": "Configures Nomad by Hashicorp",
   "license": "Apache-2.0",

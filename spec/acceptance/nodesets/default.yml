@@ -1,9 +1,7 @@
 HOSTS:
-  ubuntu-12-04:
-    platform: ubuntu-12.04-x64
-    image: solarkennedy/ubuntu-12.04-puppet
-    hypervisor: docker
-    docker_cmd: '["/sbin/init"]'
-    docker_preserve_image: true
+  centos-7-puppet:
+    platform: centos-7.2-x64
+    box: puppetlabs/centos-7.2-64-puppet
+    hypervisor: vagrant
 CONFIG:
   type: foss

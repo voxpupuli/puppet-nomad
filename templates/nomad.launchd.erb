@@ -16,7 +16,7 @@
         <array>
             <string><%= scope.lookupvar('nomad::bin_dir') %>/nomad</string>
             <string>agent</string>
-            <string>-config-dir</string>
+            <string>-config</string>
             <string><%= scope.lookupvar('nomad::config_dir') %></string>
 <% require 'shellwords' %>
 <% for extra_option in Shellwords.split(scope.lookupvar('nomad::extra_options')) %>

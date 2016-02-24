@@ -20,7 +20,7 @@
 
 rc_reset
 
-CONSUL_BIN=<%= scope.lookupvar('nomad::bin_dir') %>/nomad
+NOMAD_BIN=<%= scope.lookupvar('nomad::bin_dir') %>/nomad
 CONFIG_DIR=<%= scope.lookupvar('nomad::config_dir') %>
 LOG_FILE=/var/log/nomad
 
@@ -36,7 +36,7 @@ case "$1" in
         echo -n "Starting nomad "
         ## Start daemon with startproc(8). If this fails
         ## the return value is set appropriately by startproc.
-        startproc $CONSUL_BIN agent -config-dir "$CONFIG_DIR" <%= scope.lookupvar('nomad::extra_options') %> >> "$LOG_FILE"
+        startproc $NOMAD_BIN agent -config "$CONFIG_DIR" <%= scope.lookupvar('nomad::extra_options') %> >> "$LOG_FILE"
 
         # Remember status and be verbose
         rc_status -v
@@ -46,7 +46,7 @@ case "$1" in
         ## Stop daemon with killproc(8) and if this fails
         ## killproc sets the return value according to LSB.
 
-        killproc -TERM $CONSUL_BIN
+        killproc -TERM $NOMAD_BIN
 
         # Remember status and be verbose
         rc_status -v
@@ -63,7 +63,7 @@ case "$1" in
     reload)
         # If it supports signaling:
         echo -n "Reload service nomad "
-        killproc -HUP $CONSUL_BIN
+        killproc -HUP $NOMAD_BIN
         #touch /var/run/nomad.pid
         rc_status -v
 
@@ -85,7 +85,7 @@ case "$1" in
         # 5--199 reserved (5--99 LSB, 100--149 distro, 150--199 appl.)
 
         # NOTE: checkproc returns LSB compliant status values.
-        checkproc $CONSUL_BIN
+        checkproc $NOMAD_BIN
         # NOTE: rc_status knows that we called this init script with
         # "status" option and adapts its messages accordingly.
         rc_status -v

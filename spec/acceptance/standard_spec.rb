@@ -7,13 +7,17 @@ describe 'nomad class' do
     it 'should work with no errors based on the example' do
       pp = <<-EOS
         class { 'nomad':
-          version     => '0.5.2',
+          version     => '0.2.3',
           config_hash => {
-              'datacenter' => 'east-aws',
-              'data_dir'   => '/opt/nomad',
-              'log_level'  => 'INFO',
-              'node_name'  => 'foobar',
-              'server'     => true
+            "region"     => 'us-west',
+            "datacenter" => 'ptk',
+            "log_level"  => 'INFO',
+            "bind_dir"   => "0.0.0.0",
+            "data_dir"   => "/var/lib/nomad",
+            "server" => {
+              "enabled"          => true,
+              "bootstrap_expect" => 1
+            }
           }
         }
       EOS
@@ -32,7 +36,7 @@ describe 'nomad class' do
     end
 
     describe command('nomad version') do
-      its(:stdout) { should match /Consul v0\.5\.2/ }
+      its(:stdout) { should match /Nomad v0\.2\.3/ }
     end
 
   end

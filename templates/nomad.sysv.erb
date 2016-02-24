@@ -13,7 +13,7 @@
 # Source function library.
 . /etc/init.d/functions
 
-CONSUL=<%= scope.lookupvar('nomad::bin_dir') %>/nomad
+NOMAD=<%= scope.lookupvar('nomad::bin_dir') %>/nomad
 CONFIG=<%= scope.lookupvar('nomad::config_dir') %>
 PID_FILE=/var/run/nomad/nomad.pid
 LOG_FILE=/var/log/nomad
@@ -40,7 +40,7 @@ KILLPROC_OPT="-p ${PID_FILE}"
 mkpidfile() {
         # Create PID file if it didn't exist
         mkrundir
-        [ ! -f $PID_FILE ] && pidofproc $CONSUL > $PID_FILE
+        [ ! -f $PID_FILE ] && pidofproc $NOMAD > $PID_FILE
         chown <%= scope.lookupvar('nomad::user') %> /var/run/nomad
         if [ $? -ne 0 ] ; then
             rm $PID_FILE
@@ -54,7 +54,7 @@ start() {
         [ -f $PID_FILE ] && rm $PID_FILE
         daemon --user=<%= scope.lookupvar('nomad::user') %> \
             --pidfile="$PID_FILE" \
-            "$CONSUL" agent -pid-file "${PID_FILE}" -config-dir "$CONFIG" <%= scope.lookupvar('nomad::extra_options') %> >> "$LOG_FILE" &
+            "$NOMAD" agent -pid-file "${PID_FILE}" -config "$CONFIG" <%= scope.lookupvar('nomad::extra_options') %> >> "$LOG_FILE" &
         retcode=$?
         touch /var/lock/subsys/nomad
         return $retcode
@@ -69,9 +69,9 @@ stop() {
         # If nomad is not acting as a server, exit gracefully
         # Use SIGINT to create a "leave" event, unless the user has explicitly
         # changed that behavior in the Consul config.
-        if ("${CONSUL}" info ${RPC_ADDR} 2>/dev/null | grep -q 'server = false' 2>/dev/null) ; then
+        if ("${NOMAD}" info ${RPC_ADDR} 2>/dev/null | grep -q 'server = false' 2>/dev/null) ; then
             nomad_pid=$(cat $PID_FILE)
-            killproc $KILLPROC_OPT $CONSUL -INT
+            killproc $KILLPROC_OPT $NOMAD -INT
             retcode=$?
 
             # We'll wait if necessary to make sure the leave works, and return
@@ -93,7 +93,7 @@ stop() {
         #
         # A SIGTERM will mark the node as "failed" until it rejoins.
         # killproc with no arguments uses TERM, then escalates to KILL.
-        killproc $KILLPROC_OPT $CONSUL
+        killproc $KILLPROC_OPT $NOMAD
         retcode=$?
 
         rm -f /var/lock/subsys/nomad $PID_FILE
@@ -108,7 +108,7 @@ case "$1" in
         stop
         ;;
     status)
-        "$CONSUL" info ${RPC_ADDR}
+        "$NOMAD" info ${RPC_ADDR}
         ;;
     restart)
         stop
@@ -116,7 +116,7 @@ case "$1" in
         ;;
     reload)
         mkpidfile
-        killproc $KILLPROC_OPT $CONSUL -HUP
+        killproc $KILLPROC_OPT $NOMAD -HUP
         ;;
     condrestart)
         [ -f /var/lock/subsys/nomad ] && restart || :

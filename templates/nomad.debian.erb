@@ -18,7 +18,7 @@ DESC="Nomad job scheduling service"
 NAME=nomad
 DAEMON=<%= scope.lookupvar('nomad::bin_dir') %>/$NAME
 PIDFILE=/var/run/$NAME/$NAME.pid
-DAEMON_ARGS="agent -config-dir <%= scope.lookupvar('nomad::config_dir') %> <%= scope.lookupvar('nomad::extra_options') %>"
+DAEMON_ARGS="agent -config <%= scope.lookupvar('nomad::config_dir') %> <%= scope.lookupvar('nomad::extra_options') %>"
 USER=<%= scope.lookupvar('nomad::user') %>
 SCRIPTNAME=/etc/init.d/$NAME
 RPC_ADDR=-rpc-addr=<%= scope.lookupvar('nomad::rpc_addr') %>:<%= scope.lookupvar('nomad::rpc_port') %>

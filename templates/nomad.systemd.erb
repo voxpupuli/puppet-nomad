@@ -7,7 +7,7 @@ After=basic.target network.target
 User=<%= scope.lookupvar('nomad::user') %>
 Group=<%= scope.lookupvar('nomad::group') %>
 ExecStart=<%= scope.lookupvar('nomad::bin_dir') %>/nomad agent \
-  -config-dir <%= scope.lookupvar('nomad::config_dir') %> <%= scope.lookupvar('nomad::extra_options') %>
+  -config <%= scope.lookupvar('nomad::config_dir') %> <%= scope.lookupvar('nomad::extra_options') %>
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=on-failure

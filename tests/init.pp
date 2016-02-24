@@ -9,4 +9,16 @@
 # Learn more about module testing here:
 # http://docs.puppetlabs.com/guides/tests_smoke.html
 #
-include nomad
+class { 'nomad':
+  config_hash => {
+    "region"     => 'us-west',
+    "datacenter" => 'ptk',
+    "log_level"  => 'INFO',
+    "bind_dir"   => "0.0.0.0",
+    "data_dir"   => "/var/lib/nomad",
+    "server" => {
+      "enabled"          => true,
+      "bootstrap_expect" => 1
+    }
+  }
+}
