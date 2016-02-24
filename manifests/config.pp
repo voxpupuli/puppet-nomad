@@ -5,7 +5,7 @@
 # == Parameters
 #
 # [*config_hash*]
-#   Hash for Consul to be deployed as JSON
+#   Hash for nomad to be deployed as JSON
 #
 # [*purge*]
 #   Bool. If set will make puppet remove stale config files.

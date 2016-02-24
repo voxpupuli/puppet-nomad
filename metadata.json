@@ -1,7 +1,7 @@
 {
-  "name": "dudemcbacon-consul",
+  "name": "dudemcbacon-nomad",
   "version": "0.0.1",
-  "author": "Kyle Anderson <kyle@xkyle.com>",
+  "author": "Brandon Burnett <gentoolicious@gmail.com>",
   "summary": "Configures Nomad by Hashicorp",
   "license": "Apache-2.0",
   "source": "https://github.com/dudemcbacon/puppet-nomad",

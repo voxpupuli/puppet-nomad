@@ -39,7 +39,6 @@ class nomad::install {
 
       if ($nomad::ui_dir and $nomad::data_dir) {
 
-        # The 'dist' dir was removed from the web_ui archive in Consul version 0.6.0
         if (versioncmp($::nomad::version, '0.6.0') < 0) {
           $staging_creates = "${nomad::data_dir}/${nomad::version}_web_ui/dist"
           $ui_symlink_target = $staging_creates

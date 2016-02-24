@@ -68,7 +68,7 @@ stop() {
 
         # If nomad is not acting as a server, exit gracefully
         # Use SIGINT to create a "leave" event, unless the user has explicitly
-        # changed that behavior in the Consul config.
+        # changed that behavior in the nomad config.
         if ("${NOMAD}" info ${RPC_ADDR} 2>/dev/null | grep -q 'server = false' 2>/dev/null) ; then
             nomad_pid=$(cat $PID_FILE)
             killproc $KILLPROC_OPT $NOMAD -INT
