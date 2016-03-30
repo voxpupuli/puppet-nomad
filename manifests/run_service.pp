@@ -12,9 +12,10 @@ class nomad::run_service {
 
   if $nomad::manage_service == true {
     service { 'nomad':
-      ensure => $nomad::service_ensure,
-      name   => $init_selector,
-      enable => $nomad::service_enable,
+      ensure   => $nomad::service_ensure,
+      name     => $init_selector,
+      enable   => $nomad::service_enable,
+      provider => $nomad::init_style,
     }
   }
 
