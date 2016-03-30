@@ -39,7 +39,7 @@ class { 'nomad':
     'client'     => {
       'enabled'    => true,
       'servers'    => [
-        "nomad01.your-org.pvt4647",
+        "nomad01.your-org.pvt:4647",
         "nomad02.your-org.pvt:4647",
         "nomad03.your-org.pvt:4647"
       ]
@@ -63,7 +63,7 @@ class { '::nomad':
     'client'     => {
       'enabled'    => true,
       'servers'    => [
-        "nomad01.your-org.pvt4647",
+        "nomad01.your-org.pvt:4647",
         "nomad02.your-org.pvt:4647",
         "nomad03.your-org.pvt:4647"
       ]
