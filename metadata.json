@@ -1,6 +1,6 @@
 {
   "name": "dudemcbacon-nomad",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Brandon Burnett <gentoolicious@gmail.com>",
   "summary": "Configures Nomad by Hashicorp",
   "license": "Apache-2.0",
