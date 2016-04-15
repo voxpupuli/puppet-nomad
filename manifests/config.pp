@@ -35,10 +35,10 @@ class nomad::config(
       }
       'systemd' : {
         file { '/etc/sysconfig/nomad':
-          ensure  => directory,
-          mode    => '0644',
-          owner   => 'root',
-          group   => 'root',
+          ensure => directory,
+          mode   => '0644',
+          owner  => 'root',
+          group  => 'root',
         }->
         file { '/lib/systemd/system/nomad.service':
           mode    => '0644',
