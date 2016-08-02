@@ -36,33 +36,6 @@ class nomad::install {
           notify => $nomad::notify_service,
           target => "${::staging::path}/nomad-${nomad::version}/nomad";
       }
-
-      if ($nomad::ui_dir and $nomad::data_dir) {
-
-        if (versioncmp($::nomad::version, '0.6.0') < 0) {
-          $staging_creates = "${nomad::data_dir}/${nomad::version}_web_ui/dist"
-          $ui_symlink_target = $staging_creates
-        } else {
-          $staging_creates = "${nomad::data_dir}/${nomad::version}_web_ui/index.html"
-          $ui_symlink_target = "${nomad::data_dir}/${nomad::version}_web_ui"
-        }
-
-        file { "${nomad::data_dir}/${nomad::version}_web_ui":
-          ensure => 'directory',
-          owner  => 'root',
-          group  => 0, # 0 instead of root because OS X uses "wheel".
-          mode   => '0755',
-        } ->
-        staging::deploy { "nomad_web_ui-${nomad::version}.zip":
-          source  => $nomad::real_ui_download_url,
-          target  => "${nomad::data_dir}/${nomad::version}_web_ui",
-          creates => $staging_creates,
-        } ->
-        file { $nomad::ui_dir:
-          ensure => 'symlink',
-          target => $ui_symlink_target,
-        }
-      }
     }
     'package': {
       package { $nomad::package_name:
