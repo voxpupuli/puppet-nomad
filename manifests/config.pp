@@ -34,7 +34,7 @@ class nomad::config(
         }
       }
       'systemd' : {
-        file { '/etc/sysconfig/nomad':
+        file { '/etc/sysconfig':
           ensure => directory,
           mode   => '0644',
           owner  => 'root',
