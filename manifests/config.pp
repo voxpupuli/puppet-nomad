@@ -39,14 +39,14 @@ class nomad::config(
           mode   => '0644',
           owner  => 'root',
           group  => 'root',
-        }->
-        file { '/lib/systemd/system/nomad.service':
+        }
+        -> file { '/lib/systemd/system/nomad.service':
           mode    => '0644',
           owner   => 'root',
           group   => 'root',
           content => template('nomad/nomad.systemd.erb'),
-        }~>
-        exec { 'nomad-systemd-reload':
+        }
+        ~> exec { 'nomad-systemd-reload':
           command     => 'systemctl daemon-reload',
           path        => [ '/usr/bin', '/bin', '/usr/sbin' ],
           refreshonly => true,
@@ -57,7 +57,7 @@ class nomad::config(
           mode    => '0555',
           owner   => 'root',
           group   => 'root',
-          content => template('nomad/nomad.sysv.erb')
+          content => template('nomad/nomad.sysv.erb'),
         }
       }
       'debian' : {
@@ -65,7 +65,7 @@ class nomad::config(
           mode    => '0555',
           owner   => 'root',
           group   => 'root',
-          content => template('nomad/nomad.debian.erb')
+          content => template('nomad/nomad.debian.erb'),
         }
       }
       'sles' : {
@@ -73,7 +73,7 @@ class nomad::config(
           mode    => '0555',
           owner   => 'root',
           group   => 'root',
-          content => template('nomad/nomad.sles.erb')
+          content => template('nomad/nomad.sles.erb'),
         }
       }
       'launchd' : {
@@ -81,7 +81,7 @@ class nomad::config(
           mode    => '0644',
           owner   => 'root',
           group   => 'wheel',
-          content => template('nomad/nomad.launchd.erb')
+          content => template('nomad/nomad.launchd.erb'),
         }
       }
       default : {
@@ -96,8 +96,8 @@ class nomad::config(
     group   => $nomad::group,
     purge   => $purge,
     recurse => $purge,
-  } ->
-  file { 'nomad config.json':
+  }
+  -> file { 'nomad config.json':
     ensure  => present,
     path    => "${nomad::config_dir}/config.json",
     owner   => $nomad::user,

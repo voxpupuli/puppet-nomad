@@ -84,16 +84,17 @@ describe 'nomad' do
   end
 
   context "When installing via URL by default" do
-    it { should contain_staging__file('nomad-0.2.3.zip').with(:source => 'https://releases.hashicorp.com/nomad/0.2.3/nomad_0.2.3_linux_amd64.zip') }
+    it { should contain_archive('/opt/puppet-archive/nomad-0.5.2.zip').with(:source => 'https://releases.hashicorp.com/nomad/0.5.2/nomad_0.5.2_linux_amd64.zip') }
+    it { should contain_file('/opt/puppet-archive').with(:ensure => 'directory') }
+    it { should contain_file('/opt/puppet-archive/nomad-0.5.2').with(:ensure => 'directory') }
     it { should contain_file('/usr/local/bin/nomad').that_notifies('Class[nomad::run_service]') }
-    #it { should contain_notify(['Class[nomad::run_service]']) }
   end
 
   context "When installing via URL by with a special version" do
     let(:params) {{
       :version   => '42',
     }}
-    it { should contain_staging__file('nomad-42.zip').with(:source => 'https://releases.hashicorp.com/nomad/42/nomad_42_linux_amd64.zip') }
+    it { should contain_archive('nomad-42.zip').with(:source => 'https://releases.hashicorp.com/nomad/42/nomad_42_linux_amd64.zip') }
     it { should contain_file('/usr/local/bin/nomad').that_notifies('Class[nomad::run_service]') }
   end
 
@@ -101,7 +102,7 @@ describe 'nomad' do
     let(:params) {{
       :download_url   => 'http://myurl',
     }}
-    it { should contain_staging__file('nomad-0.2.3.zip').with(:source => 'http://myurl') }
+    it { should contain_archive('nomad-0.2.3.zip').with(:source => 'http://myurl') }
     it { should contain_file('/usr/local/bin/nomad').that_notifies('Class[nomad::run_service]') }
   end
 
@@ -118,7 +119,7 @@ describe 'nomad' do
       :install_method => 'none'
     }}
     it { should_not contain_package('nomad') }
-    it { should_not contain_staging__file('nomad.zip') }
+    it { should_not contain_archive('/opt/puppet-archive/nomad-0.5.2.zip') }
   end
 
 

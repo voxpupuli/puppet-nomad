@@ -15,26 +15,30 @@ class nomad::install {
 
   case $nomad::install_method {
     'url': {
-      include staging
-      staging::file { "nomad-${nomad::version}.${nomad::download_extension}":
-        source => $nomad::real_download_url,
-      } ->
-      file { "${::staging::path}/nomad-${nomad::version}":
+      $install_path = '/opt/puppet-archive'
+
+      include '::archive'
+      file { [
+        $install_path,
+        "${install_path}/nomad-${nomad::version}"]:
         ensure => directory,
-      } ->
-      staging::extract { "nomad-${nomad::version}.${nomad::download_extension}":
-        target  => "${::staging::path}/nomad-${nomad::version}",
-        creates => "${::staging::path}/nomad-${nomad::version}/nomad",
-      } ->
-      file {
-        "${::staging::path}/nomad-${nomad::version}/nomad":
+      }
+      -> archive { "${install_path}/nomad-${nomad::version}.${nomad::download_extension}":
+        ensure       => present,
+        source       => $nomad::real_download_url,
+        extract      => true,
+        extract_path => "${install_path}/nomad-${nomad::version}",
+        creates      => "${install_path}/nomad-${nomad::version}/nomad",
+      }
+      -> file {
+        "${install_path}/nomad-${nomad::version}/nomad":
           owner => 'root',
           group => 0, # 0 instead of root because OS X uses "wheel".
           mode  => '0555';
         "${nomad::bin_dir}/nomad":
           ensure => link,
           notify => $nomad::notify_service,
-          target => "${::staging::path}/nomad-${nomad::version}/nomad";
+          target => "${install_path}/nomad-${nomad::version}/nomad";
       }
     }
     'package': {
@@ -45,7 +49,7 @@ class nomad::install {
       if $nomad::ui_dir {
         package { $nomad::ui_package_name:
           ensure  => $nomad::ui_package_ensure,
-          require => Package[$nomad::package_name]
+          require => Package[$nomad::package_name],
         }
       }
 
