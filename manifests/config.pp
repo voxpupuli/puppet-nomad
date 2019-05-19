@@ -103,7 +103,7 @@ class nomad::config(
     owner   => $nomad::user,
     group   => $nomad::group,
     mode    => $nomad::config_mode,
-    content => nomad_sorted_json($config_hash, $nomad::pretty_config, $nomad::pretty_config_indent),
+    content => nomad::sorted_json($config_hash, $nomad::pretty_config, $nomad::pretty_config_indent),
   }
 
 }
