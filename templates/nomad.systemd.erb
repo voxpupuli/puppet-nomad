@@ -3,6 +3,8 @@ Description=Nomad agent
 Documentation=https://nomadproject.io/docs/
 Wants=network-online.target
 After=network-online.target
+StartLimitBurst=3
+StartLimitIntervalSec=10
 
 [Service]
 EnvironmentFile=-/etc/sysconfig/nomad
@@ -14,8 +16,6 @@ RestartSec=2
 LimitNOFILE=65536
 LimitNPROC=infinity
 KillMode=process
-StartLimitBurst=3
-StartLimitIntervalSec=10
 TasksMax=infinity
 
 [Install]
