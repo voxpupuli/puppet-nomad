@@ -14,7 +14,8 @@ To set up a single nomad server, with several agents attached:
 On the server:
 ```puppet
 class { '::nomad':
-	config_hash = {
+  version     => '0.9.5', # check latest version at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md
+  config_hash => {
     'region'     => 'us-west',
     'datacenter' => 'ptk',
     'log_level'  => 'INFO',

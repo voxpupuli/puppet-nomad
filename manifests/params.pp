@@ -10,7 +10,7 @@ class nomad::params {
   $package_ensure        = 'latest'
   $download_url_base     = 'https://releases.hashicorp.com/nomad/'
   $download_extension    = 'zip'
-  $version               = '0.2.3'
+  $version               = '0.9.5'
   $config_mode           = '0660'
 
   case $::architecture {
