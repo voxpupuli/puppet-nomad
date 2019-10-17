@@ -34,22 +34,9 @@ class nomad::config(
         }
       }
       'systemd' : {
-        file { '/etc/sysconfig':
-          ensure => directory,
-          mode   => '0644',
-          owner  => 'root',
-          group  => 'root',
-        }
-        -> file { '/lib/systemd/system/nomad.service':
-          mode    => '0644',
-          owner   => 'root',
-          group   => 'root',
+        systemd::unit_file { 'nomad.service':
           content => template('nomad/nomad.systemd.erb'),
-        }
-        ~> exec { 'nomad-systemd-reload':
-          command     => 'systemctl daemon-reload',
-          path        => [ '/usr/bin', '/bin', '/usr/sbin' ],
-          refreshonly => true,
+          notify  => $notify_service,
         }
       }
       'sysv' : {
