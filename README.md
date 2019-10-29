@@ -14,7 +14,7 @@ To set up a single nomad server, with several agents attached:
 On the server:
 ```puppet
 class { '::nomad':
-	config_hash = {
+  config_hash => {
     'region'     => 'us-west',
     'datacenter' => 'ptk',
     'log_level'  => 'INFO',
@@ -30,7 +30,7 @@ class { '::nomad':
 On the agent(s):
 ```puppet
 class { 'nomad':
-  config_hash   => {
+  config_hash => {
     'region'     => 'us-west',
     'datacenter' => 'ptk',
     'log_level'  => 'INFO',
