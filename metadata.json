@@ -7,7 +7,6 @@
   "source": "https://github.com/dudemcbacon/puppet-nomad",
   "project_page": "https://github.com/dudemcbacon/puppet-nomad",
   "issues_url": "https://github.com/dudemcbacon/puppet-nomad/issues",
-  "description": "Configures Nomad by Hashicorp",
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
@@ -99,5 +98,15 @@
         "12.0"
       ]
     }
-  ]
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.10.0 < 7.0.0"
+    }
+  ],
+  "description": "Configures Nomad by Hashicorp",
+  "pdk-version": "1.18.0",
+  "template-url": "pdk-default#1.18.0",
+  "template-ref": "tags/1.18.0-0-g095317c"
 }

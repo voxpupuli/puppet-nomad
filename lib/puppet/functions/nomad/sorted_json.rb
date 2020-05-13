@@ -59,94 +59,94 @@ Puppet::Functions.create_function(:'nomad::sorted_json') do
   def sorted_json(unsorted_hash = {}, pretty = false, indent_len = 4)
     quoted = false
     # simplify jsonification of standard types
-    simple_generate = lambda do |obj|
+    simple_generate = ->(obj) do
       case obj
-        when NilClass, :undef
-          'null'
-        when Integer, Float, TrueClass, FalseClass
-          if quoted then
-            "\"#{obj}\""
-          else
-            "#{obj}"
-          end
+      when NilClass, :undef
+        'null'
+      when Integer, Float, TrueClass, FalseClass
+        if quoted
+          "\"#{obj}\""
         else
-          # Should be a string
-          # keep string integers unquoted
-          (obj =~ /\A[-]?(0|[1-9]\d*)\z/ && !quoted) ? obj : obj.to_json
+          obj.to_s
+        end
+      else
+        # Should be a string
+        # keep string integers unquoted
+        (obj =~ %r{\A[-]?(0|[1-9]\d*)\z} && !quoted) ? obj : obj.to_json
       end
     end
 
-    sorted_generate = lambda do |obj|
+    sorted_generate = ->(obj) do
       case obj
-        when NilClass, :undef, Integer, Float, TrueClass, FalseClass, String
-          return simple_generate.call(obj)
-        when Array
-          arrayRet = []
-          obj.each do |a|
-            arrayRet.push(sorted_generate.call(a))
+      when NilClass, :undef, Integer, Float, TrueClass, FalseClass, String
+        return simple_generate.call(obj)
+      when Array
+        arrayRet = []
+        obj.each do |a|
+          arrayRet.push(sorted_generate.call(a))
+        end
+        return '[' << arrayRet.join(',') << ']'
+      when Hash
+        ret = []
+        obj.keys.sort.each do |k|
+          if k =~ %r{\A(node_meta|meta|tags)\z}
+            quoted = true
           end
-          return "[" << arrayRet.join(',') << "]";
-        when Hash
-          ret = []
-          obj.keys.sort.each do |k|
-            if k =~ /\A(node_meta|meta|tags)\z/ then
-              quoted = true
-            end
-            ret.push(k.to_json << ":" << sorted_generate.call(obj[k]))
-          end
-          quoted = false
-          return "{" << ret.join(",") << "}";
-        else
-          raise Exception.new("Unable to handle object of type #{obj.class.name} with value #{obj.inspect}")
+          ret.push(k.to_json << ':' << sorted_generate.call(obj[k]))
+        end
+        quoted = false
+        return '{' << ret.join(',') << '}'
+      else
+        raise Exception, "Unable to handle object of type #{obj.class.name} with value #{obj.inspect}"
       end
     end
 
-    sorted_pretty_generate = lambda do |obj, indent_len=4, level=0|
+    sorted_pretty_generate = ->(obj, indent_len = 4, level = 0) do
       # Indent length
-      indent = " " * indent_len
+      indent = ' ' * indent_len
 
       case obj
-        when NilClass, :undef, Integer, Float, TrueClass, FalseClass, String
-          return simple_generate.call(obj)
-        when Array
-          arrayRet = []
+      when NilClass, :undef, Integer, Float, TrueClass, FalseClass, String
+        return simple_generate.call(obj)
+      when Array
+        arrayRet = []
 
-          # We need to increase the level count before #each so the objects inside are indented twice.
-          # When we come out of #each we decrease the level count so the closing brace lines up properly.
-          #
-          # If you start with level = 1, the count will be as follows
-          #
-          # "start_join": [     <-- level == 1
-          #   "192.168.50.20",  <-- level == 2
-          #   "192.168.50.21",  <-- level == 2
-          #   "192.168.50.22"   <-- level == 2
-          # ] <-- closing brace <-- level == 1
-          #
-          level += 1
-          obj.each do |a|
-            arrayRet.push(sorted_pretty_generate.call(a, indent_len, level))
+        # We need to increase the level count before #each so the objects inside are indented twice.
+        # When we come out of #each we decrease the level count so the closing brace lines up properly.
+        #
+        # If you start with level = 1, the count will be as follows
+        #
+        # "start_join": [     <-- level == 1
+        #   "192.168.50.20",  <-- level == 2
+        #   "192.168.50.21",  <-- level == 2
+        #   "192.168.50.22"   <-- level == 2
+        # ] <-- closing brace <-- level == 1
+        #
+        level += 1
+        obj.each do |a|
+          arrayRet.push(sorted_pretty_generate.call(a, indent_len, level))
+        end
+        level -= 1
+
+        return "[\n#{indent * (level + 1)}" << arrayRet.join(",\n#{indent * (level + 1)}") << "\n#{indent * level}]"
+
+      when Hash
+        ret = []
+
+        # This level works in a similar way to the above
+        level += 1
+        obj.keys.sort.each do |k|
+          if k =~ %r{\A(node_meta|meta|tags)\z}
+            quoted = true
           end
-          level -= 1
+          ret.push((indent * level).to_s << k.to_json << ': ' << sorted_pretty_generate.call(obj[k], indent_len, level))
+        end
+        level -= 1
 
-          return "[\n#{indent * (level + 1)}" << arrayRet.join(",\n#{indent * (level + 1)}") << "\n#{indent * level}]";
-
-        when Hash
-          ret = []
-
-          # This level works in a similar way to the above
-          level += 1
-          obj.keys.sort.each do |k|
-            if k =~ /\A(node_meta|meta|tags)\z/ then
-              quoted = true
-            end
-            ret.push("#{indent * level}" << k.to_json << ": " << sorted_pretty_generate.call(obj[k], indent_len, level))
-          end
-          level -= 1
-
-          quoted = false
-          return "{\n" << ret.join(",\n") << "\n#{indent * level}}";
-        else
-          raise Exception.new("Unable to handle object of type #{obj.class.name} with value #{obj.inspect}")
+        quoted = false
+        return "{\n" << ret.join(",\n") << "\n#{indent * level}}"
+      else
+        raise Exception, "Unable to handle object of type #{obj.class.name} with value #{obj.inspect}"
       end
     end
 
