@@ -28,7 +28,7 @@
 #   Only valid when the install_method == package. Defaults to `nomad`.
 #
 # [*package_ensure*]
-#   Only valid when the install_method == package. Defaults to `latest`.
+#   Only valid when the install_method == package. Defaults to `installed`.
 #
 #
 # [*restart_on_change*]

@@ -7,7 +7,7 @@ class nomad::params {
 
   $install_method        = 'url'
   $package_name          = 'nomad'
-  $package_ensure        = 'latest'
+  $package_ensure        = 'installed'
   $download_url_base     = 'https://releases.hashicorp.com/nomad/'
   $download_extension    = 'zip'
   $version               = '0.2.3'
