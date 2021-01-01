@@ -7,15 +7,16 @@ class nomad::params {
 
   $install_method        = 'url'
   $package_name          = 'nomad'
-  $package_ensure        = 'latest'
+  $package_ensure        = 'installed'
   $download_url_base     = 'https://releases.hashicorp.com/nomad/'
   $download_extension    = 'zip'
-  $version               = '0.9.5'
+  $version               = '1.0.1'
   $config_mode           = '0660'
 
   case $::architecture {
     'x86_64', 'amd64': { $arch = 'amd64' }
     'i386':            { $arch = '386'   }
+    'armv7l':          { $arch = 'arm'   }
     default:           {
       fail("Unsupported kernel architecture: ${::architecture}")
     }

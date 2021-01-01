@@ -71,7 +71,7 @@ describe 'nomad' do
     let(:params) {{
       :install_method => 'package'
     }}
-    it { should contain_package('nomad').with(:ensure => 'latest') }
+    it { should contain_package('nomad').with(:ensure => 'installed') }
   end
 
   context 'When requesting to install via a custom package and version' do
@@ -111,7 +111,7 @@ describe 'nomad' do
     let(:params) {{
       :install_method => 'package'
     }}
-    it { should contain_package('nomad').with(:ensure => 'latest') }
+    it { should contain_package('nomad').with(:ensure => 'installed') }
   end
 
   context 'When requesting to not to install' do
