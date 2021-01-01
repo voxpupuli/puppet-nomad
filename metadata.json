@@ -1,21 +1,21 @@
 {
-  "name": "dudemcbacon-nomad",
-  "version": "0.0.3",
-  "author": "Brandon Burnett <gentoolicious@gmail.com>",
+  "name": "puppet-nomad",
+  "version": "0.0.4",
+  "author": "Vox Pupuli",
   "summary": "Configures Nomad by Hashicorp",
   "license": "Apache-2.0",
-  "source": "https://github.com/dudemcbacon/puppet-nomad",
-  "project_page": "https://github.com/dudemcbacon/puppet-nomad",
-  "issues_url": "https://github.com/dudemcbacon/puppet-nomad/issues",
+  "source": "https://github.com/voxpupuli/puppet-nomad",
+  "project_page": "https://github.com/voxpupuli/puppet-nomad",
+  "issues_url": "https://github.com/voxpupuli/puppet-nomad/issues",
   "description": "Configures Nomad by Hashicorp",
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.6.0 <5.0.0"
+      "version_requirement": ">= 4.25.0 < 7.0.0"
     },
     {
       "name": "puppet/archive",
-      "version_requirement": ">=1.0.0 <4.0.0"
+      "version_requirement": ">=1.0.0 <5.0.0"
     },
     {
       "name": "camptocamp/systemd",
@@ -26,82 +26,36 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "5.0",
-        "6.0",
-        "7.0"
+        "7.0",
+        "8.0"
       ]
     },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "5.0",
-        "6.0",
-        "7.0"
+        "7.0",
+        "8.0"
       ]
     },
     {
-      "operatingsystem": "Scientific Linux",
+      "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "5.0",
-        "6.0",
-        "7.0"
-      ]
-    },
-    {
-      "operatingsystem": "Oracle Linux",
-      "operatingsystemrelease": [
-        "5.0",
-        "6.0",
-        "7.0"
+        "9",
+        "10"
       ]
     },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "12.04",
-        "10.04",
-        "14.04",
-        "15.04"
+        "18.04",
+        "20.04"
       ]
-    },
+    }
+  ],
+  "requirements": [
     {
-      "operatingsystem": "Archlinux"
-    },
-    {
-      "operatingsystem": "Fedora",
-      "operatingsystemrelease": [
-        "11",
-        "12",
-        "13",
-        "14",
-        "16",
-        "17",
-        "18",
-        "19",
-        "20",
-        "21"
-      ]
-    },
-    {
-      "operatingsystem": "OpenSuSE",
-      "operatingsystemrelease": [
-        "13.1",
-        "13.2"
-      ]
-    },
-    {
-      "operatingsystem": "SLES",
-      "operatingsystemrelease": [
-        "11.4",
-        "12.0"
-      ]
-    },
-    {
-      "operatingsystem": "SLED",
-      "operatingsystemrelease": [
-        "11.4",
-        "12.0"
-      ]
+      "name": "puppet",
+      "version_requirement": ">= 5.5.8 < 7.0.0"
     }
   ]
 }
