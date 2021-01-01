@@ -1,28 +1,33 @@
-source "https://rubygems.org"
-
-group :development do
-  gem "beaker", "> 2.0.0"
-  gem "beaker-rspec", ">= 5.1.0"
-  gem "beaker-puppet_install_helper"
-  gem "pry"
-  gem "puppet-blacksmith"
-  gem "serverspec"
-  gem "vagrant-wrapper"
-end
+source ENV['GEM_SOURCE'] || "https://rubygems.org"
 
 group :test do
-  gem "json"
-  gem "rake"
-  gem "puppet", ENV['PUPPET_VERSION'] || '~> 4'
-  gem "puppet-lint"
-
-  # Pin for 1.8.7 compatibility for now
-  gem "rspec", '< 3.2.0'
-  gem "rspec-core", "3.1.7"
-  gem "rspec-puppet", "~> 2.1"
-
-  gem "puppet-syntax"
-  gem "puppetlabs_spec_helper"
-  gem "hiera"
-  gem "hiera-puppet-helper"
+  gem 'voxpupuli-test', '~> 2.1',  :require => false
+  gem 'coveralls',                 :require => false
+  gem 'simplecov-console',         :require => false
 end
+
+group :development do
+  gem 'guard-rake',               :require => false
+  gem 'overcommit', '>= 0.39.1',  :require => false
+end
+
+group :system_tests do
+  gem 'puppet_metadata', '~> 0.3.0',  :require => false
+  gem 'voxpupuli-acceptance',         :require => false
+end
+
+group :release do
+  gem 'github_changelog_generator',  :require => false, :git => 'https://github.com/voxpupuli/github-changelog-generator', :branch => 'voxpupuli_essential_fixes'
+  gem 'puppet-blacksmith',           :require => false
+  gem 'voxpupuli-release',           :require => false
+  gem 'puppet-strings', '>= 2.2',    :require => false
+end
+
+gem 'puppetlabs_spec_helper', '~> 2.0', :require => false
+gem 'rake', :require => false
+gem 'facter', ENV['FACTER_GEM_VERSION'], :require => false, :groups => [:test]
+
+puppetversion = ENV['PUPPET_VERSION'] || '~> 6.0'
+gem 'puppet', puppetversion, :require => false, :groups => [:test]
+
+# vim: syntax=ruby
