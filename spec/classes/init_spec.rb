@@ -369,39 +369,6 @@ describe 'nomad' do
     }
   end
 
-  context "When using upstart" do
-    let (:params) {{
-      :init_style => 'upstart'
-    }}
-    let (:facts) {{
-      :ipaddress_lo => '127.0.0.1'
-    }}
-    it { should contain_class('nomad').with_init_style('upstart') }
-    it {
-      should contain_file('/etc/init/nomad.conf').
-        with_content(/-rpc-addr=127.0.0.1:8400/)
-    }
-  end
-
-  context "When overriding default rpc port on upstart" do
-    let (:params) {{
-      :init_style => 'upstart',
-      :config_hash => {
-        'ports' => {
-          'rpc' => '9999'
-        },
-        'addresses' => {
-          'rpc' => 'nomad.example.com'
-        }
-      }
-    }}
-    it { should contain_class('nomad').with_init_style('upstart') }
-    it {
-      should contain_file('/etc/init/nomad.conf').
-        with_content(/-rpc-addr=nomad.example.com:9999/)
-    }
-  end
-
   context "On a redhat 6 based OS" do
     let(:facts) {{
       :operatingsystem => 'CentOS',

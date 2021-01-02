@@ -16,21 +16,6 @@ class nomad::config (
 ) {
   if $nomad::init_style {
     case $nomad::init_style {
-      'upstart' : {
-        file { '/etc/init/nomad.conf':
-          mode    => '0444',
-          owner   => 'root',
-          group   => 'root',
-          content => template('nomad/nomad.upstart.erb'),
-        }
-        file { '/etc/init.d/nomad':
-          ensure => link,
-          target => '/lib/init/upstart-job',
-          owner  => 'root',
-          group  => 'root',
-          mode   => '0755',
-        }
-      }
       'systemd' : {
         systemd::unit_file { 'nomad.service':
           content => template('nomad/nomad.systemd.erb'),
