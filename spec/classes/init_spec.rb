@@ -17,7 +17,7 @@ describe 'nomad' do
     let(:params) {{
       :install_method => 'package'
     }}
-    it { expect { should compile }.to raise_error(/Unsupported kernel architecture:/) }
+    it { should compile.and_raise_error(/Unsupported kernel architecture:/) }
   end
 
   context 'When not specifying whether to purge config' do
@@ -28,14 +28,14 @@ describe 'nomad' do
     let(:params) {{
       :purge_config_dir => 'hello'
     }}
-    it { expect { should compile }.to raise_error(/is not a boolean/) }
+    it { should compile.and_raise_error(/is not a boolean/) }
   end
 
   context 'When passing a non-bool as manage_service' do
     let(:params) {{
       :manage_service => 'hello'
     }}
-    it { expect { should compile }.to raise_error(/is not a boolean/) }
+    it { should compile.and_raise_error(/is not a boolean/) }
   end
 
   context 'When disable config purging' do
