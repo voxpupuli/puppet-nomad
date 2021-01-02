@@ -4,14 +4,6 @@
 # It sets variables according to platform
 #
 class nomad::params {
-  $install_method        = 'url'
-  $package_name          = 'nomad'
-  $package_ensure        = 'installed'
-  $download_url_base     = 'https://releases.hashicorp.com/nomad/'
-  $download_extension    = 'zip'
-  $version               = '1.0.1'
-  $config_mode           = '0660'
-
   case $facts['os']['architecture'] {
     'x86_64', 'amd64': { $arch = 'amd64' }
     'i386':            { $arch = '386' }
