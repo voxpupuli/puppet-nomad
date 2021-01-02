@@ -32,7 +32,7 @@ RSpec.shared_examples 'handling_simple_types' do |pretty|
     expect(subject.call([{'key' => 'aString' }],pretty)).to eql("{\"key\":\"aString\"}")
   end
 end
-describe 'nomad_sorted_json', :type => :puppet_function do
+describe 'nomad::sorted_json', :type => :puppet_function do
 
   let(:test_hash){ { 'z' => 3, 'a' => '1', 'p' => '2', 's' => '-7' } }
   before do
