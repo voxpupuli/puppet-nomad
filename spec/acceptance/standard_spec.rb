@@ -7,7 +7,6 @@ describe 'nomad class' do
     it 'should work with no errors based on the example' do
       pp = <<-EOS
         class { 'nomad':
-          version     => '0.2.3',
           config_hash => {
             "region"     => 'us-west',
             "datacenter" => 'ptk',
@@ -27,8 +26,21 @@ describe 'nomad class' do
       expect(apply_manifest(pp).exit_code).to eq(0)
     end
 
-    describe file('/opt/nomad') do
+    describe file('/var/lib/nomad') do
       it { should be_directory }
+    end
+
+    describe file('/opt/puppet-archive/nomad-1.0.1') do
+      it { should be_directory }
+    end
+
+    describe file('/opt/puppet-archive/nomad-1.0.1/nomad') do
+      it { should be_file }
+    end
+
+    describe file('/usr/local/bin/nomad') do
+      it { should be_symlink }
+      it { should be_linked_to '/opt/puppet-archive/nomad-1.0.1/nomad' }
     end
 
     describe service('nomad') do
@@ -36,7 +48,7 @@ describe 'nomad class' do
     end
 
     describe command('nomad version') do
-      its(:stdout) { should match /Nomad v0\.2\.3/ }
+      its(:stdout) { should match(/Nomad v1\.0\.1/) }
     end
 
   end
