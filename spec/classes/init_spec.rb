@@ -84,9 +84,9 @@ describe 'nomad' do
   end
 
   context "When installing via URL by default" do
-    it { should contain_archive('/opt/puppet-archive/nomad-0.5.2.zip').with(:source => 'https://releases.hashicorp.com/nomad/0.5.2/nomad_0.5.2_linux_amd64.zip') }
+    it { should contain_archive('/opt/puppet-archive/nomad-1.0.1.zip').with(:source => 'https://releases.hashicorp.com/nomad/1.0.1/nomad_1.0.1_linux_amd64.zip') }
     it { should contain_file('/opt/puppet-archive').with(:ensure => 'directory') }
-    it { should contain_file('/opt/puppet-archive/nomad-0.5.2').with(:ensure => 'directory') }
+    it { should contain_file('/opt/puppet-archive/nomad-1.0.1').with(:ensure => 'directory') }
     it { should contain_file('/usr/local/bin/nomad').that_notifies('Class[nomad::run_service]') }
   end
 
@@ -94,7 +94,7 @@ describe 'nomad' do
     let(:params) {{
       :version   => '42',
     }}
-    it { should contain_archive('nomad-42.zip').with(:source => 'https://releases.hashicorp.com/nomad/42/nomad_42_linux_amd64.zip') }
+    it { should contain_archive('/opt/puppet-archive/nomad-42.zip').with(:source => 'https://releases.hashicorp.com/nomad/42/nomad_42_linux_amd64.zip') }
     it { should contain_file('/usr/local/bin/nomad').that_notifies('Class[nomad::run_service]') }
   end
 
@@ -102,7 +102,7 @@ describe 'nomad' do
     let(:params) {{
       :download_url   => 'http://myurl',
     }}
-    it { should contain_archive('nomad-0.2.3.zip').with(:source => 'http://myurl') }
+    it { should contain_archive('/opt/puppet-archive/nomad-1.0.1.zip').with(:source => 'http://myurl') }
     it { should contain_file('/usr/local/bin/nomad').that_notifies('Class[nomad::run_service]') }
   end
 
@@ -119,7 +119,7 @@ describe 'nomad' do
       :install_method => 'none'
     }}
     it { should_not contain_package('nomad') }
-    it { should_not contain_archive('/opt/puppet-archive/nomad-0.5.2.zip') }
+    it { should_not contain_archive('/opt/puppet-archive/nomad-1.0.1.zip') }
   end
 
 
@@ -432,7 +432,7 @@ describe 'nomad' do
     }}
 
     it { should contain_class('nomad').with_init_style('systemd') }
-    it { should contain_file('/lib/systemd/system/nomad.service').with_content(/nomad agent/) }
+    it { should contain_file('/etc/systemd/system/nomad.service').with_content(/nomad agent/) }
   end
 
   context "On an Amazon based OS" do
@@ -452,7 +452,7 @@ describe 'nomad' do
     }}
 
     it { should contain_class('nomad').with_init_style('systemd') }
-    it { should contain_file('/lib/systemd/system/nomad.service').with_content(/nomad agent/) }
+    it { should contain_file('/etc/systemd/system/nomad.service').with_content(/nomad agent/) }
   end
 
   context "On a fedora 20 based OS" do
@@ -487,14 +487,14 @@ describe 'nomad' do
     }}
 
     it { should contain_class('nomad').with_init_style('systemd') }
-    it { should contain_file('/lib/systemd/system/nomad.service').with_content(/nomad agent/) }
+    it { should contain_file('/etc/systemd/system/nomad.service').with_content(/nomad agent/) }
   end
 
   context "When asked not to manage the init_style" do
     let(:params) {{ :init_style => false }}
     it { should contain_class('nomad').with_init_style(false) }
     it { should_not contain_file("/etc/init.d/nomad") }
-    it { should_not contain_file("/lib/systemd/system/nomad.service") }
+    it { should_not contain_file("/etc/systemd/system/nomad.service") }
   end
 
   context "On squeeze" do
