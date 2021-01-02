@@ -468,15 +468,6 @@ describe 'nomad' do
     it { should contain_class('nomad').with_init_style('systemd') }
   end
 
-  context "On SLED" do
-    let(:facts) {{
-      :operatingsystem => 'SLED',
-      :operatingsystemrelease => '11.4'
-    }}
-
-    it { should contain_class('nomad').with_init_style('sles') }
-  end
-
   context "On SLES" do
     let(:facts) {{
       :operatingsystem => 'SLES',
