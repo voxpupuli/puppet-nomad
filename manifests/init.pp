@@ -115,8 +115,7 @@ class nomad (
     default => undef,
   }
 
-  anchor { 'nomad_first': }
-  -> class { 'nomad::install': }
+  class { 'nomad::install': }
   -> class { 'nomad::config':
     config_hash => $config_hash_real,
     purge       => $purge_config_dir,
@@ -124,5 +123,9 @@ class nomad (
   }
   -> class { 'nomad::run_service': }
   -> class { 'nomad::reload_service': }
-  -> anchor { 'nomad_last': }
+
+  contain nomad::install
+  contain nomad::config
+  contain nomad::run_service
+  contain nomad::reload_service
 }
