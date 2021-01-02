@@ -15,50 +15,5 @@ class nomad::params {
 
   $os = downcase($facts['kernel'])
 
-  if $facts['os']['name'] == 'Ubuntu' {
-    if versioncmp($facts['os']['release']['full'], '8.04') < 1 {
-      $init_style = 'debian'
-    } elsif versioncmp($facts['os']['release']['full'], '15.04') < 0 {
-      $init_style = 'upstart'
-    } else {
-      $init_style = 'systemd'
-    }
-  } elsif $facts['os']['name'] =~ /Scientific|CentOS|RedHat|OracleLinux/ {
-    if versioncmp($facts['os']['release']['full'], '7.0') < 0 {
-      $init_style = 'sysv'
-    } else {
-      $init_style  = 'systemd'
-    }
-  } elsif $facts['os']['name'] == 'Fedora' {
-    if versioncmp($facts['os']['release']['full'], '12') < 0 {
-      $init_style = 'sysv'
-    } else {
-      $init_style = 'systemd'
-    }
-  } elsif $facts['os']['name'] == 'Debian' {
-    if versioncmp($facts['os']['release']['full'], '8.0') < 0 {
-      $init_style = 'debian'
-    } else {
-      $init_style = 'systemd'
-    }
-  } elsif $facts['os']['name'] == 'Archlinux' {
-    $init_style = 'systemd'
-  } elsif $facts['os']['name'] == 'OpenSuSE' {
-    $init_style = 'systemd'
-  } elsif $facts['os']['name'] =~ /SLE[SD]/ {
-    if versioncmp($facts['os']['release']['full'], '12.0') < 0 {
-      $init_style = 'sles'
-    } else {
-      $init_style = 'systemd'
-    }
-  } elsif $facts['os']['name'] == 'Darwin' {
-    $init_style = 'launchd'
-  } elsif $facts['os']['name'] == 'Amazon' {
-    $init_style = 'sysv'
-  } else {
-    $init_style = undef
-  }
-  if $init_style == undef {
-    fail('Unsupported OS')
-  }
+  $init_style = $facts['service_provider']
 }
