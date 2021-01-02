@@ -22,14 +22,6 @@ class nomad::config (
           notify  => $nomad::notify_service,
         }
       }
-      'sysv' : {
-        file { '/etc/init.d/nomad':
-          mode    => '0555',
-          owner   => 'root',
-          group   => 'root',
-          content => template('nomad/nomad.sysv.erb'),
-        }
-      }
       'launchd' : {
         file { '/Library/LaunchDaemons/io.nomad.daemon.plist':
           mode    => '0644',

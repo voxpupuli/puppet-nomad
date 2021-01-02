@@ -6,7 +6,7 @@
   * If installing from zip, you *must* ensure the unzip utility is available.
 * Optionally installs a user to run it under
 * Installs a configuration file (/etc/nomad/config.json)
-* Manages the nomad service via sysv, or systemd
+* Manages the nomad service via launchd or systemd
 
 ## Usage
 
