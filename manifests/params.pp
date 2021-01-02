@@ -21,7 +21,7 @@ class nomad::params {
     }
   }
 
-  $os = downcase($::kernel)
+  $os = downcase($facts['kernel'])
 
   if $facts['os']['name'] == 'Ubuntu' {
     if versioncmp($facts['os']['release']['full'], '8.04') < 1 {
