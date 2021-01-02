@@ -36,7 +36,7 @@ class nomad::config(
       'systemd' : {
         systemd::unit_file { 'nomad.service':
           content => template('nomad/nomad.systemd.erb'),
-          notify  => $notify_service,
+          notify  => $nomad::notify_service,
         }
       }
       'sysv' : {
