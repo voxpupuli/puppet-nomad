@@ -30,14 +30,6 @@ class nomad::config (
           content => template('nomad/nomad.sysv.erb'),
         }
       }
-      'debian' : {
-        file { '/etc/init.d/nomad':
-          mode    => '0555',
-          owner   => 'root',
-          group   => 'root',
-          content => template('nomad/nomad.debian.erb'),
-        }
-      }
       'launchd' : {
         file { '/Library/LaunchDaemons/io.nomad.daemon.plist':
           mode    => '0644',

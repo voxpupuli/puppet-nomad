@@ -336,39 +336,6 @@ describe 'nomad' do
     }
   end
 
-  context "When using debian" do
-    let (:params) {{
-      :init_style => 'debian'
-    }}
-    let (:facts) {{
-      :ipaddress_lo => '127.0.0.1'
-    }}
-    it { should contain_class('nomad').with_init_style('debian') }
-    it {
-      should contain_file('/etc/init.d/nomad').
-        with_content(/-rpc-addr=127.0.0.1:8400/)
-    }
-  end
-
-  context "When overriding default rpc port on debian" do
-    let (:params) {{
-      :init_style => 'debian',
-      :config_hash => {
-        'ports' => {
-          'rpc' => '9999'
-        },
-        'addresses' => {
-          'rpc' => 'nomad.example.com'
-        }
-      }
-    }}
-    it { should contain_class('nomad').with_init_style('debian') }
-    it {
-      should contain_file('/etc/init.d/nomad').
-        with_content(/-rpc-addr=nomad.example.com:9999/)
-    }
-  end
-
   context "On a redhat 6 based OS" do
     let(:facts) {{
       :operatingsystem => 'CentOS',
@@ -418,21 +385,6 @@ describe 'nomad' do
     it { should contain_file('/lib/systemd/system/nomad.service').with_content(/nomad agent/) }
   end
 
-  context "On hardy" do
-    let(:facts) {{
-      :operatingsystem => 'Ubuntu',
-      :operatingsystemrelease  => '8.04',
-    }}
-
-    it { should contain_class('nomad').with_init_style('debian') }
-    it {
-      should contain_file('/etc/init.d/nomad') \
-        .with_content(/start-stop-daemon .* \$DAEMON/) \
-        .with_content(/DAEMON_ARGS="agent/) \
-        .with_content(/--user \$USER/)
-    }
-  end
-
   context "On a Ubuntu Vivid 15.04 based OS" do
     let(:facts) {{
       :operatingsystem => 'Ubuntu',
@@ -448,15 +400,6 @@ describe 'nomad' do
     it { should contain_class('nomad').with_init_style(false) }
     it { should_not contain_file("/etc/init.d/nomad") }
     it { should_not contain_file("/etc/systemd/system/nomad.service") }
-  end
-
-  context "On squeeze" do
-    let(:facts) {{
-      :operatingsystem => 'Debian',
-      :operatingsystemrelease => '7.1'
-    }}
-
-    it { should contain_class('nomad').with_init_style('debian') }
   end
 
   context "On opensuse" do
