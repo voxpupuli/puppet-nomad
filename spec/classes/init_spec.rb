@@ -225,8 +225,6 @@ describe 'nomad' do
         }}
         it { should contain_user('custom_nomad_user').with(:ensure => :present) }
         it { should contain_group('custom_nomad_group').with(:ensure => :present) }
-        it { should contain_file('/etc/init/nomad.conf').with_content(/env USER=custom_nomad_user/) }
-        it { should contain_file('/etc/init/nomad.conf').with_content(/env GROUP=custom_nomad_group/) }
       end
 
       context "Config with custom file mode" do
@@ -243,9 +241,6 @@ describe 'nomad' do
       end
 
       context "When nomad is reloaded" do
-        let (:facts) {{
-          :ipaddress_lo => '127.0.0.1'
-        }}
         it {
           should contain_exec('reload nomad service').
             with_command('nomad reload -rpc-addr=127.0.0.1:8400')
@@ -292,7 +287,7 @@ describe 'nomad' do
         let(:params) {{
           :extra_options => '-some-extra-argument'
         }}
-        it { should contain_file('/etc/init/nomad.conf').with_content(/\$NOMAD -S -- agent .*-some-extra-argument$/) }
+        it { should contain_file("/etc/systemd/system/nomad.service").with_content(/^ExecStart=.*-some-extra-argument$/) }
       end
 
       # Service Stuff
