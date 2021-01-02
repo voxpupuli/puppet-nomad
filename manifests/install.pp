@@ -46,13 +46,6 @@ class nomad::install {
         ensure => $nomad::package_ensure,
       }
 
-      if $nomad::ui_dir {
-        package { $nomad::ui_package_name:
-          ensure  => $nomad::ui_package_ensure,
-          require => Package[$nomad::package_name],
-        }
-      }
-
       if $nomad::manage_user {
         User[$nomad::user] -> Package[$nomad::package_name]
       }
