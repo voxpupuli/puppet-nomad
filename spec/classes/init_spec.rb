@@ -7,10 +7,8 @@ describe 'nomad' do
 
       # Installation Stuff
       context 'On an unsupported arch' do
-        let(:facts) {{ :architecture => 'bogus' }}
-        let(:params) {{
-          :install_method => 'package'
-        }}
+        let(:facts) { override_facts(super(), os: {architecture: 'bogus'}) }
+
         it { should compile.and_raise_error(/Unsupported kernel architecture:/) }
       end
 
