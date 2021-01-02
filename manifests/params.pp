@@ -4,7 +4,6 @@
 # It sets variables according to platform
 #
 class nomad::params {
-
   $install_method        = 'url'
   $package_name          = 'nomad'
   $package_ensure        = 'installed'
@@ -13,56 +12,56 @@ class nomad::params {
   $version               = '1.0.1'
   $config_mode           = '0660'
 
-  case $::architecture {
+  case $facts['os']['architecture'] {
     'x86_64', 'amd64': { $arch = 'amd64' }
-    'i386':            { $arch = '386'   }
-    'armv7l':          { $arch = 'arm'   }
+    'i386':            { $arch = '386' }
+    'armv7l':          { $arch = 'arm' }
     default:           {
-      fail("Unsupported kernel architecture: ${::architecture}")
+      fail("Unsupported kernel architecture: ${facts['os']['architecture']}")
     }
   }
 
   $os = downcase($::kernel)
 
-  if $::operatingsystem == 'Ubuntu' {
-    if versioncmp($::operatingsystemrelease, '8.04') < 1 {
+  if $facts['os']['name'] == 'Ubuntu' {
+    if versioncmp($facts['os']['release']['full'], '8.04') < 1 {
       $init_style = 'debian'
-    } elsif versioncmp($::operatingsystemrelease, '15.04') < 0 {
+    } elsif versioncmp($facts['os']['release']['full'], '15.04') < 0 {
       $init_style = 'upstart'
     } else {
       $init_style = 'systemd'
     }
-  } elsif $::operatingsystem =~ /Scientific|CentOS|RedHat|OracleLinux/ {
-    if versioncmp($::operatingsystemrelease, '7.0') < 0 {
+  } elsif $facts['os']['name'] =~ /Scientific|CentOS|RedHat|OracleLinux/ {
+    if versioncmp($facts['os']['release']['full'], '7.0') < 0 {
       $init_style = 'sysv'
     } else {
       $init_style  = 'systemd'
     }
-  } elsif $::operatingsystem == 'Fedora' {
-    if versioncmp($::operatingsystemrelease, '12') < 0 {
+  } elsif $facts['os']['name'] == 'Fedora' {
+    if versioncmp($facts['os']['release']['full'], '12') < 0 {
       $init_style = 'sysv'
     } else {
       $init_style = 'systemd'
     }
-  } elsif $::operatingsystem == 'Debian' {
-    if versioncmp($::operatingsystemrelease, '8.0') < 0 {
+  } elsif $facts['os']['name'] == 'Debian' {
+    if versioncmp($facts['os']['release']['full'], '8.0') < 0 {
       $init_style = 'debian'
     } else {
       $init_style = 'systemd'
     }
-  } elsif $::operatingsystem == 'Archlinux' {
+  } elsif $facts['os']['name'] == 'Archlinux' {
     $init_style = 'systemd'
-  } elsif $::operatingsystem == 'OpenSuSE' {
+  } elsif $facts['os']['name'] == 'OpenSuSE' {
     $init_style = 'systemd'
-  } elsif $::operatingsystem =~ /SLE[SD]/ {
-    if versioncmp($::operatingsystemrelease, '12.0') < 0 {
+  } elsif $facts['os']['name'] =~ /SLE[SD]/ {
+    if versioncmp($facts['os']['release']['full'], '12.0') < 0 {
       $init_style = 'sles'
     } else {
       $init_style = 'systemd'
     }
-  } elsif $::operatingsystem == 'Darwin' {
+  } elsif $facts['os']['name'] == 'Darwin' {
     $init_style = 'launchd'
-  } elsif $::operatingsystem == 'Amazon' {
+  } elsif $facts['os']['name'] == 'Amazon' {
     $init_style = 'sysv'
   } else {
     $init_style = undef

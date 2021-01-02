@@ -3,7 +3,6 @@
 # Installs nomad based on the parameters from init
 #
 class nomad::install {
-
   if $nomad::data_dir {
     file { $nomad::data_dir:
       ensure => 'directory',
@@ -17,10 +16,8 @@ class nomad::install {
     'url': {
       $install_path = '/opt/puppet-archive'
 
-      include '::archive'
-      file { [
-        $install_path,
-        "${install_path}/nomad-${nomad::version}"]:
+      include 'archive'
+      file { [$install_path, "${install_path}/nomad-${nomad::version}"]:
         ensure => directory,
       }
       -> archive { "${install_path}/nomad-${nomad::version}.${nomad::download_extension}":

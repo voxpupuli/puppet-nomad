@@ -10,13 +10,11 @@
 # [*purge*]
 #   Bool. If set will make puppet remove stale config files.
 #
-class nomad::config(
+class nomad::config (
   $config_hash,
   $purge = true,
 ) {
-
   if $nomad::init_style {
-
     case $nomad::init_style {
       'upstart' : {
         file { '/etc/init/nomad.conf':
@@ -85,12 +83,11 @@ class nomad::config(
     recurse => $purge,
   }
   -> file { 'nomad config.json':
-    ensure  => present,
+    ensure  => file,
     path    => "${nomad::config_dir}/config.json",
     owner   => $nomad::user,
     group   => $nomad::group,
     mode    => $nomad::config_mode,
     content => nomad::sorted_json($config_hash, $nomad::pretty_config, $nomad::pretty_config_indent),
   }
-
 }

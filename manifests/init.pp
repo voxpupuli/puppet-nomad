@@ -75,7 +75,6 @@ class nomad (
   $restart_on_change     = true,
   $init_style            = $nomad::params::init_style,
 ) inherits nomad::params {
-
   $real_download_url    = pick($download_url, "${download_url_base}${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
 
   validate_bool($purge_config_dir)
@@ -97,7 +96,6 @@ class nomad (
     $data_dir = undef
   }
 
-
   if ($config_hash_real['ports'] and $config_hash_real['ports']['rpc']) {
     $rpc_port = $config_hash_real['ports']['rpc']
   } else {
@@ -109,7 +107,7 @@ class nomad (
   } elsif ($config_hash_real['client_addr']) {
     $rpc_addr = $config_hash_real['client_addr']
   } else {
-    $rpc_addr = $::ipaddress_lo
+    $rpc_addr = $facts['networking']['interfaces']['lo']['ip']
   }
 
   $notify_service = $restart_on_change ? {
@@ -117,14 +115,14 @@ class nomad (
     default => undef,
   }
 
-  anchor {'nomad_first': }
-  -> class { '::nomad::install': }
-  -> class { '::nomad::config':
+  anchor { 'nomad_first': }
+  -> class { 'nomad::install': }
+  -> class { 'nomad::config':
     config_hash => $config_hash_real,
     purge       => $purge_config_dir,
     notify      => $notify_service,
   }
-  -> class { '::nomad::run_service': }
-  -> class { '::nomad::reload_service': }
-  -> anchor {'nomad_last': }
+  -> class { 'nomad::run_service': }
+  -> class { 'nomad::reload_service': }
+  -> anchor { 'nomad_last': }
 }
