@@ -1,2 +1,1 @@
 ---
-nomad::init_style: "%{facts.service_provider}"
