@@ -9,7 +9,7 @@ describe 'nomad' do
       context 'On an unsupported arch' do
         let(:facts) { override_facts(super(), os: {architecture: 'bogus'}) }
 
-        it { should compile.and_raise_error(/Unsupported kernel architecture:/) }
+        it { should compile.and_raise_error(/Class\[Nomad\]: expects a value for parameter \'arch\' /) }
       end
 
       context 'When not specifying whether to purge config' do
