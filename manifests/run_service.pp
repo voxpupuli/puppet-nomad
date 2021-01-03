@@ -4,7 +4,6 @@
 # It ensure the service is running
 #
 class nomad::run_service {
-
   $init_selector = $nomad::init_style ? {
     'launchd' => 'io.nomad.daemon',
     default   => 'nomad',
@@ -28,5 +27,4 @@ class nomad::run_service {
       subscribe => Service['nomad'],
     }
   }
-
 }

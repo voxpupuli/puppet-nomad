@@ -1,7 +1,0 @@
-HOSTS:
-  centos-7-puppet:
-    platform: centos-7.2-x64
-    box: puppetlabs/centos-7.2-64-puppet
-    hypervisor: vagrant
-CONFIG:
-  type: foss

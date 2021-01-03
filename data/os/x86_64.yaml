@@ -1,0 +1,2 @@
+---
+nomad::arch: 'amd64'

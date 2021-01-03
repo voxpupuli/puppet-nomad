@@ -26,15 +26,15 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "7.0",
-        "8.0"
+        "7",
+        "8"
       ]
     },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "7.0",
-        "8.0"
+        "7",
+        "8"
       ]
     },
     {
@@ -55,7 +55,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 5.5.8 < 7.0.0"
+      "version_requirement": ">= 6.1.0 < 7.0.0"
     }
   ]
 }

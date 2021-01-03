@@ -11,14 +11,14 @@
 #
 class { 'nomad':
   config_hash => {
-    "region"     => 'us-west',
-    "datacenter" => 'ptk',
-    "log_level"  => 'INFO',
-    "bind_dir"   => "0.0.0.0",
-    "data_dir"   => "/var/lib/nomad",
-    "server" => {
-      "enabled"          => true,
-      "bootstrap_expect" => 1
-    }
-  }
+    'region'     => 'us-west',
+    'datacenter' => 'ptk',
+    'log_level'  => 'INFO',
+    'bind_dir'   => '0.0.0.0',
+    'data_dir'   => '/var/lib/nomad',
+    'server'     => {
+      'enabled'          => true,
+      'bootstrap_expect' => 1,
+    },
+  },
 }
