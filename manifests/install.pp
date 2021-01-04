@@ -1,7 +1,6 @@
-# == Class nomad::install
+# This class is called from nomad::init to install the config file.
 #
-# Installs nomad based on the parameters from init
-#
+# @api private
 class nomad::install {
   if $nomad::data_dir {
     file { $nomad::data_dir:

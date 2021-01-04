@@ -1,18 +1,11 @@
-# == Class nomad::config
-#
 # This class is called from nomad::init to install the config file.
 #
-# == Parameters
-#
-# [*config_hash*]
-#   Hash for nomad to be deployed as JSON
-#
-# [*purge*]
-#   Bool. If set will make puppet remove stale config files.
-#
+# @api private
+# @param config_hash Hash for nomad to be deployed as JSON.
+# @param purge If set will make puppet remove stale config files.
 class nomad::config (
-  $config_hash,
-  $purge = true,
+  Hash $config_hash,
+  Boolean $purge = true,
 ) {
   if $nomad::init_style {
     case $nomad::init_style {

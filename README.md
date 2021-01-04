@@ -8,70 +8,9 @@
 * Installs a configuration file (/etc/nomad/config.json)
 * Manages the nomad service via launchd or systemd
 
-## Usage
+## Reference
 
-To set up a single nomad server, with several agents attached:
-On the server:
-```puppet
-class { '::nomad':
-  version     => '1.0.1', # check latest version at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md
-  config_hash => {
-    'region'     => 'us-west',
-    'datacenter' => 'ptk',
-    'log_level'  => 'INFO',
-    'bind_addr'  => '0.0.0.0',
-    'data_dir'   => '/opt/nomad',
-    'server'     => {
-      'enabled'          => true,
-      'bootstrap_expect' => 3,
-    }
-  }
-}
-```
-On the agent(s):
-```puppet
-class { 'nomad':
-  config_hash => {
-    'region'     => 'us-west',
-    'datacenter' => 'ptk',
-    'log_level'  => 'INFO',
-    'bind_addr'  => '0.0.0.0',
-    'data_dir'   => '/opt/nomad',
-    'client'     => {
-      'enabled'    => true,
-      'servers'    => [
-        "nomad01.your-org.pvt:4647",
-        "nomad02.your-org.pvt:4647",
-        "nomad03.your-org.pvt:4647"
-      ]
-    }
-  },
-}
-
-```
-Disable install and service components:
-```puppet
-class { '::nomad':
-  install_method => 'none',
-  init_style     => false,
-  manage_service => false,
-  config_hash   => {
-    'region'     => 'us-west',
-    'datacenter' => 'ptk',
-    'log_level'  => 'INFO',
-    'bind_addr'  => '0.0.0.0',
-    'data_dir'   => '/opt/nomad',
-    'client'     => {
-      'enabled'    => true,
-      'servers'    => [
-        "nomad01.your-org.pvt:4647",
-        "nomad02.your-org.pvt:4647",
-        "nomad03.your-org.pvt:4647"
-      ]
-    }
-  },
-}
-```
+See [REFERENCE](REFERENCE.md).
 
 ## Limitations
 

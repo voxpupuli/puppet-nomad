@@ -8,6 +8,8 @@
 # ---- original file header ----
 require 'json'
 
+# module to sort json
+#
 module JSON
   class << self
     @@loop = 0
@@ -175,7 +177,7 @@ Puppet::Functions.create_function(:'nomad::nomad_sorted_json') do
 
 
   def default_impl(*args)
-    
+
 
     unsorted_hash = args[0]      || {}
     pretty        = args[1]      || false
@@ -188,6 +190,6 @@ Puppet::Functions.create_function(:'nomad::nomad_sorted_json') do
     else
       return JSON.sorted_generate(unsorted_hash)
     end
-  
+
   end
 end
