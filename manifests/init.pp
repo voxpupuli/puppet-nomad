@@ -33,7 +33,7 @@
 #         ]
 #       }
 #     },
-#  }
+#   }
 #
 # @example Disable install and service components
 #   class { '::nomad':
