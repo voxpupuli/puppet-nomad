@@ -55,7 +55,7 @@
 #         ]
 #       }
 #     },
-#  }
+#   }
 #
 # @param arch cpu architecture
 # @param manage_user manage the user that will run nomad
