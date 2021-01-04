@@ -58,10 +58,10 @@ Puppet::Functions.create_function(:'nomad::sorted_json') do
   #         ]
   #     }
   #
-  # @param unsorted_hash
-  # @param pretty
-  # @param indent_len
-  # @return [Hash]
+  # @param [Hash] unsorted_hash unstructured input
+  # @param [Boolean] pretty make output human readable
+  # @param [Integer] indent_len number of characters to indent
+  # @return [Hash] sorted json
   def sorted_json(unsorted_hash = {}, pretty = false, indent_len = 4)
     # simplify jsonification of standard types
     simple_generate = lambda do |obj, quoted|
