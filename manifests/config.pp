@@ -2,24 +2,12 @@
 #
 # This class is called from nomad::init to install the config file.
 #
-# == Parameters
-#
-# [*config_hash*]
-#   Hash for nomad to be deployed as JSON
-#
-# [*purge*]
-#   Bool. If set will make puppet remove stale config files.
-#
-class nomad::config (
-  $config_hash,
-  $purge = true,
-) {
+class nomad::config {
   if $nomad::init_style {
     case $nomad::init_style {
       'systemd' : {
         systemd::unit_file { 'nomad.service':
           content => template('nomad/nomad.systemd.erb'),
-          notify  => $nomad::notify_service,
         }
       }
       'launchd' : {
@@ -40,8 +28,8 @@ class nomad::config (
     ensure  => 'directory',
     owner   => $nomad::user,
     group   => $nomad::group,
-    purge   => $purge,
-    recurse => $purge,
+    purge   => $nomad::purge_config_dir,
+    recurse => $nomad::purge_config_dir,
   }
   -> file { 'nomad config.json':
     ensure  => file,
@@ -49,6 +37,6 @@ class nomad::config (
     owner   => $nomad::user,
     group   => $nomad::group,
     mode    => $nomad::config_mode,
-    content => nomad::sorted_json($config_hash, $nomad::pretty_config, $nomad::pretty_config_indent),
+    content => nomad::sorted_json($nomad::config_hash_real, $nomad::pretty_config, $nomad::pretty_config_indent),
   }
 }

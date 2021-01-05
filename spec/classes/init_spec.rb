@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'nomad' do
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
-      let(:facts) { os_facts }
+      let(:facts) { os_facts.merge(service_provider: 'systemd') }
 
       # Installation Stuff
       context 'On an unsupported arch' do
@@ -20,11 +20,14 @@ describe 'nomad' do
         let(:params) {{
           :purge_config_dir => false
         }}
-        it { should contain_class('nomad::config').with(:purge => false) }
+
+        it { should contain_file('/etc/nomad').with(:purge => false,:recurse => false) }
       end
 
       context 'nomad::config should notify nomad::run_service' do
         it { should contain_class('nomad::config').that_notifies(['Class[nomad::run_service]']) }
+        it { should contain_file('/usr/local/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
+        it { should contain_systemd__unit_file('nomad.service').that_notifies(['Class[nomad::run_service]']) }
       end
 
       context 'nomad::config should not notify nomad::run_service on config change' do
