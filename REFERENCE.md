@@ -8,7 +8,7 @@
 
 #### Public Classes
 
-* [`nomad`](#nomad): Installs, configures, and manages nomad   }   }
+* [`nomad`](#nomad): Installs, configures, and manages nomad
 
 #### Private Classes
 
@@ -27,10 +27,6 @@
 ### `nomad`
 
 Installs, configures, and manages nomad
-
- }
-
- }
 
 #### Examples
 
@@ -72,6 +68,7 @@ class { 'nomad':
       ]
     }
   },
+}
 ```
 
 ##### Disable install and service components
@@ -96,6 +93,7 @@ class { '::nomad':
       ]
     }
   },
+}
 ```
 
 #### Parameters
@@ -184,7 +182,7 @@ Default value: `'1.0.1'`
 
 Data type: `Enum['url', 'package', 'none']`
 
-install via system package, download and extract from a url. Defaults to `url` or disable install.
+install via system package, download and extract from a url.
 
 Default value: `'url'`
 
@@ -224,7 +222,7 @@ Default value: `'zip'`
 
 Data type: `String[1]`
 
-Only valid when the install_method == package. Defaults to `nomad`.
+Only valid when the install_method == package.
 
 Default value: `'nomad'`
 
@@ -232,7 +230,7 @@ Default value: `'nomad'`
 
 Data type: `String[1]`
 
-Only valid when the install_method == package. Defaults to `installed`.
+Only valid when the install_method == package.
 
 Default value: `'installed'`
 
@@ -288,7 +286,7 @@ Default value: ``true``
 
 Data type: `Boolean`
 
-Generates a human readable JSON config file. Defaults to `false`.
+Generates a human readable JSON config file.
 
 Default value: ``false``
 
@@ -296,7 +294,7 @@ Default value: ``false``
 
 Data type: `Integer`
 
-Toggle indentation for human readable JSON file. Defaults to `4`.
+Toggle indentation for human readable JSON file.
 
 Default value: `4`
 
@@ -467,27 +465,27 @@ Type: Ruby 4.x API
 
 This function takes unsorted hash and outputs JSON object making sure the keys are sorted.
 
-#### `nomad::sorted_json(Optional[Any] $unsorted_hash = {}, Optional[Any] $pretty = false, Optional[Any] $indent_len = 4)`
+#### `nomad::sorted_json(Optional[Hash] $unsorted_hash = {}, Optional[Boolean] $pretty = false, Optional[Integer] $indent_len = 4)`
 
 The nomad::sorted_json function.
 
-Returns: `Hash`
+Returns: `Hash` sorted json
 
 ##### `unsorted_hash`
 
-Data type: `Optional[Any]`
+Data type: `Optional[Hash]`
 
-
+unstructured input
 
 ##### `pretty`
 
-Data type: `Optional[Any]`
+Data type: `Optional[Boolean]`
 
-
+make output human readable
 
 ##### `indent_len`
 
-Data type: `Optional[Any]`
+Data type: `Optional[Integer]`
 
-
+number of characters to indent
 
