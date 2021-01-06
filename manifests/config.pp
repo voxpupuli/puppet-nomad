@@ -1,5 +1,3 @@
-# == Class nomad::config
-#
 # This class is called from nomad::init to install the config file.
 #
 class nomad::config {

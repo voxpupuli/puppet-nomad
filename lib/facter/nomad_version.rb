@@ -1,5 +1,5 @@
 # nomad_version.rb
-
+#
 Facter.add(:nomad_version) do
   confine :kernel => 'Linux'
   setcode do

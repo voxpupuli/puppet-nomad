@@ -1,8 +1,7 @@
-# == Class nomad::service
-#
 # This class is meant to be called from nomad
 # It ensure the service is running
 #
+# @api private
 class nomad::run_service {
   $init_selector = $nomad::init_style ? {
     'launchd' => 'io.nomad.daemon',
