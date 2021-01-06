@@ -176,9 +176,7 @@ class nomad (
 
   class { 'nomad::install': }
   -> class { 'nomad::config':
-    config_hash => $config_hash_real,
-    purge       => $purge_config_dir,
-    notify      => $notify_service,
+    notify => $notify_service,
   }
   -> class { 'nomad::run_service': }
   -> class { 'nomad::reload_service': }
