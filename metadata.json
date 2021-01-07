@@ -1,6 +1,6 @@
 {
   "name": "puppet-nomad",
-  "version": "0.0.4",
+  "version": "0.0.5-rc0",
   "author": "Vox Pupuli",
   "summary": "Configures Nomad by Hashicorp",
   "license": "Apache-2.0",
