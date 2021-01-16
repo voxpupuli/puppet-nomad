@@ -40,6 +40,7 @@ class nomad::install {
     'package': {
       if $nomad::manage_repo {
         include hashi_stack::repo
+        Class['hashi_stack::repo'] -> Package[$nomad::package_name]
       }
       package { $nomad::package_name:
         ensure => $nomad::package_ensure,
