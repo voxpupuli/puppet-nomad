@@ -34,7 +34,7 @@ Installs, configures, and manages nomad
 
 ```puppet
 class { '::nomad':
-  version     => '1.0.1', # check latest version at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md
+  version     => '1.0.2', # check latest version at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md
   config_hash => {
     'region'     => 'us-west',
     'datacenter' => 'ptk',
@@ -176,7 +176,7 @@ Data type: `String[1]`
 
 Specify version of nomad binary to download.
 
-Default value: `'1.0.1'`
+Default value: `'1.0.2'`
 
 ##### `install_method`
 

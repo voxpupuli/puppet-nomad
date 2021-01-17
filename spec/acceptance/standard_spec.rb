@@ -30,17 +30,17 @@ describe 'nomad class' do
       it { should be_directory }
     end
 
-    describe file('/opt/puppet-archive/nomad-1.0.1') do
+    describe file('/opt/puppet-archive/nomad-1.0.2') do
       it { should be_directory }
     end
 
-    describe file('/opt/puppet-archive/nomad-1.0.1/nomad') do
+    describe file('/opt/puppet-archive/nomad-1.0.2/nomad') do
       it { should be_file }
     end
 
     describe file('/usr/local/bin/nomad') do
       it { should be_symlink }
-      it { should be_linked_to '/opt/puppet-archive/nomad-1.0.1/nomad' }
+      it { should be_linked_to '/opt/puppet-archive/nomad-1.0.2/nomad' }
     end
 
     describe service('nomad') do
