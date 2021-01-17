@@ -8,5 +8,3 @@ defaults:  # Used for any hierarchy level that omits these keys.
 hierarchy:
   - name: "architecture"
     path: "os/%{facts.os.architecture}.yaml"
-  - name: 'common'
-    path: 'common.yaml'
