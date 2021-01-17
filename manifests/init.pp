@@ -2,7 +2,7 @@
 #
 # @example To set up a single nomad server, with several agents attached, on the server.
 #   class { '::nomad':
-#     version     => '1.0.1', # check latest version at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md
+#     version     => '1.0.2', # check latest version at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md
 #     config_hash => {
 #       'region'     => 'us-west',
 #       'datacenter' => 'ptk',
@@ -27,6 +27,29 @@
 #         'client'     => {
 #         'enabled'    => true,
 #         'servers'    => [
+#           "nomad01.your-org.pvt:4647",
+#           "nomad02.your-org.pvt:4647",
+#           "nomad03.your-org.pvt:4647"
+#         ]
+#       }
+#     },
+#   }
+#
+# @example Install as package from the HashiCorp repositories
+#   class { '::nomad':
+#     install_method => 'package',
+#     bin_dir        => '/bin',
+#     manage_repo    => true,
+#     package_ensure => installed,
+#     config_hash    => {
+#       'region'     => 'us-west',
+#       'datacenter' => 'ptk',
+#       'log_level'  => 'INFO',
+#       'bind_addr'  => '0.0.0.0',
+#       'data_dir'   => '/opt/nomad',
+#       'client'     => {
+#       'enabled'    => true,
+#       'servers'    => [
 #           "nomad01.your-org.pvt:4647",
 #           "nomad02.your-org.pvt:4647",
 #           "nomad03.your-org.pvt:4647"
@@ -125,7 +148,7 @@ class nomad (
   String[1] $group                               = 'nomad',
   Optional[String[1]] $join_wan                  = undef,
   Stdlib::Absolutepath $bin_dir                  = '/usr/local/bin',
-  String[1] $version                             = '1.0.1',
+  String[1] $version                             = '1.0.2',
   Enum['url', 'package', 'none'] $install_method = 'url',
   String[1] $os                                  = downcase($facts['kernel']),
   Optional[String[1]] $download_url              = undef,
@@ -144,7 +167,7 @@ class nomad (
   Stdlib::Ensure::Service $service_ensure        = 'running',
   Boolean $manage_service                        = true,
   Boolean $restart_on_change                     = true,
-  Variant[String[1], Boolean] $init_style        = $facts['service_provider'],
+  Enum['systemd', 'launchd'] $init_style         = $facts['service_provider'],
 ) {
   $real_download_url = pick($download_url, "${download_url_base}${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
   $config_hash_real = deep_merge($config_defaults, $config_hash)
