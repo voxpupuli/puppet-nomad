@@ -167,7 +167,7 @@ class nomad (
   Stdlib::Ensure::Service $service_ensure        = 'running',
   Boolean $manage_service                        = true,
   Boolean $restart_on_change                     = true,
-  Enum['systemd', 'launchd'] $init_style         = $facts['service_provider'],
+  Variant[Enum['systemd', 'launchd'], Boolean] $init_style = $facts['service_provider'],
 ) {
   $real_download_url = pick($download_url, "${download_url_base}${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
   $config_hash_real = deep_merge($config_defaults, $config_hash)
