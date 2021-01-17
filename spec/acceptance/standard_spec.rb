@@ -48,7 +48,7 @@ describe 'nomad class' do
     end
 
     describe command('nomad version') do
-      its(:stdout) { should match(/Nomad v1\.0\.1/) }
+      its(:stdout) { should match(/Nomad v1\.0\.2/) }
     end
 
   end
