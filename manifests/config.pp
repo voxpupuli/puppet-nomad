@@ -7,6 +7,10 @@ class nomad::config {
         systemd::unit_file { 'nomad.service':
           content => template('nomad/nomad.systemd.erb'),
         }
+        # cleaning up legacy service file created before PR #13
+        file { '/lib/systemd/system/nomad.service':
+          ensure => absent,
+        }
       }
       'launchd' : {
         file { '/Library/LaunchDaemons/io.nomad.daemon.plist':

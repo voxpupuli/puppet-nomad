@@ -1,21 +1,20 @@
 [Unit]
-Description=Nomad agent
+Description=Nomad
 Documentation=https://nomadproject.io/docs/
 Wants=network-online.target
 After=network-online.target
-StartLimitBurst=3
-StartLimitIntervalSec=10
 
 [Service]
-EnvironmentFile=-/etc/sysconfig/nomad
-Restart=on-failure
-ExecStart=<%= scope.lookupvar('nomad::bin_dir') %>/nomad agent -config=<%= scope.lookupvar('nomad::config_dir') %> <%= scope.lookupvar('nomad::extra_options') %>
 ExecReload=/bin/kill -HUP $MAINPID
+ExecStart=<%= scope.lookupvar('nomad::bin_dir') %>/nomad agent -config=<%= scope.lookupvar('nomad::config_dir') %> <%= scope.lookupvar('nomad::extra_options') %>
+KillMode=process
 KillSignal=SIGINT
-RestartSec=2
 LimitNOFILE=65536
 LimitNPROC=infinity
-KillMode=process
+Restart=on-failure
+RestartSec=2
+StartLimitBurst=3
+StartLimitIntervalSec=10
 TasksMax=infinity
 OOMScoreAdjust=-1000
 
