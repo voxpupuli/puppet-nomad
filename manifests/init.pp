@@ -1,7 +1,7 @@
 # Installs, configures, and manages nomad
 #
 # @example To set up a single nomad server, with several agents attached, on the server.
-#   class { '::nomad':
+#   class { 'nomad':
 #     version     => '1.0.2', # check latest version at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md
 #     config_hash => {
 #       'region'     => 'us-west',
@@ -36,7 +36,7 @@
 #   }
 #
 # @example Install as package from the HashiCorp repositories
-#   class { '::nomad':
+#   class { 'nomad':
 #     install_method => 'package',
 #     bin_dir        => '/bin',
 #     manage_repo    => true,
@@ -59,7 +59,7 @@
 #   }
 #
 # @example Disable install and service components
-#   class { '::nomad':
+#   class { 'nomad':
 #     install_method => 'none',
 #     init_style     => false,
 #     manage_service => false,
