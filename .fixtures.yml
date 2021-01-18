@@ -5,7 +5,6 @@ fixtures:
     hashi_stack: "https://github.com/voxpupuli/puppet-hashi_stack.git"
     stdlib: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
     systemd: "https://github.com/camptocamp/puppet-systemd.git"
-    yum: "https://github.com/voxpupuli/puppet-yum.git"
     yumrepo_core:
       repo: "https://github.com/puppetlabs/puppetlabs-yumrepo_core.git"
       puppet_version: ">= 6.0.0"
