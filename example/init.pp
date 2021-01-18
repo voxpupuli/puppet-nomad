@@ -14,7 +14,7 @@ class { 'nomad':
     'region'     => 'us-west',
     'datacenter' => 'ptk',
     'log_level'  => 'INFO',
-    'bind_dir'   => '0.0.0.0',
+    'bind_addr'  => '0.0.0.0',
     'data_dir'   => '/var/lib/nomad',
     'server'     => {
       'enabled'          => true,

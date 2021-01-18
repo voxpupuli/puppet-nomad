@@ -124,6 +124,8 @@
 #   default set of config settings
 # @param config_mode
 #   Use this to set the JSON config file mode for nomad.
+# @param manage_repo
+#   Configure the upstream HashiCorp repository. Only relevant when $nomad::install_method = 'package'.
 # @param manage_service
 #   manage the nomad service
 # @param pretty_config
@@ -165,6 +167,7 @@ class nomad (
   Integer $pretty_config_indent                  = 4,
   Boolean $service_enable                        = true,
   Stdlib::Ensure::Service $service_ensure        = 'running',
+  Boolean $manage_repo                           = true,
   Boolean $manage_service                        = true,
   Boolean $restart_on_change                     = true,
   Variant[Enum['systemd', 'launchd'], Boolean] $init_style = $facts['service_provider'],
