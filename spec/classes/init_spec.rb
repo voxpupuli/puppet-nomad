@@ -144,13 +144,6 @@ describe 'nomad' do
         it { should_not contain_archive('/opt/puppet-archive/nomad-1.0.2.zip') }
       end
 
-
-
-      context "By default, a user and group should be installed" do
-        it { should contain_user('nomad').with(:ensure => :present) }
-        it { should contain_group('nomad').with(:ensure => :present) }
-      end
-
       context "When data_dir is provided" do
         let(:params) {{
           :config_hash => {
@@ -232,16 +225,6 @@ describe 'nomad' do
         it { should contain_file('nomad config.json').with_content(/"ports": \{/) }
       end
 
-      context "When asked not to manage the user" do
-        let(:params) {{ :manage_user => false }}
-        it { should_not contain_user('nomad') }
-      end
-
-      context "When asked not to manage the group" do
-        let(:params) {{ :manage_group => false }}
-        it { should_not contain_group('nomad') }
-      end
-
       context "When asked not to manage the service" do
         let(:params) {{ :manage_service => false }}
 
@@ -262,24 +245,11 @@ describe 'nomad' do
         it { should_not contain_exec('reload nomad service')  }
       end
 
-      context "With a custom username" do
-        let(:params) {{
-          :user => 'custom_nomad_user',
-          :group => 'custom_nomad_group',
-        }}
-        it { should contain_user('custom_nomad_user').with(:ensure => :present) }
-        it { should contain_group('custom_nomad_group').with(:ensure => :present) }
-      end
-
       context "Config with custom file mode" do
         let(:params) {{
-          :user  => 'custom_nomad_user',
-          :group => 'custom_nomad_group',
           :config_mode  => '0600',
         }}
         it { should contain_file('nomad config.json').with(
-          :owner => 'custom_nomad_user',
-          :group => 'custom_nomad_group',
           :mode  => '0600'
         )}
       end
@@ -320,12 +290,6 @@ describe 'nomad' do
         }
       end
 
-      context "When asked not to manage the init_style" do
-        let(:params) {{ :init_style => false }}
-        it { should contain_class('nomad').with_init_style(false) }
-        it { should_not contain_file("/etc/systemd/system/nomad.service") }
-      end
-
       # Config Stuff
       context "With extra_options" do
         let(:params) {{
@@ -335,7 +299,6 @@ describe 'nomad' do
       end
 
       # Service Stuff
-      it { should contain_class('nomad').with_init_style('systemd') }
       it { should contain_file('/etc/systemd/system/nomad.service').with_content(/nomad agent/) }
     end
   end

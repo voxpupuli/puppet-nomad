@@ -3,17 +3,10 @@
 #
 # @api private
 class nomad::run_service {
-  $init_selector = $nomad::init_style ? {
-    'launchd' => 'io.nomad.daemon',
-    default   => 'nomad',
-  }
-
   if $nomad::manage_service == true {
     service { 'nomad':
-      ensure   => $nomad::service_ensure,
-      name     => $init_selector,
-      enable   => $nomad::service_enable,
-      provider => $nomad::init_style,
+      ensure => $nomad::service_ensure,
+      enable => $nomad::service_enable,
     }
   }
 
