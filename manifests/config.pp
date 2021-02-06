@@ -2,12 +2,15 @@
 #
 # @api private
 class nomad::config {
-  systemd::unit_file { 'nomad.service':
-    content => template('nomad/nomad.systemd.erb'),
+  if $nomad::manage_service_file {
+    systemd::unit_file { 'nomad.service':
+      content => template('nomad/nomad.systemd.erb'),
+    }
   }
-  # cleaning up legacy service file created before PR #13
-  file { '/lib/systemd/system/nomad.service':
-    ensure => absent,
+
+  $_config = $nomad::pretty_config ? {
+    true    => to_json_pretty($nomad::config_hash_real),
+    default => to_json($nomad::config_hash_real),
   }
 
   file { $nomad::config_dir:
@@ -23,6 +26,6 @@ class nomad::config {
     group   => 'root',
     path    => "${nomad::config_dir}/config.json",
     mode    => $nomad::config_mode,
-    content => nomad::sorted_json($nomad::config_hash_real, $nomad::pretty_config, $nomad::pretty_config_indent),
+    content => $_config,
   }
 }

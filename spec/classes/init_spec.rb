@@ -13,7 +13,7 @@ describe 'nomad' do
       end
 
       context 'When not specifying whether to purge config' do
-        it { should contain_file('/etc/nomad').with(:purge => true,:recurse => true) }
+        it { should contain_file('/etc/nomad.d').with(:purge => true,:recurse => true) }
       end
 
       context 'When disable config purging' do
@@ -21,13 +21,23 @@ describe 'nomad' do
           :purge_config_dir => false
         }}
 
-        it { should contain_file('/etc/nomad').with(:purge => false,:recurse => false) }
+        it { should contain_file('/etc/nomad.d').with(:purge => false,:recurse => false) }
       end
 
       context 'nomad::config should notify nomad::run_service' do
+        let(:params) {{
+          :install_method      => 'url',
+          :manage_service_file => true,
+          :version             => '1.0.3'
+        }}
         it { should contain_class('nomad::config').that_notifies(['Class[nomad::run_service]']) }
-        it { should contain_file('/usr/local/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
         it { should contain_systemd__unit_file('nomad.service').that_notifies(['Class[nomad::run_service]']) }
+        case os_facts[:os]['family']
+        when 'Debian'
+          it { should contain_file('/usr/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
+        when 'RedHat'
+          it { should contain_file('/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
+        end
       end
 
       context 'nomad::config should not notify nomad::run_service on config change' do
@@ -63,8 +73,10 @@ describe 'nomad' do
 
       context "When asked to manage the repo but not to install using package" do
         let(:params) {{
-          :install_method => 'url',
-          :manage_repo => true
+          :install_method      => 'url',
+          :manage_service_file => true,
+          :version             => '1.0.3',
+          :manage_repo         => true
         }}
 
         case os_facts[:os]['family']
@@ -99,33 +111,55 @@ describe 'nomad' do
       context 'When requesting to install via a custom package and version' do
         let(:params) {{
           :install_method => 'package',
-          :package_ensure => 'specific_release',
-          :package_name   => 'custom_nomad_package'
+          :package_name   => 'custom_nomad_package',
+          :version        => 'specific_release'
         }}
         it { should contain_package('custom_nomad_package').with(:ensure => 'specific_release') }
       end
 
       context "When installing via URL by default" do
-        it { should contain_archive('/opt/puppet-archive/nomad-1.0.2.zip').with(:source => 'https://releases.hashicorp.com/nomad/1.0.2/nomad_1.0.2_linux_amd64.zip') }
+        let(:params) {{
+          :install_method => 'url',
+          :version        => '1.0.3'
+        }}
+        it { should contain_archive('/opt/puppet-archive/nomad-1.0.3.zip').with(:source => 'https://releases.hashicorp.com/nomad/1.0.3/nomad_1.0.3_linux_amd64.zip') }
         it { should contain_file('/opt/puppet-archive').with(:ensure => 'directory') }
-        it { should contain_file('/opt/puppet-archive/nomad-1.0.2').with(:ensure => 'directory') }
-        it { should contain_file('/usr/local/bin/nomad').that_notifies('Class[nomad::run_service]') }
+        it { should contain_file('/opt/puppet-archive/nomad-1.0.3').with(:ensure => 'directory') }
+        case os_facts[:os]['family']
+        when 'Debian'
+          it { should contain_file('/usr/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
+        when 'RedHat'
+          it { should contain_file('/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
+        end
       end
 
       context "When installing via URL by with a special version" do
         let(:params) {{
-          :version   => '42',
+          :install_method => 'url',
+          :version        => '42',
         }}
         it { should contain_archive('/opt/puppet-archive/nomad-42.zip').with(:source => 'https://releases.hashicorp.com/nomad/42/nomad_42_linux_amd64.zip') }
-        it { should contain_file('/usr/local/bin/nomad').that_notifies('Class[nomad::run_service]') }
+        case os_facts[:os]['family']
+        when 'Debian'
+          it { should contain_file('/usr/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
+        when 'RedHat'
+          it { should contain_file('/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
+        end
       end
 
       context "When installing via URL by with a custom url" do
         let(:params) {{
+          :install_method => 'url',
           :download_url   => 'http://myurl',
+          :version        => '1.0.3',
         }}
-        it { should contain_archive('/opt/puppet-archive/nomad-1.0.2.zip').with(:source => 'http://myurl') }
-        it { should contain_file('/usr/local/bin/nomad').that_notifies('Class[nomad::run_service]') }
+        it { should contain_archive('/opt/puppet-archive/nomad-1.0.3.zip').with(:source => 'http://myurl') }
+        case os_facts[:os]['family']
+        when 'Debian'
+          it { should contain_file('/usr/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
+        when 'RedHat'
+          it { should contain_file('/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
+        end
       end
 
 
@@ -141,7 +175,7 @@ describe 'nomad' do
           :install_method => 'none'
         }}
         it { should_not contain_package('nomad') }
-        it { should_not contain_archive('/opt/puppet-archive/nomad-1.0.2.zip') }
+        it { should_not contain_archive('/opt/puppet-archive/nomad-1.0.3.zip') }
       end
 
       context "When data_dir is provided" do
@@ -160,7 +194,7 @@ describe 'nomad' do
       context 'The bootstrap_expect in config_hash is an int' do
         let(:params) {{
           :config_hash =>
-            { 'bootstrap_expect' => '5' }
+            { 'bootstrap_expect' => 5 }
         }}
         it { should contain_file('nomad config.json').with_content(/"bootstrap_expect":5/) }
         it { should_not contain_file('nomad config.json').with_content(/"bootstrap_expect":"5"/) }
@@ -172,7 +206,7 @@ describe 'nomad' do
               'data_dir' => '/dir1',
           },
           :config_hash => {
-              'bootstrap_expect' => '5',
+              'bootstrap_expect' => 5,
           }
         }}
         it { should contain_file('nomad config.json').with_content(/"bootstrap_expect":5/) }
@@ -186,11 +220,11 @@ describe 'nomad' do
               'server' => false,
               'ports' => {
                 'http' => 1,
-                'rpc'  => '8300',
+                'rpc'  => 8300,
               },
           },
           :config_hash => {
-              'bootstrap_expect' => '5',
+              'bootstrap_expect' => 5,
               'server' => true,
               'ports' => {
                 'http'  => -1,
@@ -210,7 +244,7 @@ describe 'nomad' do
         let(:params) {{
           :pretty_config => true,
           :config_hash => {
-              'bootstrap_expect' => '5',
+              'bootstrap_expect' => 5,
               'server' => true,
               'ports' => {
                 'http'  => -1,
@@ -222,7 +256,6 @@ describe 'nomad' do
         it { should contain_file('nomad config.json').with_content(/"server": true/) }
         it { should contain_file('nomad config.json').with_content(/"http": -1,/) }
         it { should contain_file('nomad config.json').with_content(/"https": 8500/) }
-        it { should contain_file('nomad config.json').with_content(/"ports": \{/) }
       end
 
       context "When asked not to manage the service" do
@@ -293,13 +326,11 @@ describe 'nomad' do
       # Config Stuff
       context "With extra_options" do
         let(:params) {{
-          :extra_options => '-some-extra-argument'
+          :manage_service_file => true,
+          :extra_options       => '-some-extra-argument'
         }}
         it { should contain_file("/etc/systemd/system/nomad.service").with_content(/^ExecStart=.*-some-extra-argument$/) }
       end
-
-      # Service Stuff
-      it { should contain_file('/etc/systemd/system/nomad.service').with_content(/nomad agent/) }
     end
   end
 end

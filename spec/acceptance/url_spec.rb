@@ -7,13 +7,15 @@ describe 'nomad class' do
     it 'should work with no errors based on the example' do
       pp = <<-EOS
         class { 'nomad':
-          config_hash => {
+          install_method => 'url',
+          version        => '1.0.3',
+          config_hash    => {
             "region"     => 'us-west',
             "datacenter" => 'ptk',
             "log_level"  => 'INFO',
             "bind_addr"  => "0.0.0.0",
             "data_dir"   => "/var/lib/nomad",
-            "server" => {
+            "server"     => {
               "enabled"          => true,
               "bootstrap_expect" => 1
             }
@@ -30,17 +32,25 @@ describe 'nomad class' do
       it { should be_directory }
     end
 
-    describe file('/opt/puppet-archive/nomad-1.0.2') do
+    describe file('/opt/puppet-archive/nomad-1.0.3') do
       it { should be_directory }
     end
 
-    describe file('/opt/puppet-archive/nomad-1.0.2/nomad') do
+    describe file('/opt/puppet-archive/nomad-1.0.3/nomad') do
       it { should be_file }
     end
 
-    describe file('/usr/local/bin/nomad') do
-      it { should be_symlink }
-      it { should be_linked_to '/opt/puppet-archive/nomad-1.0.2/nomad' }
+    case os[:family]
+    when 'Debian'
+      describe file('/usr/local/bin/nomad') do
+        it { should be_symlink }
+        it { should be_linked_to '/opt/puppet-archive/nomad-1.0.3/nomad' }
+      end
+    when 'RedHat'
+      describe file('/bin/nomad') do
+        it { should be_symlink }
+        it { should be_linked_to '/opt/puppet-archive/nomad-1.0.3/nomad' }
+      end
     end
 
     describe service('nomad') do
@@ -48,7 +58,7 @@ describe 'nomad class' do
     end
 
     describe command('nomad version') do
-      its(:stdout) { should match(/Nomad v1\.0\.2/) }
+      its(:stdout) { should match(/Nomad v1\.0\.3/) }
     end
 
   end

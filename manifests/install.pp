@@ -43,7 +43,7 @@ class nomad::install {
         Class['hashi_stack::repo'] -> Package[$nomad::package_name]
       }
       package { $nomad::package_name:
-        ensure => $nomad::package_ensure,
+        ensure => $nomad::version,
       }
 
       if $nomad::data_dir {
