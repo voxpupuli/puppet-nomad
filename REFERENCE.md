@@ -29,15 +29,15 @@ Installs, configures, and manages nomad
 
 ```puppet
 class { 'nomad':
-  config_hash         => {
-    'region'     => 'us-west',
-    'datacenter' => 'ptk',
-    'log_level'  => 'INFO',
-    'bind_addr'  => '0.0.0.0',
-    'data_dir'   => '/opt/nomad',
-    'server'     => {
-      'enabled'          => true,
-      'bootstrap_expect' => 3,
+  config_hash => {
+    region     => 'us-west',
+    datacenter => 'ptk',
+    log_level  => 'INFO',
+    bind_addr  => '0.0.0.0',
+    data_dir   => '/opt/nomad',
+    server     => {
+      enabled          => true,
+      bootstrap_expect => 3,
     }
   }
 }
@@ -47,19 +47,19 @@ class { 'nomad':
 
 ```puppet
 class { 'nomad':
-  config_hash         => {
-    'region'     => 'us-west',
-    'datacenter' => 'ptk',
-    'log_level'  => 'INFO',
-    'bind_addr'  => '0.0.0.0',
-    'data_dir'   => '/opt/nomad',
-    'client'     => {
-    'enabled'    => true,
-    'servers'    => [
-       "nomad01.your-org.pvt:4647",
-       "nomad02.your-org.pvt:4647",
-       "nomad03.your-org.pvt:4647"
-     ]
+  config_hash => {
+    region     => 'us-west',
+    datacenter => 'ptk',
+    log_level  => 'INFO',
+    bind_addr  => '0.0.0.0',
+    data_dir   => '/opt/nomad',
+    client     => {
+      enabled => true,
+      servers => [
+        "nomad01.your-org.pvt:4647",
+        "nomad02.your-org.pvt:4647",
+        "nomad03.your-org.pvt:4647"
+      ]
     }
   },
 }
@@ -73,15 +73,15 @@ class { 'nomad':
   install_method      => 'url',
   manage_service_file => true,
   version             => '1.0.3', # check latest version at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md
-  config_hash    => {
-    'region'     => 'us-west',
-    'datacenter' => 'ptk',
-    'log_level'  => 'INFO',
-    'bind_addr'  => '0.0.0.0',
-    'data_dir'   => '/opt/nomad',
-    'client'     => {
-    'enabled'    => true,
-    'servers'    => [
+  config_hash         => {
+    region     => 'us-west',
+    datacenter => 'ptk',
+    log_level  => 'INFO',
+    bind_addr  => '0.0.0.0',
+    data_dir   => '/opt/nomad',
+    client     => {
+      enabled => true,
+      servers => [
         "nomad01.your-org.pvt:4647",
         "nomad02.your-org.pvt:4647",
         "nomad03.your-org.pvt:4647"
@@ -98,14 +98,14 @@ class { 'nomad':
   install_method => 'none',
   manage_service => false,
   config_hash    => {
-    'region'     => 'us-west',
-    'datacenter' => 'ptk',
-    'log_level'  => 'INFO',
-    'bind_addr'  => '0.0.0.0',
-    'data_dir'   => '/opt/nomad',
-    'client'     => {
-    'enabled'    => true,
-    'servers'    => [
+    region     => 'us-west',
+    datacenter => 'ptk',
+    log_level  => 'INFO',
+    bind_addr  => '0.0.0.0',
+    data_dir   => '/opt/nomad',
+    client     => {
+      enabled => true,
+      servers => [
         "nomad01.your-org.pvt:4647",
         "nomad02.your-org.pvt:4647",
         "nomad03.your-org.pvt:4647"
@@ -130,6 +130,8 @@ cpu architecture
 Data type: `Stdlib::Absolutepath`
 
 location of the nomad binary
+
+Default value: `'/usr/bin'`
 
 ##### `purge_config_dir`
 

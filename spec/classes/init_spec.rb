@@ -32,12 +32,7 @@ describe 'nomad' do
         }}
         it { should contain_class('nomad::config').that_notifies(['Class[nomad::run_service]']) }
         it { should contain_systemd__unit_file('nomad.service').that_notifies(['Class[nomad::run_service]']) }
-        case os_facts[:os]['family']
-        when 'Debian'
-          it { should contain_file('/usr/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
-        when 'RedHat'
-          it { should contain_file('/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
-        end
+        it { should contain_file('/usr/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
       end
 
       context 'nomad::config should not notify nomad::run_service on config change' do
@@ -125,12 +120,7 @@ describe 'nomad' do
         it { should contain_archive('/opt/puppet-archive/nomad-1.0.3.zip').with(:source => 'https://releases.hashicorp.com/nomad/1.0.3/nomad_1.0.3_linux_amd64.zip') }
         it { should contain_file('/opt/puppet-archive').with(:ensure => 'directory') }
         it { should contain_file('/opt/puppet-archive/nomad-1.0.3').with(:ensure => 'directory') }
-        case os_facts[:os]['family']
-        when 'Debian'
-          it { should contain_file('/usr/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
-        when 'RedHat'
-          it { should contain_file('/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
-        end
+        it { should contain_file('/usr/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
       end
 
       context "When installing via URL by with a special version" do
@@ -139,12 +129,7 @@ describe 'nomad' do
           :version        => '42',
         }}
         it { should contain_archive('/opt/puppet-archive/nomad-42.zip').with(:source => 'https://releases.hashicorp.com/nomad/42/nomad_42_linux_amd64.zip') }
-        case os_facts[:os]['family']
-        when 'Debian'
-          it { should contain_file('/usr/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
-        when 'RedHat'
-          it { should contain_file('/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
-        end
+        it { should contain_file('/usr/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
       end
 
       context "When installing via URL by with a custom url" do
@@ -154,12 +139,7 @@ describe 'nomad' do
           :version        => '1.0.3',
         }}
         it { should contain_archive('/opt/puppet-archive/nomad-1.0.3.zip').with(:source => 'http://myurl') }
-        case os_facts[:os]['family']
-        when 'Debian'
-          it { should contain_file('/usr/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
-        when 'RedHat'
-          it { should contain_file('/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
-        end
+        it { should contain_file('/usr/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
       end
 
 

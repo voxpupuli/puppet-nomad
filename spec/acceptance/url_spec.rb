@@ -10,14 +10,14 @@ describe 'nomad class' do
           install_method => 'url',
           version        => '1.0.3',
           config_hash    => {
-            "region"     => 'us-west',
-            "datacenter" => 'ptk',
-            "log_level"  => 'INFO',
-            "bind_addr"  => "0.0.0.0",
-            "data_dir"   => "/var/lib/nomad",
-            "server"     => {
-              "enabled"          => true,
-              "bootstrap_expect" => 1
+            region     => 'us-west',
+            datacenter => 'ptk',
+            log_level  => 'INFO',
+            bind_addr  => "0.0.0.0",
+            data_dir   => "/var/lib/nomad",
+            server     => {
+              enabled          => true,
+              bootstrap_expect => 1
             }
           }
         }

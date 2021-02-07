@@ -2,34 +2,34 @@
 #
 # @example To set up a single nomad server, with several agents attached, on the server.
 #   class { 'nomad':
-#     config_hash         => {
-#       'region'     => 'us-west',
-#       'datacenter' => 'ptk',
-#       'log_level'  => 'INFO',
-#       'bind_addr'  => '0.0.0.0',
-#       'data_dir'   => '/opt/nomad',
-#       'server'     => {
-#         'enabled'          => true,
-#         'bootstrap_expect' => 3,
+#     config_hash => {
+#       region     => 'us-west',
+#       datacenter => 'ptk',
+#       log_level  => 'INFO',
+#       bind_addr  => '0.0.0.0',
+#       data_dir   => '/opt/nomad',
+#       server     => {
+#         enabled          => true,
+#         bootstrap_expect => 3,
 #       }
 #     }
 #   }
 #
 # @example On the agent(s)
 #   class { 'nomad':
-#     config_hash         => {
-#       'region'     => 'us-west',
-#       'datacenter' => 'ptk',
-#       'log_level'  => 'INFO',
-#       'bind_addr'  => '0.0.0.0',
-#       'data_dir'   => '/opt/nomad',
-#       'client'     => {
-#       'enabled'    => true,
-#       'servers'    => [
-#          "nomad01.your-org.pvt:4647",
-#          "nomad02.your-org.pvt:4647",
-#          "nomad03.your-org.pvt:4647"
-#        ]
+#     config_hash => {
+#       region     => 'us-west',
+#       datacenter => 'ptk',
+#       log_level  => 'INFO',
+#       bind_addr  => '0.0.0.0',
+#       data_dir   => '/opt/nomad',
+#       client     => {
+#         enabled => true,
+#         servers => [
+#           "nomad01.your-org.pvt:4647",
+#           "nomad02.your-org.pvt:4647",
+#           "nomad03.your-org.pvt:4647"
+#         ]
 #       }
 #     },
 #   }
@@ -40,15 +40,15 @@
 #     install_method      => 'url',
 #     manage_service_file => true,
 #     version             => '1.0.3', # check latest version at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md
-#     config_hash    => {
-#       'region'     => 'us-west',
-#       'datacenter' => 'ptk',
-#       'log_level'  => 'INFO',
-#       'bind_addr'  => '0.0.0.0',
-#       'data_dir'   => '/opt/nomad',
-#       'client'     => {
-#       'enabled'    => true,
-#       'servers'    => [
+#     config_hash         => {
+#       region     => 'us-west',
+#       datacenter => 'ptk',
+#       log_level  => 'INFO',
+#       bind_addr  => '0.0.0.0',
+#       data_dir   => '/opt/nomad',
+#       client     => {
+#         enabled => true,
+#         servers => [
 #           "nomad01.your-org.pvt:4647",
 #           "nomad02.your-org.pvt:4647",
 #           "nomad03.your-org.pvt:4647"
@@ -62,14 +62,14 @@
 #     install_method => 'none',
 #     manage_service => false,
 #     config_hash    => {
-#       'region'     => 'us-west',
-#       'datacenter' => 'ptk',
-#       'log_level'  => 'INFO',
-#       'bind_addr'  => '0.0.0.0',
-#       'data_dir'   => '/opt/nomad',
-#       'client'     => {
-#       'enabled'    => true,
-#       'servers'    => [
+#       region     => 'us-west',
+#       datacenter => 'ptk',
+#       log_level  => 'INFO',
+#       bind_addr  => '0.0.0.0',
+#       data_dir   => '/opt/nomad',
+#       client     => {
+#         enabled => true,
+#         servers => [
 #           "nomad01.your-org.pvt:4647",
 #           "nomad02.your-org.pvt:4647",
 #           "nomad03.your-org.pvt:4647"
@@ -126,7 +126,7 @@
 #   Determines whether to restart nomad agent on $config_hash changes. This will not affect reloads when service, check or watch configs change.
 class nomad (
   String[1] $arch,
-  Stdlib::Absolutepath $bin_dir,
+  Stdlib::Absolutepath $bin_dir                  = '/usr/bin',
   Boolean $purge_config_dir                      = true,
   Optional[String[1]] $join_wan                  = undef,
   String[1] $version                             = 'installed',

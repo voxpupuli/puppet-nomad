@@ -7,7 +7,7 @@ describe 'nomad class' do
     it 'should work with no errors based on the example' do
       pp = <<-EOS
         class { 'nomad':
-          config_hash    => {
+          config_hash => {
             region     => 'us-west',
             datacenter => 'ptk',
             log_level  => 'INFO',
