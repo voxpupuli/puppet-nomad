@@ -55,6 +55,7 @@ describe 'nomad class' do
 
     describe service('nomad') do
       it { should be_enabled }
+      it { should be_running }
     end
 
     describe command('nomad version') do
