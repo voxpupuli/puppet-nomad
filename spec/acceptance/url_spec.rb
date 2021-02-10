@@ -42,12 +42,12 @@ describe 'nomad class' do
 
     case os[:family]
     when 'Debian'
-      describe file('/usr/local/bin/nomad') do
+      describe file('/usr/bin/nomad') do
         it { should be_symlink }
         it { should be_linked_to '/opt/puppet-archive/nomad-1.0.3/nomad' }
       end
     when 'RedHat'
-      describe file('/bin/nomad') do
+      describe file('/usr/bin/nomad') do
         it { should be_symlink }
         it { should be_linked_to '/opt/puppet-archive/nomad-1.0.3/nomad' }
       end
