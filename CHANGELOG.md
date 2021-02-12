@@ -4,7 +4,38 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v0.0.4](https://github.com/voxpupuli/puppet-nomad/tree/v0.0.4) (2021-01-06)
+## [v1.0.0](https://github.com/voxpupuli/puppet-nomad/tree/v1.0.0) (2021-02-12)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/v0.0.4...v1.0.0)
+
+**Breaking changes:**
+
+- Aligning with upstream package layout, stdlib::to\_json and install method [\#48](https://github.com/voxpupuli/puppet-nomad/pull/48) ([attachmentgenie](https://github.com/attachmentgenie))
+- removing os x  support [\#47](https://github.com/voxpupuli/puppet-nomad/pull/47) ([attachmentgenie](https://github.com/attachmentgenie))
+- adding the option to setup the upstream HashiCorp repository [\#40](https://github.com/voxpupuli/puppet-nomad/pull/40) ([attachmentgenie](https://github.com/attachmentgenie))
+
+**Closed issues:**
+
+- Default config is not in sync with upstream defaults [\#45](https://github.com/voxpupuli/puppet-nomad/issues/45)
+- user and group are not used [\#44](https://github.com/voxpupuli/puppet-nomad/issues/44)
+- Add support for puppet 7 [\#43](https://github.com/voxpupuli/puppet-nomad/issues/43)
+- Remove the environmentFile from service file [\#39](https://github.com/voxpupuli/puppet-nomad/issues/39)
+- add option to manage the upstream repo [\#35](https://github.com/voxpupuli/puppet-nomad/issues/35)
+- clean up init.pp params [\#34](https://github.com/voxpupuli/puppet-nomad/issues/34)
+- get systemd file in sync with upstream version [\#33](https://github.com/voxpupuli/puppet-nomad/issues/33)
+- nomad.service file large changes after upgrading to 0.0.4 [\#32](https://github.com/voxpupuli/puppet-nomad/issues/32)
+- Do not monkey patch JSON function [\#23](https://github.com/voxpupuli/puppet-nomad/issues/23)
+- Push puppet module 0.0.4 to forge [\#20](https://github.com/voxpupuli/puppet-nomad/issues/20)
+
+**Merged pull requests:**
+
+- Adding puppet 7 support [\#46](https://github.com/voxpupuli/puppet-nomad/pull/46) ([attachmentgenie](https://github.com/attachmentgenie))
+- Init.pp cleanup; bump nomand 1.0.1 -\> 1.0.2 [\#42](https://github.com/voxpupuli/puppet-nomad/pull/42) ([attachmentgenie](https://github.com/attachmentgenie))
+- Service file cleanup [\#41](https://github.com/voxpupuli/puppet-nomad/pull/41) ([attachmentgenie](https://github.com/attachmentgenie))
+- adding OOMScoreAdjust from upstream PR https://github.com/hashicorp/n… [\#38](https://github.com/voxpupuli/puppet-nomad/pull/38) ([star3am](https://github.com/star3am))
+- README.md: Add badges and fix links [\#31](https://github.com/voxpupuli/puppet-nomad/pull/31) ([bastelfreak](https://github.com/bastelfreak))
+
+## [v0.0.4](https://github.com/voxpupuli/puppet-nomad/tree/v0.0.4) (2021-01-07)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/0.0.2...v0.0.4)
 
@@ -20,6 +51,7 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
+- prepare for 0.0.4 release [\#30](https://github.com/voxpupuli/puppet-nomad/pull/30) ([attachmentgenie](https://github.com/attachmentgenie))
 - Remove private class parameters [\#29](https://github.com/voxpupuli/puppet-nomad/pull/29) ([ekohl](https://github.com/ekohl))
 - Documenting remaining params and example to puppet-strings tags [\#27](https://github.com/voxpupuli/puppet-nomad/pull/27) ([attachmentgenie](https://github.com/attachmentgenie))
 - renaming to puppet-nomad in the vox namespace, updating dependencies … [\#26](https://github.com/voxpupuli/puppet-nomad/pull/26) ([attachmentgenie](https://github.com/attachmentgenie))
