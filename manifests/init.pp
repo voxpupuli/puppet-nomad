@@ -2,7 +2,6 @@
 #
 # @example To set up a single nomad server, with several agents attached, on the server.
 #   class { 'nomad':
-#     version     => '1.0.2', # check latest version at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md
 #     config_hash => {
 #       'region'     => 'us-west',
 #       'datacenter' => 'ptk',
@@ -19,14 +18,14 @@
 # @example On the agent(s)
 #   class { 'nomad':
 #     config_hash => {
-#         'region'     => 'us-west',
-#         'datacenter' => 'ptk',
-#         'log_level'  => 'INFO',
-#         'bind_addr'  => '0.0.0.0',
-#         'data_dir'   => '/opt/nomad',
-#         'client'     => {
-#         'enabled'    => true,
-#         'servers'    => [
+#       'region'     => 'us-west',
+#       'datacenter' => 'ptk',
+#       'log_level'  => 'INFO',
+#       'bind_addr'  => '0.0.0.0',
+#       'data_dir'   => '/opt/nomad',
+#       'client'     => {
+#         'enabled' => true,
+#         'servers' => [
 #           "nomad01.your-org.pvt:4647",
 #           "nomad02.your-org.pvt:4647",
 #           "nomad03.your-org.pvt:4647"
@@ -35,21 +34,21 @@
 #     },
 #   }
 #
-# @example Install as package from the HashiCorp repositories
+# @example Install from zip file for a CPU architecture HashiCorp does not provide native packages for.
 #   class { 'nomad':
-#     install_method => 'package',
-#     bin_dir        => '/bin',
-#     manage_repo    => true,
-#     package_ensure => installed,
-#     config_hash    => {
+#     arch                => 'armv7l',
+#     install_method      => 'url',
+#     manage_service_file => true,
+#     version             => '1.0.3', # check latest version at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md
+#     config_hash         => {
 #       'region'     => 'us-west',
 #       'datacenter' => 'ptk',
 #       'log_level'  => 'INFO',
 #       'bind_addr'  => '0.0.0.0',
 #       'data_dir'   => '/opt/nomad',
 #       'client'     => {
-#       'enabled'    => true,
-#       'servers'    => [
+#         'enabled' => true,
+#         'servers' => [
 #           "nomad01.your-org.pvt:4647",
 #           "nomad02.your-org.pvt:4647",
 #           "nomad03.your-org.pvt:4647"
@@ -62,15 +61,15 @@
 #   class { 'nomad':
 #     install_method => 'none',
 #     manage_service => false,
-#     config_hash   => {
-#       'region'     => 'us-west',
-#       'datacenter' => 'ptk',
-#       'log_level'  => 'INFO',
-#       'bind_addr'  => '0.0.0.0',
-#       'data_dir'   => '/opt/nomad',
+#     config_hash    => {
+#       region     => 'us-west',
+#       datacenter => 'ptk',
+#       log_level  => 'INFO',
+#       bind_addr  => '0.0.0.0',
+#       data_dir   => '/opt/nomad',
 #       'client'     => {
-#       'enabled'    => true,
-#       'servers'    => [
+#         'enabled' => true,
+#         'servers' => [
 #           "nomad01.your-org.pvt:4647",
 #           "nomad02.your-org.pvt:4647",
 #           "nomad03.your-org.pvt:4647"
@@ -101,8 +100,6 @@
 #   archive type to download
 # @param package_name
 #   Only valid when the install_method == package.
-# @param package_ensure
-#   Only valid when the install_method == package.
 # @param config_dir
 #   location of the nomad configuration
 # @param extra_options
@@ -117,10 +114,10 @@
 #   Configure the upstream HashiCorp repository. Only relevant when $nomad::install_method = 'package'.
 # @param manage_service
 #   manage the nomad service
+# @param manage_service_file
+#   create and manage the systemd service file
 # @param pretty_config
 #   Generates a human readable JSON config file.
-# @param pretty_config_indent
-#   Toggle indentation for human readable JSON file.
 # @param service_enable
 #   enable the nomad service
 # @param service_ensure
@@ -131,26 +128,25 @@ class nomad (
   String[1] $arch,
   Boolean $purge_config_dir                      = true,
   Optional[String[1]] $join_wan                  = undef,
-  Stdlib::Absolutepath $bin_dir                  = '/usr/local/bin',
-  String[1] $version                             = '1.0.2',
-  Enum['url', 'package', 'none'] $install_method = 'url',
+  Stdlib::Absolutepath $bin_dir                  = '/usr/bin',
+  String[1] $version                             = 'installed',
+  Enum['none', 'package', 'url'] $install_method = 'package',
   String[1] $os                                  = downcase($facts['kernel']),
   Optional[String[1]] $download_url              = undef,
   String[1] $download_url_base                   = 'https://releases.hashicorp.com/nomad/',
   String[1] $download_extension                  = 'zip',
   String[1] $package_name                        = 'nomad',
-  String[1] $package_ensure                      = 'installed',
-  Stdlib::Absolutepath $config_dir               = '/etc/nomad',
+  Stdlib::Absolutepath $config_dir               = '/etc/nomad.d',
   String $extra_options                          = '',
   Hash $config_hash                              = {},
   Hash $config_defaults                          = {},
   Stdlib::Filemode $config_mode                  = '0660',
   Boolean $pretty_config                         = false,
-  Integer $pretty_config_indent                  = 4,
   Boolean $service_enable                        = true,
   Stdlib::Ensure::Service $service_ensure        = 'running',
   Boolean $manage_repo                           = true,
   Boolean $manage_service                        = true,
+  Boolean $manage_service_file                   = false,
   Boolean $restart_on_change                     = true,
 ) {
   $real_download_url = pick($download_url, "${download_url_base}${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")

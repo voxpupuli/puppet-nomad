@@ -17,11 +17,6 @@
 * `nomad::reload_service`: This class is meant to be called from certain configuration changes that support reload.
 * `nomad::run_service`: This class is meant to be called from nomad It ensure the service is running
 
-### Functions
-
-* [`nomad::nomad_sorted_json`](#nomadnomad_sorted_json): This function takes unsorted hash and outputs JSON object making sure the keys are sorted.
-* [`nomad::sorted_json`](#nomadsorted_json): This function takes unsorted hash and outputs JSON object making sure the keys are sorted.
-
 ## Classes
 
 ### `nomad`
@@ -34,7 +29,6 @@ Installs, configures, and manages nomad
 
 ```puppet
 class { 'nomad':
-  version     => '1.0.2', # check latest version at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md
   config_hash => {
     'region'     => 'us-west',
     'datacenter' => 'ptk',
@@ -54,14 +48,14 @@ class { 'nomad':
 ```puppet
 class { 'nomad':
   config_hash => {
-      'region'     => 'us-west',
-      'datacenter' => 'ptk',
-      'log_level'  => 'INFO',
-      'bind_addr'  => '0.0.0.0',
-      'data_dir'   => '/opt/nomad',
-      'client'     => {
-      'enabled'    => true,
-      'servers'    => [
+    'region'     => 'us-west',
+    'datacenter' => 'ptk',
+    'log_level'  => 'INFO',
+    'bind_addr'  => '0.0.0.0',
+    'data_dir'   => '/opt/nomad',
+    'client'     => {
+      'enabled' => true,
+      'servers' => [
         "nomad01.your-org.pvt:4647",
         "nomad02.your-org.pvt:4647",
         "nomad03.your-org.pvt:4647"
@@ -71,23 +65,23 @@ class { 'nomad':
 }
 ```
 
-##### Install as package from the HashiCorp repositories
+##### Install from zip file for a CPU architecture HashiCorp does not provide native packages for.
 
 ```puppet
 class { 'nomad':
-  install_method => 'package',
-  bin_dir        => '/bin',
-  manage_repo    => true,
-  package_ensure => installed,
-  config_hash    => {
+  arch                => 'armv7l',
+  install_method      => 'url',
+  manage_service_file => true,
+  version             => '1.0.3', # check latest version at https://github.com/hashicorp/nomad/blob/master/CHANGELOG.md
+  config_hash         => {
     'region'     => 'us-west',
     'datacenter' => 'ptk',
     'log_level'  => 'INFO',
     'bind_addr'  => '0.0.0.0',
     'data_dir'   => '/opt/nomad',
     'client'     => {
-    'enabled'    => true,
-    'servers'    => [
+      'enabled' => true,
+      'servers' => [
         "nomad01.your-org.pvt:4647",
         "nomad02.your-org.pvt:4647",
         "nomad03.your-org.pvt:4647"
@@ -103,15 +97,15 @@ class { 'nomad':
 class { 'nomad':
   install_method => 'none',
   manage_service => false,
-  config_hash   => {
-    'region'     => 'us-west',
-    'datacenter' => 'ptk',
-    'log_level'  => 'INFO',
-    'bind_addr'  => '0.0.0.0',
-    'data_dir'   => '/opt/nomad',
+  config_hash    => {
+    region     => 'us-west',
+    datacenter => 'ptk',
+    log_level  => 'INFO',
+    bind_addr  => '0.0.0.0',
+    data_dir   => '/opt/nomad',
     'client'     => {
-    'enabled'    => true,
-    'servers'    => [
+      'enabled' => true,
+      'servers' => [
         "nomad01.your-org.pvt:4647",
         "nomad02.your-org.pvt:4647",
         "nomad03.your-org.pvt:4647"
@@ -153,7 +147,7 @@ Data type: `Stdlib::Absolutepath`
 
 location of the nomad binary
 
-Default value: `'/usr/local/bin'`
+Default value: `'/usr/bin'`
 
 ##### `version`
 
@@ -161,15 +155,15 @@ Data type: `String[1]`
 
 Specify version of nomad binary to download.
 
-Default value: `'1.0.2'`
+Default value: `'installed'`
 
 ##### `install_method`
 
-Data type: `Enum['url', 'package', 'none']`
+Data type: `Enum['none', 'package', 'url']`
 
 install via system package, download and extract from a url.
 
-Default value: `'url'`
+Default value: `'package'`
 
 ##### `os`
 
@@ -211,21 +205,13 @@ Only valid when the install_method == package.
 
 Default value: `'nomad'`
 
-##### `package_ensure`
-
-Data type: `String[1]`
-
-Only valid when the install_method == package.
-
-Default value: `'installed'`
-
 ##### `config_dir`
 
 Data type: `Stdlib::Absolutepath`
 
 location of the nomad configuration
 
-Default value: `'/etc/nomad'`
+Default value: `'/etc/nomad.d'`
 
 ##### `extra_options`
 
@@ -275,6 +261,14 @@ manage the nomad service
 
 Default value: ``true``
 
+##### `manage_service_file`
+
+Data type: `Boolean`
+
+create and manage the systemd service file
+
+Default value: ``false``
+
 ##### `pretty_config`
 
 Data type: `Boolean`
@@ -282,14 +276,6 @@ Data type: `Boolean`
 Generates a human readable JSON config file.
 
 Default value: ``false``
-
-##### `pretty_config_indent`
-
-Data type: `Integer`
-
-Toggle indentation for human readable JSON file.
-
-Default value: `4`
 
 ##### `service_enable`
 
@@ -314,163 +300,4 @@ Data type: `Boolean`
 Determines whether to restart nomad agent on $config_hash changes. This will not affect reloads when service, check or watch configs change.
 
 Default value: ``true``
-
-## Functions
-
-### `nomad::nomad_sorted_json`
-
-Type: Ruby 4.x API
-
----- original file header ----
-
-Optionally you can pass 2 additional parameters, pretty generate and indent length.
-
-*Examples:*
-
-   -------------------
-   -- UNSORTED HASH --
-   -------------------
-   unsorted_hash = {
-     'client_addr' => '127.0.0.1',
-     'bind_addr'   => '192.168.34.56',
-     'start_join'  => [
-       '192.168.34.60',
-       '192.168.34.61',
-       '192.168.34.62',
-     ],
-     'ports'       => {
-       'rpc'   => 8567,
-       'https' => 8500,
-       'http'  => -1,
-     },
-   }
-
-   -----------------
-   -- SORTED JSON --
-   -----------------
-
-   nomad_sorted_json(unsorted_hash)
-
-   {"bind_addr":"192.168.34.56","client_addr":"127.0.0.1",
-   "ports":{"http":-1,"https":8500,"rpc":8567},
-   "start_join":["192.168.34.60","192.168.34.61","192.168.34.62"]}
-
-   ------------------------
-   -- PRETTY SORTED JSON --
-   ------------------------
-   Params: data <hash>, pretty <true|false>, indent <int>.
-
-   nomad_sorted_json(unsorted_hash, true, 4)
-
-   {
-       "bind_addr": "192.168.34.56",
-       "client_addr": "127.0.0.1",
-       "ports": {
-           "http": -1,
-           "https": 8500,
-           "rpc": 8567
-       },
-       "start_join": [
-           "192.168.34.60",
-           "192.168.34.61",
-           "192.168.34.62"
-       ]
-   }
-
-#### `nomad::nomad_sorted_json(Any *$args)`
-
----- original file header ----
-
-Optionally you can pass 2 additional parameters, pretty generate and indent length.
-
-*Examples:*
-
-   -------------------
-   -- UNSORTED HASH --
-   -------------------
-   unsorted_hash = {
-     'client_addr' => '127.0.0.1',
-     'bind_addr'   => '192.168.34.56',
-     'start_join'  => [
-       '192.168.34.60',
-       '192.168.34.61',
-       '192.168.34.62',
-     ],
-     'ports'       => {
-       'rpc'   => 8567,
-       'https' => 8500,
-       'http'  => -1,
-     },
-   }
-
-   -----------------
-   -- SORTED JSON --
-   -----------------
-
-   nomad_sorted_json(unsorted_hash)
-
-   {"bind_addr":"192.168.34.56","client_addr":"127.0.0.1",
-   "ports":{"http":-1,"https":8500,"rpc":8567},
-   "start_join":["192.168.34.60","192.168.34.61","192.168.34.62"]}
-
-   ------------------------
-   -- PRETTY SORTED JSON --
-   ------------------------
-   Params: data <hash>, pretty <true|false>, indent <int>.
-
-   nomad_sorted_json(unsorted_hash, true, 4)
-
-   {
-       "bind_addr": "192.168.34.56",
-       "client_addr": "127.0.0.1",
-       "ports": {
-           "http": -1,
-           "https": 8500,
-           "rpc": 8567
-       },
-       "start_join": [
-           "192.168.34.60",
-           "192.168.34.61",
-           "192.168.34.62"
-       ]
-   }
-
-Returns: `Data type` Describe what the function returns here
-
-##### `*args`
-
-Data type: `Any`
-
-The original array of arguments. Port this to individually managed params
-to get the full benefit of the modern function API.
-
-### `nomad::sorted_json`
-
-Type: Ruby 4.x API
-
-This function takes unsorted hash and outputs JSON object making sure the keys are sorted.
-
-#### `nomad::sorted_json(Optional[Hash] $unsorted_hash = {}, Optional[Boolean] $pretty = false, Optional[Integer] $indent_len = 4)`
-
-The nomad::sorted_json function.
-
-Returns: `Hash` sorted json
-
-##### `unsorted_hash`
-
-Data type: `Optional[Hash]`
-
-unstructured input
-
-##### `pretty`
-
-Data type: `Optional[Boolean]`
-
-make output human readable
-
-##### `indent_len`
-
-Data type: `Optional[Integer]`
-
-number of characters to indent
 
