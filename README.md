@@ -11,8 +11,7 @@
 
 * Installs the nomad daemon (via url or package)
   * If installing from zip, you *must* ensure the unzip utility is available.
-* Optionally installs a user to run it under
-* Installs a configuration file (/etc/nomad/config.json)
+* Installs a configuration file (/etc/nomad.d/config.json)
 * Manages the nomad service via systemd
 
 ## Reference
