@@ -1,10 +1,9 @@
 require 'spec_helper_acceptance'
 
 describe 'nomad class' do
-
   context 'default parameters' do
     # Using puppet_apply as a helper
-    it 'should work with no errors based on the example' do
+    it 'works with no errors based on the example' do
       pp = <<-EOS
         class { 'nomad':
           install_method => 'url',
@@ -29,38 +28,37 @@ describe 'nomad class' do
     end
 
     describe file('/var/lib/nomad') do
-      it { should be_directory }
+      it { is_expected.to be_directory }
     end
 
     describe file('/opt/puppet-archive/nomad-1.0.3') do
-      it { should be_directory }
+      it { is_expected.to be_directory }
     end
 
     describe file('/opt/puppet-archive/nomad-1.0.3/nomad') do
-      it { should be_file }
+      it { is_expected.to be_file }
     end
 
     case os[:family]
     when 'Debian'
       describe file('/usr/bin/nomad') do
-        it { should be_symlink }
-        it { should be_linked_to '/opt/puppet-archive/nomad-1.0.3/nomad' }
+        it { is_expected.to be_symlink }
+        it { is_expected.to be_linked_to '/opt/puppet-archive/nomad-1.0.3/nomad' }
       end
     when 'RedHat'
       describe file('/usr/bin/nomad') do
-        it { should be_symlink }
-        it { should be_linked_to '/opt/puppet-archive/nomad-1.0.3/nomad' }
+        it { is_expected.to be_symlink }
+        it { is_expected.to be_linked_to '/opt/puppet-archive/nomad-1.0.3/nomad' }
       end
     end
 
     describe service('nomad') do
-      it { should be_enabled }
-      it { should be_running }
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
     end
 
     describe command('nomad version') do
-      its(:stdout) { should match(/Nomad v1\.0\.3/) }
+      its(:stdout) { is_expected.to match(%r{Nomad v1\.0\.3}) }
     end
-
   end
 end
