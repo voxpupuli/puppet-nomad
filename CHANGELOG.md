@@ -4,7 +4,15 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v1.0.0](https://github.com/voxpupuli/puppet-nomad/tree/v1.0.0) (2021-02-12)
+## [v1.1.0](https://github.com/voxpupuli/puppet-nomad/tree/v1.1.0) (2021-05-14)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/v1.0.0...v1.1.0)
+
+**Implemented enhancements:**
+
+- Add support for nomad.env file / Add nomad 1.0.5 support [\#50](https://github.com/voxpupuli/puppet-nomad/pull/50) ([bastelfreak](https://github.com/bastelfreak))
+
+## [v1.0.0](https://github.com/voxpupuli/puppet-nomad/tree/v1.0.0) (2021-02-13)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/v0.0.4...v1.0.0)
 
