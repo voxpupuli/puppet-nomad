@@ -28,4 +28,13 @@ class nomad::config {
     mode    => $nomad::config_mode,
     content => $_config,
   }
+  $content = join(map($nomad::env_vars) |$key, $value| { "${key}=${value}" }, "\n")
+  file { "${nomad::config_dir}/nomad.env":
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => $nomad::config_mode,
+    content => "${content}\n",
+    require => File[$nomad::config_dir],
+  }
 }

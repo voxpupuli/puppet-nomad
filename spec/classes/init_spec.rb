@@ -16,6 +16,10 @@ describe 'nomad' do
         it { should contain_file('/etc/nomad.d').with(:purge => true,:recurse => true) }
       end
 
+      context 'with all defaults' do
+        it { is_expected.to compile.with_all_deps }
+      end
+
       context 'When disable config purging' do
         let(:params) {{
           :purge_config_dir => false
@@ -310,6 +314,23 @@ describe 'nomad' do
           :extra_options       => '-some-extra-argument'
         }}
         it { should contain_file("/etc/systemd/system/nomad.service").with_content(/^ExecStart=.*-some-extra-argument$/) }
+      end
+
+      context 'without env_vars' do
+        it { is_expected.to contain_file('/etc/nomad.d/nomad.env').with_content("\n") }
+      end
+
+      context 'with env_vars' do
+        let :params do
+          {
+            env_vars: {
+              'TEST' => 'foobar',
+              'BLA' => 'blub',
+            }
+          }
+        end
+        it { is_expected.to contain_file('/etc/nomad.d/nomad.env').with_content(%r{TEST=foobar}) }
+        it { is_expected.to contain_file('/etc/nomad.d/nomad.env').with_content(%r{BLA=blub}) }
       end
     end
   end
