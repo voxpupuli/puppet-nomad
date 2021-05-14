@@ -124,6 +124,8 @@
 #   ensure the state of the nomad service
 # @param restart_on_change
 #   Determines whether to restart nomad agent on $config_hash changes. This will not affect reloads when service, check or watch configs change.
+# @param env_vars
+#   Array of optional environment variables that should be passed to nomad
 class nomad (
   String[1] $arch,
   Boolean $purge_config_dir                      = true,
@@ -148,6 +150,7 @@ class nomad (
   Boolean $manage_service                        = true,
   Boolean $manage_service_file                   = false,
   Boolean $restart_on_change                     = true,
+  Hash[String[1], String] $env_vars              = {},
 ) {
   $real_download_url = pick($download_url, "${download_url_base}${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
   $config_hash_real = deep_merge($config_defaults, $config_hash)
