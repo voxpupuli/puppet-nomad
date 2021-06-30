@@ -125,7 +125,7 @@
 # @param restart_on_change
 #   Determines whether to restart nomad agent on $config_hash changes. This will not affect reloads when service, check or watch configs change.
 # @param env_vars
-#   Array of optional environment variables that should be passed to nomad
+#   Hash of optional environment variables that should be passed to nomad
 class nomad (
   String[1] $arch,
   Boolean $purge_config_dir                      = true,
