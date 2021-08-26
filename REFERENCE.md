@@ -330,7 +330,7 @@ Default value: ``true``
 
 Data type: `Hash[String[1], String]`
 
-Array of optional environment variables that should be passed to nomad
+Hash of optional environment variables that should be passed to nomad
 
 Default value: `{}`
 
