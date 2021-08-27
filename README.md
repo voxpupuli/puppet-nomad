@@ -1,5 +1,7 @@
 # puppet-nomad
 
+[![Build Status](https://github.com/voxpupuli/puppet-nomad/workflows/CI/badge.svg)](https://github.com/voxpupuli/puppet-nomad/actions?query=workflow%3ACI)
+[![Release](https://github.com/voxpupuli/puppet-nomad/actions/workflows/release.yml/badge.svg)](https://github.com/voxpupuli/puppet-nomad/actions/workflows/release.yml)
 [![Puppet Forge](https://img.shields.io/puppetforge/v/puppet/nomad.svg)](https://forge.puppetlabs.com/puppet/nomad)
 [![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/puppet/nomad.svg)](https://forge.puppetlabs.com/puppet/nomad)
 [![Puppet Forge - endorsement](https://img.shields.io/puppetforge/e/puppet/nomad.svg)](https://forge.puppetlabs.com/puppet/nomad)
