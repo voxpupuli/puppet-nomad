@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v2.0.0](https://github.com/voxpupuli/puppet-nomad/tree/v2.0.0) (2021-08-27)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/v1.1.0...v2.0.0)
+
+**Breaking changes:**
+
+- Drop Debian 9; Add Debian 11 support [\#58](https://github.com/voxpupuli/puppet-nomad/pull/58) ([root-expert](https://github.com/root-expert))
+
+**Merged pull requests:**
+
+- add puppet-lint-param-docs [\#57](https://github.com/voxpupuli/puppet-nomad/pull/57) ([bastelfreak](https://github.com/bastelfreak))
+- Allow up-to-date dependencies [\#55](https://github.com/voxpupuli/puppet-nomad/pull/55) ([smortex](https://github.com/smortex))
+- switch from camptocamp/systemd to voxpupuli/systemd [\#54](https://github.com/voxpupuli/puppet-nomad/pull/54) ([bastelfreak](https://github.com/bastelfreak))
+- Fix variable type in env\_vars documentation line [\#53](https://github.com/voxpupuli/puppet-nomad/pull/53) ([bplunkert](https://github.com/bplunkert))
+
 ## [v1.1.0](https://github.com/voxpupuli/puppet-nomad/tree/v1.1.0) (2021-05-14)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/v1.0.0...v1.1.0)
