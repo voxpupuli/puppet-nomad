@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Facter::Util::Fact do
@@ -8,8 +10,8 @@ describe Facter::Util::Fact do
   describe 'nomad_version' do
     context 'Returns nomad version on Linux'
     it do
-      nomad_version_output = <<-EOS
-Nomad v0.6.0
+      nomad_version_output = <<~EOS
+        Nomad v0.6.0
       EOS
       allow(Facter.fact(:kernel)).to receive(:value).and_return('Linux')
       allow(Facter::Util::Resolution).to receive(:exec).with('nomad --version 2> /dev/null').
