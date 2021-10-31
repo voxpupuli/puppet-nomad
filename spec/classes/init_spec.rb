@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'nomad' do
@@ -9,7 +11,7 @@ describe 'nomad' do
       context 'On an unsupported arch' do
         let(:facts) { override_facts(super(), os: { architecture: 'bogus' }) }
 
-        it { is_expected.to compile.and_raise_error(%r{Class\[Nomad\]: expects a value for parameter \'arch\' }) }
+        it { is_expected.to compile.and_raise_error(%r{Class\[Nomad\]: expects a value for parameter 'arch' }) }
       end
 
       context 'When not specifying whether to purge config' do
@@ -75,6 +77,8 @@ describe 'nomad' do
           }
         end
 
+        it { is_expected.to compile.with_all_deps }
+
         case os_facts[:os]['family']
         when 'Debian'
           it { is_expected.not_to contain_apt__source('HashiCorp') }
@@ -93,6 +97,8 @@ describe 'nomad' do
           }
         end
 
+        it { is_expected.to compile.with_all_deps }
+
         case os_facts[:os]['family']
         when 'Debian'
           it { is_expected.not_to contain_apt__source('HashiCorp') }
@@ -108,6 +114,8 @@ describe 'nomad' do
             manage_repo: true
           }
         end
+
+        it { is_expected.to compile.with_all_deps }
 
         case os_facts[:os]['family']
         when 'Debian'
@@ -178,16 +186,6 @@ describe 'nomad' do
         it { is_expected.to contain_file('/usr/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
       end
 
-      context 'When requesting to install via a package with defaults' do
-        let(:params) do
-          {
-            install_method: 'package'
-          }
-        end
-
-        it { is_expected.to contain_package('nomad').with(ensure: 'installed') }
-      end
-
       context 'When requesting to not to install' do
         let(:params) do
           {
@@ -218,7 +216,7 @@ describe 'nomad' do
       context 'The bootstrap_expect in config_hash is an int' do
         let(:params) do
           {
-            config_hash:             { 'bootstrap_expect' => 5 }
+            config_hash: { 'bootstrap_expect' => 5 }
           }
         end
 
@@ -257,7 +255,7 @@ describe 'nomad' do
               'bootstrap_expect' => 5,
               'server' => true,
               'ports' => {
-                'http'  => -1,
+                'http' => -1,
                 'https' => 8500,
               },
             }
@@ -280,7 +278,7 @@ describe 'nomad' do
               'bootstrap_expect' => 5,
               'server' => true,
               'ports' => {
-                'http'  => -1,
+                'http' => -1,
                 'https' => 8500,
               },
             }
@@ -327,7 +325,7 @@ describe 'nomad' do
         end
 
         it {
-          is_expected.to contain_file('nomad config.json').with(
+          expect(subject).to contain_file('nomad config.json').with(
             mode: '0600'
           )
         }
@@ -335,7 +333,7 @@ describe 'nomad' do
 
       context 'When nomad is reloaded' do
         it {
-          is_expected.to contain_exec('reload nomad service').
+          expect(subject).to contain_exec('reload nomad service').
             with_command('nomad reload -rpc-addr=127.0.0.1:8400')
         }
       end
@@ -355,7 +353,7 @@ describe 'nomad' do
         end
 
         it {
-          is_expected.to contain_exec('reload nomad service').
+          expect(subject).to contain_exec('reload nomad service').
             with_command('nomad reload -rpc-addr=nomad.example.com:9999')
         }
       end
@@ -370,7 +368,7 @@ describe 'nomad' do
         end
 
         it {
-          is_expected.to contain_exec('reload nomad service').
+          expect(subject).to contain_exec('reload nomad service').
             with_command('nomad reload -rpc-addr=192.168.34.56:8400')
         }
       end
