@@ -139,7 +139,7 @@ class nomad (
   String[1] $download_extension                  = 'zip',
   String[1] $package_name                        = 'nomad',
   Stdlib::Absolutepath $config_dir               = '/etc/nomad.d',
-  String $extra_options                          = '',
+  Optional[String[1]] $extra_options             = undef,
   Hash $config_hash                              = {},
   Hash $config_defaults                          = {},
   Stdlib::Filemode $config_mode                  = '0660',
