@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v2.1.0](https://github.com/voxpupuli/puppet-nomad/tree/v2.1.0) (2022-05-23)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/v2.0.0...v2.1.0)
+
+**Implemented enhancements:**
+
+- Add fact for nomad\_node\_id [\#63](https://github.com/voxpupuli/puppet-nomad/pull/63) ([sebastianrakel](https://github.com/sebastianrakel))
+
+**Merged pull requests:**
+
+- extra\_options: default to undef instead of '' [\#64](https://github.com/voxpupuli/puppet-nomad/pull/64) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v2.0.0](https://github.com/voxpupuli/puppet-nomad/tree/v2.0.0) (2021-08-27)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/v1.1.0...v2.0.0)

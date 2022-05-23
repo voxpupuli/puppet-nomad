@@ -240,11 +240,11 @@ Default value: `'/etc/nomad.d'`
 
 ##### <a name="extra_options"></a>`extra_options`
 
-Data type: `String`
+Data type: `Optional[String[1]]`
 
 Extra arguments to be passed to the nomad agent
 
-Default value: `''`
+Default value: ``undef``
 
 ##### <a name="config_hash"></a>`config_hash`
 
