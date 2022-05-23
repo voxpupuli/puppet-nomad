@@ -25,7 +25,6 @@ describe 'nomad class' do
       notify{"nomad_version: ${facts['nomad_version']}":}
     EOS
 
-    # rubocop:disable RSpec/RepeatedExample
     it 'outputs nomad facts when not installed' do
       apply_manifest(fact_notices, catch_failures: true) do |r|
         expect(r.stdout).to match(%r{nomad_node_id: \S+})
@@ -42,6 +41,6 @@ describe 'nomad class' do
         expect(r.stdout).to match(%r{nomad_node_id: [0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}})
         expect(r.stdout).to match(%r{nomad_version: \S+})
       end
-    end    
+    end
   end
 end
