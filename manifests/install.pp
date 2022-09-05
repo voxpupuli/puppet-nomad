@@ -7,7 +7,7 @@ class nomad::install {
       ensure => 'directory',
       owner  => 'root',
       group  => 'root',
-      mode   => '0755',
+      mode   => $nomad::data_dir_mode,
     }
   }
 

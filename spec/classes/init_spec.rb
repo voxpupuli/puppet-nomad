@@ -206,7 +206,20 @@ describe 'nomad' do
           }
         end
 
-        it { is_expected.to contain_file('/dir1').with(ensure: :directory) }
+        it { is_expected.to contain_file('/dir1').with(ensure: :directory, mode: '0755') }
+
+        context 'When data_dir_mode is provided' do
+          let(:params) do
+            {
+              config_hash: {
+                'data_dir' => '/dir1',
+              },
+              data_dir_mode: '0750'
+            }
+          end
+
+          it { is_expected.to contain_file('/dir1').with(mode: '0750') }
+        end
       end
 
       context 'When data_dir not provided' do
