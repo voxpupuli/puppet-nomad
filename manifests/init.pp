@@ -128,6 +128,10 @@
 #   Determines whether to restart nomad agent on $config_hash changes. This will not affect reloads when service, check or watch configs change.
 # @param env_vars
 #   Hash of optional environment variables that should be passed to nomad
+# @param user
+#   User to run the Nomad binary as. Also used as owner of directories and config files managed by this module.
+# @param group
+#   Group to run the Nomad binary as. Also used as group of directories and config files managed by this module.
 class nomad (
   String[1] $arch,
   Boolean $purge_config_dir                      = true,
@@ -154,6 +158,8 @@ class nomad (
   Boolean $manage_service_file                   = false,
   Boolean $restart_on_change                     = true,
   Hash[String[1], String] $env_vars              = {},
+  String[1] $user                                = 'root',
+  String[1] $group                               = 'root',
 ) {
   $real_download_url = pick($download_url, "${download_url_base}${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
   $config_hash_real = deep_merge($config_defaults, $config_hash)

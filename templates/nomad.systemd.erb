@@ -17,6 +17,8 @@ StartLimitBurst=3
 StartLimitIntervalSec=10
 TasksMax=infinity
 OOMScoreAdjust=-1000
+User=<%= scope.lookupvar('nomad::user') %>
+Group=<%= scope.lookupvar('nomad::group') %>
 
 [Install]
 WantedBy=multi-user.target

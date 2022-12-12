@@ -15,15 +15,15 @@ class nomad::config {
 
   file { $nomad::config_dir:
     ensure  => 'directory',
-    owner   => 'root',
-    group   => 'root',
+    owner   => $nomad::user,
+    group   => $nomad::group,
     purge   => $nomad::purge_config_dir,
     recurse => $nomad::purge_config_dir,
   }
   -> file { 'nomad config.json':
     ensure  => file,
-    owner   => 'root',
-    group   => 'root',
+    owner   => $nomad::user,
+    group   => $nomad::group,
     path    => "${nomad::config_dir}/config.json",
     mode    => $nomad::config_mode,
     content => $_config,
@@ -31,8 +31,8 @@ class nomad::config {
   $content = join(map($nomad::env_vars) |$key, $value| { "${key}=${value}" }, "\n")
   file { "${nomad::config_dir}/nomad.env":
     ensure  => 'file',
-    owner   => 'root',
-    group   => 'root',
+    owner   => $nomad::user,
+    group   => $nomad::group,
     mode    => $nomad::config_mode,
     content => "${content}\n",
     require => File[$nomad::config_dir],
