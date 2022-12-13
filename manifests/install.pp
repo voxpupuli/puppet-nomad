@@ -5,8 +5,8 @@ class nomad::install {
   if $nomad::data_dir {
     file { $nomad::data_dir:
       ensure => 'directory',
-      owner  => 'root',
-      group  => 'root',
+      owner  => $nomad::user,
+      group  => $nomad::group,
       mode   => $nomad::data_dir_mode,
     }
   }

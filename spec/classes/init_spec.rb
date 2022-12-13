@@ -415,6 +415,63 @@ describe 'nomad' do
         it { is_expected.to contain_file('/etc/nomad.d/nomad.env').with_content(%r{TEST=foobar}) }
         it { is_expected.to contain_file('/etc/nomad.d/nomad.env').with_content(%r{BLA=blub}) }
       end
+
+      context 'With non-default user and group' do
+        context 'with defaults' do
+          let :params do
+            {
+              user: 'nomad',
+              group: 'nomad',
+            }
+          end
+
+          it { is_expected.to contain_file('/etc/nomad.d').with(owner: 'nomad', group: 'nomad') }
+          it { is_expected.to contain_file('nomad config.json').with(owner: 'nomad', group: 'nomad') }
+        end
+
+        context 'with provided data_dir' do
+          let :params do
+            {
+              config_hash: {
+                'data_dir' => '/dir1',
+              },
+              user: 'nomad',
+              group: 'nomad',
+            }
+          end
+
+          it { is_expected.to contain_file('/dir1').with(ensure: 'directory', owner: 'nomad', group: 'nomad') }
+        end
+
+        context 'with env_vars' do
+          let :params do
+            {
+              env_vars: {
+                'TEST' => 'foobar',
+                'BLA' => 'blub',
+              },
+              user: 'nomad',
+              group: 'nomad',
+            }
+          end
+
+          it { is_expected.to contain_file('/etc/nomad.d/nomad.env').with(content: %r{TEST=foobar}, owner: 'nomad', group: 'nomad') }
+          it { is_expected.to contain_file('/etc/nomad.d/nomad.env').with(content: %r{BLA=blub}, owner: 'nomad', group: 'nomad') }
+        end
+
+        context 'with manage_service_file = true' do
+          let :params do
+            {
+              user: 'nomad',
+              group: 'nomad',
+              manage_service_file: true,
+            }
+          end
+
+          it { is_expected.to contain_file('/etc/systemd/system/nomad.service').with_content(%r{^User=nomad$}) }
+          it { is_expected.to contain_file('/etc/systemd/system/nomad.service').with_content(%r{^Group=nomad$}) }
+        end
+      end
     end
   end
 end
