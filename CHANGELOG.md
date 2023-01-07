@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v2.2.0](https://github.com/voxpupuli/puppet-nomad/tree/v2.2.0) (2023-01-07)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/v2.1.0...v2.2.0)
+
+**Implemented enhancements:**
+
+- Allow overriding user and group used [\#71](https://github.com/voxpupuli/puppet-nomad/pull/71) ([jonasdemoor](https://github.com/jonasdemoor))
+- Allow setting the data dir file mode [\#69](https://github.com/voxpupuli/puppet-nomad/pull/69) ([optiz0r](https://github.com/optiz0r))
+
 ## [v2.1.0](https://github.com/voxpupuli/puppet-nomad/tree/v2.1.0) (2022-05-23)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/v2.0.0...v2.1.0)
