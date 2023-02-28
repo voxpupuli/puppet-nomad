@@ -347,7 +347,7 @@ describe 'nomad' do
       context 'When nomad is reloaded' do
         it {
           expect(subject).to contain_exec('reload nomad service').
-            with_command('nomad reload -rpc-addr=127.0.0.1:8400')
+            with_command('systemctl reload nomad')
         }
       end
 
@@ -367,7 +367,7 @@ describe 'nomad' do
 
         it {
           expect(subject).to contain_exec('reload nomad service').
-            with_command('nomad reload -rpc-addr=nomad.example.com:9999')
+            with_command('systemctl reload nomad')
         }
       end
 
@@ -382,7 +382,7 @@ describe 'nomad' do
 
         it {
           expect(subject).to contain_exec('reload nomad service').
-            with_command('nomad reload -rpc-addr=192.168.34.56:8400')
+            with_command('systemctl reload nomad')
         }
       end
 
