@@ -9,6 +9,7 @@
 #### Public Classes
 
 * [`nomad`](#nomad): Installs, configures, and manages nomad
+* [`nomad::server_recovery`](#nomad--server_recovery): This class is used to generate a peers.json and a recovery script file for Nomad servers. It is used to recover from a Nomad server outage.
 
 #### Private Classes
 
@@ -146,6 +147,11 @@ The following parameters are available in the `nomad` class:
 * [`env_vars`](#-nomad--env_vars)
 * [`user`](#-nomad--user)
 * [`group`](#-nomad--group)
+* [`server_recovery`](#-nomad--server_recovery)
+* [`recovery_nomad_server_regex`](#-nomad--recovery_nomad_server_regex)
+* [`recovery_nomad_server_hash`](#-nomad--recovery_nomad_server_hash)
+* [`recovery_network_interface`](#-nomad--recovery_network_interface)
+* [`recovery_rpc_port`](#-nomad--recovery_rpc_port)
 
 ##### <a name="-nomad--arch"></a>`arch`
 
@@ -360,4 +366,113 @@ Data type: `String[1]`
 Group to run the Nomad binary as. Also used as group of directories and config files managed by this module.
 
 Default value: `'root'`
+
+##### <a name="-nomad--server_recovery"></a>`server_recovery`
+
+Data type: `Boolean`
+
+Nomad server outage recovery configuration
+
+Default value: `false`
+
+##### <a name="-nomad--recovery_nomad_server_regex"></a>`recovery_nomad_server_regex`
+
+Data type: `Optional[String]`
+
+Regex to match Nomad server hostnames within the same puppet environment. It requires PuppetDB and it's mutually exclusive with nomad_server_hash.
+
+Default value: `undef`
+
+##### <a name="-nomad--recovery_nomad_server_hash"></a>`recovery_nomad_server_hash`
+
+Data type: `Optional[Hash]`
+
+If you don't have the PuppetDB you can supply a Hash with server IPs and corresponding node-ids. It works without PuppetDB and it's mutually exclusive with nomad_server_regex.
+
+Default value: `undef`
+
+##### <a name="-nomad--recovery_network_interface"></a>`recovery_network_interface`
+
+Data type: `Optional[String]`
+
+NIC where Nomad server IP is configured
+
+Default value: `undef`
+
+##### <a name="-nomad--recovery_rpc_port"></a>`recovery_rpc_port`
+
+Data type: `Stdlib::Port`
+
+Nomad server RPC port
+
+Default value: `4647`
+
+### <a name="nomad--server_recovery"></a>`nomad::server_recovery`
+
+This class is used to generate a peers.json and a recovery script file for Nomad servers.
+It is used to recover from a Nomad server outage.
+
+#### Examples
+
+##### using PuppetDB
+
+```puppet
+class { 'geant_nomad::server::peer_json':
+  nomad_server_regex => 'nomad-server0',
+  network_interface              => 'eth0',
+}
+```
+
+##### using a Hash
+
+```puppet
+class { 'geant_nomad::server::peer_json':
+  nomad_server_hash => {
+    '192.168.1.10' => 'a1b2c3d4-1234-5678-9012-3456789abcde',
+    '192.168.1.10' => 'a1b2c3d4-1234-5678-9012-3456789abcde',
+  },
+  network_interface => 'eth0',
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `nomad::server_recovery` class:
+
+* [`nomad_server_regex`](#-nomad--server_recovery--nomad_server_regex)
+* [`nomad_server_hash`](#-nomad--server_recovery--nomad_server_hash)
+* [`network_interface`](#-nomad--server_recovery--network_interface)
+* [`rpc_port`](#-nomad--server_recovery--rpc_port)
+
+##### <a name="-nomad--server_recovery--nomad_server_regex"></a>`nomad_server_regex`
+
+Data type: `Optional[String]`
+
+Regex to match Nomad server hostnames within the same puppet environment. It's mutually exclusive with nomad_server_hash.
+
+Default value: `undef`
+
+##### <a name="-nomad--server_recovery--nomad_server_hash"></a>`nomad_server_hash`
+
+Data type: `Optional[Hash]`
+
+If you don't have the PuppetDB you can supply a Hash with server IPs and corresponding node-ids. It's mutually exclusive with nomad_server_regex.
+
+Default value: `undef`
+
+##### <a name="-nomad--server_recovery--network_interface"></a>`network_interface`
+
+Data type: `Optional[String]`
+
+NIC where Nomad server IP is configured
+
+Default value: `undef`
+
+##### <a name="-nomad--server_recovery--rpc_port"></a>`rpc_port`
+
+Data type: `Stdlib::Port`
+
+Nomad server RPC port
+
+Default value: `4647`
 

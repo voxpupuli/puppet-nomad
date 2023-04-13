@@ -132,6 +132,16 @@
 #   User to run the Nomad binary as. Also used as owner of directories and config files managed by this module.
 # @param group
 #   Group to run the Nomad binary as. Also used as group of directories and config files managed by this module.
+# @param server_recovery
+#   Nomad server outage recovery configuration
+# @param recovery_nomad_server_regex
+#  Regex to match Nomad server hostnames within the same puppet environment. It requires PuppetDB and it's mutually exclusive with nomad_server_hash.
+# @param recovery_nomad_server_hash
+#  If you don't have the PuppetDB you can supply a Hash with server IPs and corresponding node-ids. It works without PuppetDB and it's mutually exclusive with nomad_server_regex.
+# @param recovery_network_interface
+#  NIC where Nomad server IP is configured
+# @param recovery_rpc_port
+#  Nomad server RPC port
 class nomad (
   String[1] $arch,
   Boolean $purge_config_dir                      = true,
@@ -160,6 +170,11 @@ class nomad (
   Hash[String[1], String] $env_vars              = {},
   String[1] $user                                = 'root',
   String[1] $group                               = 'root',
+  Boolean $server_recovery                       = false,
+  Optional[String] $recovery_nomad_server_regex  = undef,
+  Optional[Hash] $recovery_nomad_server_hash     = undef,
+  Optional[String] $recovery_network_interface   = undef,
+  Stdlib::Port $recovery_rpc_port                = 4647,
 ) {
   $real_download_url = pick($download_url, "${download_url_base}${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
   $config_hash_real = deep_merge($config_defaults, $config_hash)
@@ -200,4 +215,26 @@ class nomad (
   contain nomad::config
   contain nomad::run_service
   contain nomad::reload_service
+
+  if ($server_recovery) {
+    if ($recovery_nomad_server_regex) and ($recovery_nomad_server_hash) {
+      fail('You can only use one of the parameters: nomad_server_regex or nomad_server_hash')
+    }
+    elsif !($recovery_nomad_server_regex) and !($recovery_nomad_server_hash) {
+      fail('You must use one of the parameters: nomad_server_regex or nomad_server_hash')
+    }
+    if !($recovery_network_interface) and ($recovery_nomad_server_regex) {
+      fail('You must specify the network_interface parameter when using nomad_server_regex')
+    }
+    class { 'nomad::server_recovery':
+      nomad_server_regex => $recovery_nomad_server_regex,
+      nomad_server_hash  => $recovery_nomad_server_hash,
+      rpc_port           => $recovery_rpc_port,
+      network_interface  => $recovery_network_interface,
+    }
+  } else {
+    file { '/usr/local/bin/nomad-server-outage-recovery.sh':
+      ensure => 'absent',
+    }
+  }
 }
