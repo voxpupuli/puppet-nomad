@@ -3,7 +3,7 @@
 require 'spec_helper_acceptance'
 
 describe 'nomad class' do
-  context 'facts' do
+  context 'server_recovery' do
     pp = <<-EOS
       class { 'nomad':
         config_hash => {
@@ -16,7 +16,12 @@ describe 'nomad class' do
             enabled          => true,
             bootstrap_expect => 1
           }
-        }
+        },
+        server_recovery => true,
+        recovery_nomad_server_hash => {
+          '192.168.1.10' => 'a1b2c3d4-1234-5678-9012-3456789abcde',
+          '192.168.1.11' => 'b2c3d4a1-5678-9012-1234-56789abcde12',
+        },
       }
     EOS
 
@@ -34,6 +39,14 @@ describe 'nomad class' do
 
     it 'sets up nomad' do
       apply_manifest(pp, catch_failures: true)
+    end
+
+    describe file('/tmp/peers.json') do
+      it { is_expected.to be_file }
+      it { is_expected.to contain 'a1b2c3d4-1234-5678-9012-3456789abcde' }
+      it { is_expected.to contain '192.168.1.10' }
+      it { is_expected.to contain 'b2c3d4a1-5678-9012-1234-56789abcde12' }
+      it { is_expected.to contain '192.168.1.11' }
     end
 
     it 'outputs nomad facts when installed' do
