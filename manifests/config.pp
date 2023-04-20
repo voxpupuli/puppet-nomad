@@ -13,7 +13,13 @@ class nomad::config {
     default => to_json($nomad::config_hash_real),
   }
 
-  file { $nomad::config_dir:
+  file { '/usr/local/bin/config_validate.rb':
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+    source => 'puppet:///modules/nomad/config_validate.rb',
+  }
+  -> file { $nomad::config_dir:
     ensure  => 'directory',
     owner   => $nomad::user,
     group   => $nomad::group,
@@ -21,12 +27,13 @@ class nomad::config {
     recurse => $nomad::purge_config_dir,
   }
   -> file { 'nomad config.json':
-    ensure  => file,
-    owner   => $nomad::user,
-    group   => $nomad::group,
-    path    => "${nomad::config_dir}/config.json",
-    mode    => $nomad::config_mode,
-    content => $_config,
+    ensure       => file,
+    owner        => $nomad::user,
+    group        => $nomad::group,
+    path         => "${nomad::config_dir}/config.json",
+    mode         => $nomad::config_mode,
+    validate_cmd => '/usr/local/bin/config_validate.rb %',
+    content      => $_config,
   }
   $content = join(map($nomad::env_vars) |$key, $value| { "${key}=${value}" }, "\n")
   file { "${nomad::config_dir}/nomad.env":
