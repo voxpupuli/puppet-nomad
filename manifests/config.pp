@@ -17,9 +17,10 @@ class nomad::config {
     owner  => 'root',
     group  => 'root',
     mode   => '0755',
+    before => File['nomad config.json'],
     source => 'puppet:///modules/nomad/config_validate.rb',
   }
-  -> file { $nomad::config_dir:
+  file { $nomad::config_dir:
     ensure  => 'directory',
     owner   => $nomad::user,
     group   => $nomad::group,

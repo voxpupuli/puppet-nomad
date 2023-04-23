@@ -503,6 +503,30 @@ describe 'nomad' do
 ')
         }
       end
+
+      context 'When host_volume is supplied' do
+        let(:params) do
+          {
+            config_hash: {
+              'client' => {
+                'enabled' => true,
+                'host_volume' => [
+                  {
+                    'test_application' => {
+                      'path' => '/data/dir1',
+                    },
+                  }
+                ],
+              },
+            }
+          }
+        end
+
+        it { is_expected.to compile }
+        it { is_expected.to contain_file('nomad config.json').with_content(%r{"path":"/data/dir1"}) }
+        it { is_expected.to contain_file('/usr/local/bin/config_validate.rb').with(owner: 'root', group: 'root', mode: '0755', source: 'puppet:///modules/nomad/config_validate.rb', before: 'File[nomad config.json]') }
+
+      end
     end
   end
 end

@@ -218,13 +218,13 @@ class nomad (
 
   if ($server_recovery) {
     if ($recovery_nomad_server_regex) and ($recovery_nomad_server_hash) {
-      fail('You can only use one of the parameters: nomad_server_regex or nomad_server_hash')
+      fail('You can only use one of the parameters: recovery_nomad_server_regex or recovery_nomad_server_hash')
     }
     elsif !($recovery_nomad_server_regex) and !($recovery_nomad_server_hash) {
-      fail('You must use one of the parameters: nomad_server_regex or nomad_server_hash')
+      fail('You must use one of the parameters: recovery_nomad_server_regex or recovery_nomad_server_hash')
     }
     if !($recovery_network_interface) and ($recovery_nomad_server_regex) {
-      fail('You must specify the network_interface parameter when using nomad_server_regex')
+      fail('You must specify the network_interface parameter when using recovery_nomad_server_regex')
     }
     class { 'nomad::server_recovery':
       nomad_server_regex => $recovery_nomad_server_regex,

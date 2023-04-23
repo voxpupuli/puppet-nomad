@@ -2,18 +2,20 @@
 # It is used to recover from a Nomad server outage.
 #
 # @example using PuppetDB
-#  class { 'geant_nomad::server::peer_json':
-#    nomad_server_regex => 'nomad-server0',
-#    network_interface              => 'eth0',
-#  }
-#
-# @example using a Hash
-#  class { 'geant_nomad::server::peer_json':
-#    nomad_server_hash => {
-#      '192.168.1.10' => 'a1b2c3d4-1234-5678-9012-3456789abcde',
-#      '192.168.1.10' => 'a1b2c3d4-1234-5678-9012-3456789abcde',
+#  class { 'nomad':
+#    config_hash                 => {
+#      'region'     => 'us-west',
+#      'datacenter' => 'ptk',
+#      'bind_addr'  => '0.0.0.0',
+#      'data_dir'   => '/opt/nomad',
+#      'server'     => {
+#        'enabled'          => true,
+#        'bootstrap_expect' => 3,
+#      },
 #    },
-#    network_interface => 'eth0',
+#    server_recovery             => true,
+#    recovery_nomad_server_regex => 'nomad-server0',
+#    recovery_network_interface  => 'eth0',
 #  }
 #
 # @param nomad_server_regex
