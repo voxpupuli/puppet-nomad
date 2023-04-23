@@ -5,7 +5,7 @@ require 'spec_helper'
 describe 'nomad' do
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
-      let(:facts) { os_facts.merge(service_provider: 'systemd') }
+      let(:facts) { os_facts.merge(service_provider: 'systemd', nomad_node_id: 'a1b2c3d4-1234-5678-9012-3456789abcde') }
 
       # Installation Stuff
       context 'On an unsupported arch' do
@@ -471,6 +471,37 @@ describe 'nomad' do
           it { is_expected.to contain_file('/etc/systemd/system/nomad.service').with_content(%r{^User=nomad$}) }
           it { is_expected.to contain_file('/etc/systemd/system/nomad.service').with_content(%r{^Group=nomad$}) }
         end
+      end
+
+      context 'with server recovery enabled' do
+        let(:params) do
+          {
+            server_recovery: true,
+            recovery_nomad_server_hash: {
+              '192.168.1.10' => 'a1b2c3d4-1234-5678-9012-3456789abcde',
+              '192.168.1.11' => 'b2c3d4a1-5678-9012-1234-56789abcde12',
+            },
+          }
+        end
+
+        it {
+          is_expected.to compile.with_all_deps
+          is_expected.to contain_class('nomad::server_recovery')
+          is_expected.to contain_file('/usr/local/bin/nomad-server-outage-recovery.sh').with(owner: 'root', group: 'root', mode: '0750')
+          is_expected.to contain_file('/tmp/peers.json').with(owner: 'root', group: 'root', mode: '0640', content: '[
+  {
+    "id": "a1b2c3d4-1234-5678-9012-3456789abcde",
+    "address": "192.168.1.10:4647",
+    "non_voter": false
+  },
+  {
+    "id": "b2c3d4a1-5678-9012-1234-56789abcde12",
+    "address": "192.168.1.11:4647",
+    "non_voter": false
+  }
+]
+')
+        }
       end
     end
   end
