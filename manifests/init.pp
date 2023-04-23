@@ -110,6 +110,9 @@
 #   Use this to populate the JSON config file for nomad.
 # @param config_defaults
 #   default set of config settings
+# @param config_validator
+#   Use this to set the JSON config file validation command. It defaults to nomad validator which is currenly missing some validation checks.
+#   If ruby is available on the system you could use 'ruby_validator', or create your own script (ending with space and % symbol).
 # @param config_mode
 #   Use this to set the JSON config file mode for nomad.
 # @param manage_repo
@@ -175,6 +178,9 @@ class nomad (
   Optional[Hash] $recovery_nomad_server_hash     = undef,
   Optional[String] $recovery_network_interface   = undef,
   Stdlib::Port $recovery_rpc_port                = 4647,
+  Variant[
+    Enum['nomad_validator', 'ruby_validator'], Pattern[/\A.*\ %\z/]
+  ] $config_validator                            = 'nomad_validator',
 ) {
   $real_download_url = pick($download_url, "${download_url_base}${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
   $config_hash_real = deep_merge($config_defaults, $config_hash)

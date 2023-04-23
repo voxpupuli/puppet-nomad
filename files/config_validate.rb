@@ -1,4 +1,4 @@
-#!/opt/puppetlabs/puppet/bin/ruby
+#!/usr/bin/env ruby
 # frozen_string_literal: true
 
 require 'json'
@@ -34,7 +34,7 @@ unless $?.success? # rubocop:disable Style/SpecialGlobalVars
   exit 1
 end
 
-# now check if this an Agent configuratin stanza and ensure that the paths under each host_volume are valid
+# now check if there is an Agent configuratin stanza and check the paths for the host_volume
 #
 json_data = JSON.parse(File.read(config_file))
 

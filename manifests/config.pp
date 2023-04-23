@@ -13,6 +13,12 @@ class nomad::config {
     default => to_json($nomad::config_hash_real),
   }
 
+  $validate_cmd = $nomad::config_validator ? {
+    'nomad_validator' => 'nomad config validate %',
+    'ruby_validator' => '/usr/local/bin/config_validate.rb %',
+    default => $nomad::config_validator,
+  }
+
   file { '/usr/local/bin/config_validate.rb':
     owner  => 'root',
     group  => 'root',
@@ -33,7 +39,7 @@ class nomad::config {
     group        => $nomad::group,
     path         => "${nomad::config_dir}/config.json",
     mode         => $nomad::config_mode,
-    validate_cmd => '/usr/local/bin/config_validate.rb %',
+    validate_cmd => $validate_cmd,
     content      => $_config,
   }
   $content = join(map($nomad::env_vars) |$key, $value| { "${key}=${value}" }, "\n")
