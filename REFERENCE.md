@@ -136,6 +136,7 @@ The following parameters are available in the `nomad` class:
 * [`extra_options`](#-nomad--extra_options)
 * [`config_hash`](#-nomad--config_hash)
 * [`config_defaults`](#-nomad--config_defaults)
+* [`config_validator`](#-nomad--config_validator)
 * [`config_mode`](#-nomad--config_mode)
 * [`manage_repo`](#-nomad--manage_repo)
 * [`manage_service`](#-nomad--manage_service)
@@ -279,6 +280,21 @@ default set of config settings
 
 Default value: `{}`
 
+##### <a name="-nomad--config_validator"></a>`config_validator`
+
+Data type:
+
+```puppet
+Variant[
+    Enum['nomad_validator', 'ruby_validator'], Pattern[/\A.*\ %\z/]
+  ]
+```
+
+Use this to set the JSON config file validation command. It defaults to nomad validator which is currenly missing some validation checks.
+If ruby is available on the system you could use 'ruby_validator', or create your own script (ending with space and % symbol).
+
+Default value: `'nomad_validator'`
+
 ##### <a name="-nomad--config_mode"></a>`config_mode`
 
 Data type: `Stdlib::Filemode`
@@ -417,21 +433,20 @@ It is used to recover from a Nomad server outage.
 ##### using PuppetDB
 
 ```puppet
-class { 'geant_nomad::server::peer_json':
-  nomad_server_regex => 'nomad-server0',
-  network_interface              => 'eth0',
-}
-```
-
-##### using a Hash
-
-```puppet
-class { 'geant_nomad::server::peer_json':
-  nomad_server_hash => {
-    '192.168.1.10' => 'a1b2c3d4-1234-5678-9012-3456789abcde',
-    '192.168.1.10' => 'a1b2c3d4-1234-5678-9012-3456789abcde',
+class { 'nomad':
+  config_hash                 => {
+    'region'     => 'us-west',
+    'datacenter' => 'ptk',
+    'bind_addr'  => '0.0.0.0',
+    'data_dir'   => '/opt/nomad',
+    'server'     => {
+      'enabled'          => true,
+      'bootstrap_expect' => 3,
+    },
   },
-  network_interface => 'eth0',
+  server_recovery             => true,
+  recovery_nomad_server_regex => 'nomad-server0',
+  recovery_network_interface  => 'eth0',
 }
 ```
 
