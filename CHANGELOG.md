@@ -4,6 +4,38 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.0.0](https://github.com/voxpupuli/puppet-nomad/tree/v3.0.0) (2023-08-21)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/v2.2.0...v3.0.0)
+
+**Breaking changes:**
+
+- Drop Puppet 6 support [\#88](https://github.com/voxpupuli/puppet-nomad/pull/88) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Add EL9 support [\#98](https://github.com/voxpupuli/puppet-nomad/pull/98) ([bastelfreak](https://github.com/bastelfreak))
+- Add Rocky/AlmaLinux/OracleLinux support [\#97](https://github.com/voxpupuli/puppet-nomad/pull/97) ([bastelfreak](https://github.com/bastelfreak))
+- Ubuntu: Add support for 22.04 [\#96](https://github.com/voxpupuli/puppet-nomad/pull/96) ([bastelfreak](https://github.com/bastelfreak))
+- puppet/systemd: Allow 5.x [\#95](https://github.com/voxpupuli/puppet-nomad/pull/95) ([bastelfreak](https://github.com/bastelfreak))
+- puppet/hashi\_stack: Allow 3.x [\#94](https://github.com/voxpupuli/puppet-nomad/pull/94) ([bastelfreak](https://github.com/bastelfreak))
+- puppet/archive: Allow 7.x [\#93](https://github.com/voxpupuli/puppet-nomad/pull/93) ([bastelfreak](https://github.com/bastelfreak))
+- Add Puppet 8 support [\#91](https://github.com/voxpupuli/puppet-nomad/pull/91) ([bastelfreak](https://github.com/bastelfreak))
+- puppetlabs/stdlib: Allow 9.x [\#90](https://github.com/voxpupuli/puppet-nomad/pull/90) ([bastelfreak](https://github.com/bastelfreak))
+- Add config validate  [\#85](https://github.com/voxpupuli/puppet-nomad/pull/85) ([maxadamo](https://github.com/maxadamo))
+- add peers.json and script to recover from outage [\#82](https://github.com/voxpupuli/puppet-nomad/pull/82) ([maxadamo](https://github.com/maxadamo))
+- bump puppet/systemd to \< 5.0.0 [\#74](https://github.com/voxpupuli/puppet-nomad/pull/74) ([jhoblitt](https://github.com/jhoblitt))
+
+**Closed issues:**
+
+- add config validate [\#84](https://github.com/voxpupuli/puppet-nomad/issues/84)
+- Nomad server recover helper [\#77](https://github.com/voxpupuli/puppet-nomad/issues/77)
+- exec statement "reload nomad service" contains wrong command [\#75](https://github.com/voxpupuli/puppet-nomad/issues/75)
+
+**Merged pull requests:**
+
+- use systemd to reload the daemon [\#76](https://github.com/voxpupuli/puppet-nomad/pull/76) ([maxadamo](https://github.com/maxadamo))
+
 ## [v2.2.0](https://github.com/voxpupuli/puppet-nomad/tree/v2.2.0) (2023-01-07)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/v2.1.0...v2.2.0)
