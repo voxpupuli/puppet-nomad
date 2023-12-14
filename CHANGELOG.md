@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.1.0](https://github.com/voxpupuli/puppet-nomad/tree/v3.1.0) (2023-12-14)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/v3.0.0...v3.1.0)
+
+**Implemented enhancements:**
+
+- feat: Adding plugin\_dir management [\#100](https://github.com/voxpupuli/puppet-nomad/pull/100) ([attachmentgenie](https://github.com/attachmentgenie))
+
 ## [v3.0.0](https://github.com/voxpupuli/puppet-nomad/tree/v3.0.0) (2023-08-21)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/v2.2.0...v3.0.0)
