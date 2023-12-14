@@ -226,6 +226,35 @@ describe 'nomad' do
         it { is_expected.not_to contain_file('/dir1').with(ensure: :directory) }
       end
 
+      context 'When plugin_dir is provided' do
+        let(:params) do
+          {
+            config_hash: {
+              'plugin_dir' => '/plugin_dir',
+            },
+          }
+        end
+
+        it { is_expected.to contain_file('/plugin_dir').with(ensure: :directory, mode: '0755') }
+
+        context 'When plugin_dir_mode is provided' do
+          let(:params) do
+            {
+              config_hash: {
+                'plugin_dir' => '/plugin_dir',
+              },
+              plugin_dir_mode: '0750'
+            }
+          end
+
+          it { is_expected.to contain_file('/plugin_dir').with(mode: '0750') }
+        end
+      end
+
+      context 'When plugin_dir is not provided' do
+        it { is_expected.not_to contain_file('/plugin_dir').with(ensure: :directory) }
+      end
+
       context 'The bootstrap_expect in config_hash is an int' do
         let(:params) do
           {
@@ -434,6 +463,20 @@ describe 'nomad' do
             {
               config_hash: {
                 'data_dir' => '/dir1',
+              },
+              user: 'nomad',
+              group: 'nomad',
+            }
+          end
+
+          it { is_expected.to contain_file('/dir1').with(ensure: 'directory', owner: 'nomad', group: 'nomad') }
+        end
+
+        context 'with provided plugin_dir' do
+          let :params do
+            {
+              config_hash: {
+                'plugin_dir' => '/dir1',
               },
               user: 'nomad',
               group: 'nomad',

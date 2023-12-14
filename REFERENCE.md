@@ -123,6 +123,7 @@ The following parameters are available in the `nomad` class:
 * [`arch`](#-nomad--arch)
 * [`purge_config_dir`](#-nomad--purge_config_dir)
 * [`data_dir_mode`](#-nomad--data_dir_mode)
+* [`plugin_dir_mode`](#-nomad--plugin_dir_mode)
 * [`join_wan`](#-nomad--join_wan)
 * [`bin_dir`](#-nomad--bin_dir)
 * [`version`](#-nomad--version)
@@ -173,6 +174,14 @@ Default value: `true`
 Data type: `Stdlib::Filemode`
 
 Specify unix permissions for data dir directory managed by this module
+
+Default value: `'0755'`
+
+##### <a name="-nomad--plugin_dir_mode"></a>`plugin_dir_mode`
+
+Data type: `Stdlib::Filemode`
+
+Specify unix permissions for plugin dir directory managed by this module
 
 Default value: `'0755'`
 
