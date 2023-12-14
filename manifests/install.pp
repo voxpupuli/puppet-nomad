@@ -11,6 +11,15 @@ class nomad::install {
     }
   }
 
+  if $nomad::plugin_dir {
+    file { $nomad::plugin_dir:
+      ensure => 'directory',
+      owner  => $nomad::user,
+      group  => $nomad::group,
+      mode   => $nomad::plugin_dir_mode,
+    }
+  }
+
   case $nomad::install_method {
     'url': {
       $install_path = '/opt/puppet-archive'
@@ -48,6 +57,9 @@ class nomad::install {
 
       if $nomad::data_dir {
         Package[$nomad::package_name] -> File[$nomad::data_dir]
+      }
+      if $nomad::plugin_dir {
+        Package[$nomad::package_name] -> File[$nomad::plugin_dir]
       }
     }
     'none': {}
