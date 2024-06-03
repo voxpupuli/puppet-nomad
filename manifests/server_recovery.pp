@@ -66,7 +66,7 @@ class nomad::server_recovery (
         group => 'root';
       '/tmp/peers.json':
         mode    => '0640',
-        content => to_json_pretty($nomad_server_pretty_inventory);
+        content => stdlib::to_json_pretty($nomad_server_pretty_inventory);
       '/usr/local/bin/nomad-server-outage-recovery.sh':
         mode   => '0750',
         source => 'puppet:///modules/nomad/nomad-server-outage-recovery.sh';
