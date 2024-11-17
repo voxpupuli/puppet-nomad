@@ -43,8 +43,9 @@ describe 'nomad class' do
     apply_manifest(pp, expect_failures: true)
     apply_manifest(pp, catch_changes: true)
 
-    describe file('/etc/nomad.d/config.json') do
-      it { is_expected.to be_file }
+    describe service('nomad') do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
     end
   end
 end
