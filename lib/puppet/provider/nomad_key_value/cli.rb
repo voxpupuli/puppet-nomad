@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 require 'tempfile'
 
@@ -40,11 +42,7 @@ Puppet::Type.type(:nomad_key_value).provide(:cli) do
     @modify_index = result['ModifyIndex']
     @existing_items = result['Items']
 
-    if @existing_items == resource[:value]
-      true
-    else
-      false
-    end
+    @existing_items == resource[:value]
   end
 
   def create

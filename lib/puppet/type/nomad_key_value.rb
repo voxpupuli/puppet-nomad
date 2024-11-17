@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:nomad_key_value) do
@@ -106,8 +108,6 @@ Puppet::Type.newtype(:nomad_key_value) do
   end
 
   validate do
-    if !self[:ca_cert].empty? && !self[:ca_path].empty?
-      raise ArgumentError, "You cannot specify both 'ca_cert' and 'ca_path'. Please provide only one."
-    end
+    raise ArgumentError, "You cannot specify both 'ca_cert' and 'ca_path'. Please provide only one." if !self[:ca_cert].empty? && !self[:ca_path].empty?
   end
 end
