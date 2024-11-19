@@ -25,7 +25,7 @@ describe 'nomad' do
       context 'When disable config purging' do
         let(:params) do
           {
-            purge_config_dir: false
+            purge_config_dir: false,
           }
         end
 
@@ -37,7 +37,7 @@ describe 'nomad' do
           {
             install_method: 'url',
             manage_service_file: true,
-            version: '1.0.3'
+            version: '1.9.3',
           }
         end
 
@@ -49,7 +49,7 @@ describe 'nomad' do
       context 'nomad::config should not notify nomad::run_service on config change' do
         let(:params) do
           {
-            restart_on_change: false
+            restart_on_change: false,
           }
         end
 
@@ -59,7 +59,7 @@ describe 'nomad' do
       context 'When joining nomad to a wan cluster by a known URL' do
         let(:params) do
           {
-            join_wan: 'wan_host.test.com'
+            join_wan: 'wan_host.test.com',
           }
         end
 
@@ -73,7 +73,7 @@ describe 'nomad' do
       context 'When asked not to manage the repo' do
         let(:params) do
           {
-            manage_repo: false
+            manage_repo: false,
           }
         end
 
@@ -92,8 +92,8 @@ describe 'nomad' do
           {
             install_method: 'url',
             manage_service_file: true,
-            version: '1.0.3',
-            manage_repo: true
+            version: '1.9.3',
+            manage_repo: true,
           }
         end
 
@@ -111,7 +111,7 @@ describe 'nomad' do
         let(:params) do
           {
             install_method: 'package',
-            manage_repo: true
+            manage_repo: true,
           }
         end
 
@@ -128,7 +128,7 @@ describe 'nomad' do
       context 'When requesting to install via a package with defaults' do
         let(:params) do
           {
-            install_method: 'package'
+            install_method: 'package',
           }
         end
 
@@ -140,7 +140,7 @@ describe 'nomad' do
           {
             install_method: 'package',
             package_name: 'custom_nomad_package',
-            version: 'specific_release'
+            version: 'specific_release',
           }
         end
 
@@ -151,13 +151,13 @@ describe 'nomad' do
         let(:params) do
           {
             install_method: 'url',
-            version: '1.0.3'
+            version: '1.9.3',
           }
         end
 
-        it { is_expected.to contain_archive('/opt/puppet-archive/nomad-1.0.3.zip').with(source: 'https://releases.hashicorp.com/nomad/1.0.3/nomad_1.0.3_linux_amd64.zip') }
+        it { is_expected.to contain_archive('/opt/puppet-archive/nomad-1.9.3.zip').with(source: 'https://releases.hashicorp.com/nomad/1.9.3/nomad_1.9.3_linux_amd64.zip') }
         it { is_expected.to contain_file('/opt/puppet-archive').with(ensure: 'directory') }
-        it { is_expected.to contain_file('/opt/puppet-archive/nomad-1.0.3').with(ensure: 'directory') }
+        it { is_expected.to contain_file('/opt/puppet-archive/nomad-1.9.3').with(ensure: 'directory') }
         it { is_expected.to contain_file('/usr/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
       end
 
@@ -178,23 +178,23 @@ describe 'nomad' do
           {
             install_method: 'url',
             download_url: 'http://myurl',
-            version: '1.0.3',
+            version: '1.9.3',
           }
         end
 
-        it { is_expected.to contain_archive('/opt/puppet-archive/nomad-1.0.3.zip').with(source: 'http://myurl') }
+        it { is_expected.to contain_archive('/opt/puppet-archive/nomad-1.9.3.zip').with(source: 'http://myurl') }
         it { is_expected.to contain_file('/usr/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
       end
 
       context 'When requesting to not to install' do
         let(:params) do
           {
-            install_method: 'none'
+            install_method: 'none',
           }
         end
 
         it { is_expected.not_to contain_package('nomad') }
-        it { is_expected.not_to contain_archive('/opt/puppet-archive/nomad-1.0.3.zip') }
+        it { is_expected.not_to contain_archive('/opt/puppet-archive/nomad-1.9.3.zip') }
       end
 
       context 'When data_dir is provided' do
@@ -214,7 +214,7 @@ describe 'nomad' do
               config_hash: {
                 'data_dir' => '/dir1',
               },
-              data_dir_mode: '0750'
+              data_dir_mode: '0750',
             }
           end
 
@@ -243,7 +243,7 @@ describe 'nomad' do
               config_hash: {
                 'plugin_dir' => '/plugin_dir',
               },
-              plugin_dir_mode: '0750'
+              plugin_dir_mode: '0750',
             }
           end
 
@@ -258,7 +258,7 @@ describe 'nomad' do
       context 'The bootstrap_expect in config_hash is an int' do
         let(:params) do
           {
-            config_hash: { 'bootstrap_expect' => 5 }
+            config_hash: { 'bootstrap_expect' => 5 },
           }
         end
 
@@ -274,7 +274,7 @@ describe 'nomad' do
             },
             config_hash: {
               'bootstrap_expect' => 5,
-            }
+            },
           }
         end
 
@@ -300,7 +300,7 @@ describe 'nomad' do
                 'http' => -1,
                 'https' => 8500,
               },
-            }
+            },
           }
         end
 
@@ -323,7 +323,7 @@ describe 'nomad' do
                 'http' => -1,
                 'https' => 8500,
               },
-            }
+            },
           }
         end
 
@@ -368,7 +368,7 @@ describe 'nomad' do
 
         it {
           expect(subject).to contain_file('nomad config.json').with(
-            mode: '0600'
+            mode: '0600',
           )
         }
       end
@@ -376,7 +376,7 @@ describe 'nomad' do
       context 'When nomad is reloaded' do
         it {
           expect(subject).to contain_exec('reload nomad service').
-            with_command('systemctl reload nomad')
+              with_command('systemctl reload nomad')
         }
       end
 
@@ -385,18 +385,18 @@ describe 'nomad' do
           {
             config_hash: {
               'ports' => {
-                'rpc' => '9999'
+                'rpc' => '9999',
               },
               'addresses' => {
-                'rpc' => 'nomad.example.com'
-              }
-            }
+                'rpc' => 'nomad.example.com',
+              },
+            },
           }
         end
 
         it {
           expect(subject).to contain_exec('reload nomad service').
-            with_command('systemctl reload nomad')
+              with_command('systemctl reload nomad')
         }
       end
 
@@ -405,13 +405,13 @@ describe 'nomad' do
           {
             config_hash: {
               'client_addr' => '192.168.34.56',
-            }
+            },
           }
         end
 
         it {
           expect(subject).to contain_exec('reload nomad service').
-            with_command('systemctl reload nomad')
+              with_command('systemctl reload nomad')
         }
       end
 
@@ -420,7 +420,7 @@ describe 'nomad' do
         let(:params) do
           {
             manage_service_file: true,
-            extra_options: '-some-extra-argument'
+            extra_options: '-some-extra-argument',
           }
         end
 
@@ -437,7 +437,7 @@ describe 'nomad' do
             env_vars: {
               'TEST' => 'foobar',
               'BLA' => 'blub',
-            }
+            },
           }
         end
 
@@ -558,10 +558,10 @@ describe 'nomad' do
                     'test_application' => {
                       'path' => '/data/dir1',
                     },
-                  }
+                  },
                 ],
               },
-            }
+            },
           }
         end
 
