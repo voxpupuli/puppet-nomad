@@ -368,7 +368,7 @@ describe 'nomad' do
 
         it {
           expect(subject).to contain_file('nomad config.json').with(
-            mode: '0600',
+            mode: '0600'
           )
         }
       end
@@ -376,7 +376,7 @@ describe 'nomad' do
       context 'When nomad is reloaded' do
         it {
           expect(subject).to contain_exec('reload nomad service').
-              with_command('systemctl reload nomad')
+            with_command('systemctl reload nomad')
         }
       end
 
@@ -396,7 +396,7 @@ describe 'nomad' do
 
         it {
           expect(subject).to contain_exec('reload nomad service').
-              with_command('systemctl reload nomad')
+            with_command('systemctl reload nomad')
         }
       end
 
@@ -411,7 +411,7 @@ describe 'nomad' do
 
         it {
           expect(subject).to contain_exec('reload nomad service').
-              with_command('systemctl reload nomad')
+            with_command('systemctl reload nomad')
         }
       end
 
