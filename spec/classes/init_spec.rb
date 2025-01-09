@@ -37,7 +37,7 @@ describe 'nomad' do
           {
             install_method: 'url',
             manage_service_file: true,
-            version: '1.0.3'
+            version: '1.9.4'
           }
         end
 
@@ -92,7 +92,7 @@ describe 'nomad' do
           {
             install_method: 'url',
             manage_service_file: true,
-            version: '1.0.3',
+            version: '1.9.4',
             manage_repo: true
           }
         end
@@ -151,13 +151,13 @@ describe 'nomad' do
         let(:params) do
           {
             install_method: 'url',
-            version: '1.0.3'
+            version: '1.9.4'
           }
         end
 
-        it { is_expected.to contain_archive('/opt/puppet-archive/nomad-1.0.3.zip').with(source: 'https://releases.hashicorp.com/nomad/1.0.3/nomad_1.0.3_linux_amd64.zip') }
+        it { is_expected.to contain_archive('/opt/puppet-archive/nomad-1.9.4.zip').with(source: 'https://releases.hashicorp.com/nomad/1.9.4/nomad_1.9.4_linux_amd64.zip') }
         it { is_expected.to contain_file('/opt/puppet-archive').with(ensure: 'directory') }
-        it { is_expected.to contain_file('/opt/puppet-archive/nomad-1.0.3').with(ensure: 'directory') }
+        it { is_expected.to contain_file('/opt/puppet-archive/nomad-1.9.4').with(ensure: 'directory') }
         it { is_expected.to contain_file('/usr/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
       end
 
@@ -178,11 +178,11 @@ describe 'nomad' do
           {
             install_method: 'url',
             download_url: 'http://myurl',
-            version: '1.0.3',
+            version: '1.9.4',
           }
         end
 
-        it { is_expected.to contain_archive('/opt/puppet-archive/nomad-1.0.3.zip').with(source: 'http://myurl') }
+        it { is_expected.to contain_archive('/opt/puppet-archive/nomad-1.9.4.zip').with(source: 'http://myurl') }
         it { is_expected.to contain_file('/usr/bin/nomad').that_notifies(['Class[nomad::run_service]']) }
       end
 
@@ -194,7 +194,7 @@ describe 'nomad' do
         end
 
         it { is_expected.not_to contain_package('nomad') }
-        it { is_expected.not_to contain_archive('/opt/puppet-archive/nomad-1.0.3.zip') }
+        it { is_expected.not_to contain_archive('/opt/puppet-archive/nomad-1.9.4.zip') }
       end
 
       context 'When data_dir is provided' do
