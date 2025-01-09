@@ -9,8 +9,8 @@ class nomad::config {
   }
 
   $_config = $nomad::pretty_config ? {
-    true    => to_json_pretty($nomad::config_hash_real),
-    default => to_json($nomad::config_hash_real),
+    true    => stdlib::to_json_pretty($nomad::config_hash_real),
+    default => stdlib::to_json($nomad::config_hash_real),
   }
 
   $validate_cmd = $nomad::config_validator ? {
