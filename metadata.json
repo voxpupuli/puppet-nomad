@@ -11,7 +11,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.25.0 < 10.0.0"
+      "version_requirement": ">= 9.0.0 < 10.0.0"
     },
     {
       "name": "puppet/archive",
@@ -30,7 +30,6 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "7",
         "8",
         "8"
       ]
@@ -59,7 +58,6 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "7",
         "8",
         "9"
       ]
@@ -67,7 +65,6 @@
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "10",
         "11",
         "12"
       ]
