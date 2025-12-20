@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v4.0.0](https://github.com/voxpupuli/puppet-nomad/tree/v4.0.0) (2025-12-20)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/v3.1.0...v4.0.0)
+
+**Breaking changes:**
+
+- Drop puppet, update openvox minimum version to 8.19 [\#130](https://github.com/voxpupuli/puppet-nomad/pull/130) ([TheMeier](https://github.com/TheMeier))
+- Drop EoL Debian 10 [\#122](https://github.com/voxpupuli/puppet-nomad/pull/122) ([bastelfreak](https://github.com/bastelfreak))
+- Drop EoL EL7 [\#121](https://github.com/voxpupuli/puppet-nomad/pull/121) ([bastelfreak](https://github.com/bastelfreak))
+- puppetlabs/stdlib: require 9.x [\#113](https://github.com/voxpupuli/puppet-nomad/pull/113) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- puppet/archive: Allow 8.x [\#129](https://github.com/voxpupuli/puppet-nomad/pull/129) ([TheMeier](https://github.com/TheMeier))
+- metadata.json: Add OpenVox [\#125](https://github.com/voxpupuli/puppet-nomad/pull/125) ([jstraw](https://github.com/jstraw))
+- puppet/systemd: allow 8.x [\#116](https://github.com/voxpupuli/puppet-nomad/pull/116) ([jay7x](https://github.com/jay7x))
+- Add Debian 12 support [\#107](https://github.com/voxpupuli/puppet-nomad/pull/107) ([lbdemv](https://github.com/lbdemv))
+
+**Closed issues:**
+
+- create custom resource type to upload keys to nomad [\#87](https://github.com/voxpupuli/puppet-nomad/issues/87)
+
+**Merged pull requests:**
+
+- Cleanup .fixtures.yml [\#120](https://github.com/voxpupuli/puppet-nomad/pull/120) ([bastelfreak](https://github.com/bastelfreak))
+- CI: Install Nomad 1.9.4 [\#119](https://github.com/voxpupuli/puppet-nomad/pull/119) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v3.1.0](https://github.com/voxpupuli/puppet-nomad/tree/v3.1.0) (2023-12-14)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/v3.0.0...v3.1.0)
@@ -11,6 +38,10 @@ These should not affect the functionality of the module.
 **Implemented enhancements:**
 
 - feat: Adding plugin\_dir management [\#100](https://github.com/voxpupuli/puppet-nomad/pull/100) ([attachmentgenie](https://github.com/attachmentgenie))
+
+**Merged pull requests:**
+
+- modulesync 7.2.0 [\#101](https://github.com/voxpupuli/puppet-nomad/pull/101) ([attachmentgenie](https://github.com/attachmentgenie))
 
 ## [v3.0.0](https://github.com/voxpupuli/puppet-nomad/tree/v3.0.0) (2023-08-21)
 
