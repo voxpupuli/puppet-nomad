@@ -18,6 +18,10 @@
 * `nomad::reload_service`: This class is meant to be called from certain configuration changes that support reload.
 * `nomad::run_service`: This class is meant to be called from nomad It ensure the service is running
 
+### Resource types
+
+* [`nomad_key_value`](#nomad_key_value): Manage Nomad key value objects.
+
 ## Classes
 
 ### <a name="nomad"></a>`nomad`
@@ -499,4 +503,148 @@ Data type: `Stdlib::Port`
 Nomad server RPC port
 
 Default value: `4647`
+
+## Resource types
+
+### <a name="nomad_key_value"></a>`nomad_key_value`
+
+Manage Nomad key value objects.
+
+#### Examples
+
+##### handling keys in the key value store
+
+```puppet
+nomad_key_value {
+  default:
+    ensure          => present,
+    address         => 'https://127.0.0.1:4646',
+    token           => $nomad_token.unwrap,
+    tls_server_name => 'nomad.example.org',
+    ca_cert         => '/etc/ssl/certs/COMODO_OV.crt',
+    require         => Class['nomad'];
+  'test/keys':
+    value  => {
+      'key1' => 'value1',
+      'key2' => 'value2',
+    };
+  'test_again/keys':
+    ensure => absent,
+    value  => {
+      'key1' => 'value13',
+      'key2' => 'value21',
+    };
+}
+```
+
+#### Properties
+
+The following properties are available in the `nomad_key_value` type.
+
+##### `ensure`
+
+Valid values: `present`, `absent`
+
+The basic property that the resource should be in.
+
+Default value: `present`
+
+##### `value`
+
+The key-value pairs to set
+
+#### Parameters
+
+The following parameters are available in the `nomad_key_value` type.
+
+* [`address`](#-nomad_key_value--address)
+* [`binary_path`](#-nomad_key_value--binary_path)
+* [`ca_cert`](#-nomad_key_value--ca_cert)
+* [`ca_path`](#-nomad_key_value--ca_path)
+* [`client_cert`](#-nomad_key_value--client_cert)
+* [`client_key`](#-nomad_key_value--client_key)
+* [`name`](#-nomad_key_value--name)
+* [`namespace`](#-nomad_key_value--namespace)
+* [`provider`](#-nomad_key_value--provider)
+* [`region`](#-nomad_key_value--region)
+* [`skip_verify`](#-nomad_key_value--skip_verify)
+* [`tls_server_name`](#-nomad_key_value--tls_server_name)
+* [`token`](#-nomad_key_value--token)
+
+##### <a name="-nomad_key_value--address"></a>`address`
+
+Nomad URL, with scheme and port number. It defaults to http://127.0.0.1:4646
+
+Default value: `http://127.0.0.1:4646`
+
+##### <a name="-nomad_key_value--binary_path"></a>`binary_path`
+
+Path to the nomad binary. Can be an absolute path or just "nomad" if it is in the PATH.
+
+##### <a name="-nomad_key_value--ca_cert"></a>`ca_cert`
+
+Path to a PEM-encoded CA certificate file to use to verify the Nomad server SSL certificate.
+
+Default value: `''`
+
+##### <a name="-nomad_key_value--ca_path"></a>`ca_path`
+
+Path to a directory of PEM-encoded CA certificate files to verify the Nomad server SSL certificate.
+
+Default value: `''`
+
+##### <a name="-nomad_key_value--client_cert"></a>`client_cert`
+
+Path to the client certificate file to use to authenticate to the Nomad server.
+
+Default value: `''`
+
+##### <a name="-nomad_key_value--client_key"></a>`client_key`
+
+Path to the client private key file to use to authenticate to the Nomad server.
+
+Default value: `''`
+
+##### <a name="-nomad_key_value--name"></a>`name`
+
+namevar
+
+Name of the path object containing the key/value pairs
+
+##### <a name="-nomad_key_value--namespace"></a>`namespace`
+
+The namespace to query. If unspecified, it will use the default namespace.
+
+Default value: `''`
+
+##### <a name="-nomad_key_value--provider"></a>`provider`
+
+The specific backend to use for this `nomad_key_value` resource. You will seldom need to specify this --- Puppet will
+usually discover the appropriate provider for your platform.
+
+##### <a name="-nomad_key_value--region"></a>`region`
+
+Name of the region. It defaults to global
+
+Default value: `global`
+
+##### <a name="-nomad_key_value--skip_verify"></a>`skip_verify`
+
+Valid values: `true`, `false`, `yes`, `no`
+
+Skip Nomad certificate verification. Defaults to false.
+
+Default value: `false`
+
+##### <a name="-nomad_key_value--tls_server_name"></a>`tls_server_name`
+
+The server name to use as the SNI host when connecting via TLS.
+
+Default value: `''`
+
+##### <a name="-nomad_key_value--token"></a>`token`
+
+Nomad token with read and write access to the variables
+
+Default value: `''`
 
