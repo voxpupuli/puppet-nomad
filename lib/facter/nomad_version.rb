@@ -4,9 +4,8 @@
 #
 Facter.add(:nomad_version) do
   confine kernel: 'Linux'
+  confine { Facter::Core::Execution.which('nomad') }
   setcode do
-    Facter::Util::Resolution.exec('nomad --version 2> /dev/null').lines.first.split[1].tr('v', '')
-  rescue StandardError
-    nil
+    Facter::Core::Execution.execute('nomad --version 2> /dev/null').lines.first.split[1].tr('v', '')
   end
 end

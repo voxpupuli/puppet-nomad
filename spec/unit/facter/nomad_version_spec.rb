@@ -14,8 +14,9 @@ describe Facter::Util::Fact do
         Nomad v0.6.0
       EOS
       allow(Facter.fact(:kernel)).to receive(:value).and_return('Linux')
-      allow(Facter::Util::Resolution).to receive(:exec).with('nomad --version 2> /dev/null')
-                                                       .and_return(nomad_version_output)
+      allow(Facter::Core::Execution).to receive(:which).with('nomad').and_return('nomad')
+      allow(Facter::Core::Execution).to receive(:execute).with('nomad --version 2> /dev/null')
+                                                         .and_return(nomad_version_output)
       expect(Facter.fact(:nomad_version).value).to match('0.6.0')
     end
   end
