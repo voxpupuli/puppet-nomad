@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v4.1.0](https://github.com/voxpupuli/puppet-nomad/tree/v4.1.0) (2026-10-28)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/v4.0.0...v4.1.0)
+
+**Implemented enhancements:**
+
+- puppet/systemd: Allow 11.x [\#145](https://github.com/voxpupuli/puppet-nomad/pull/145) ([bastelfreak](https://github.com/bastelfreak))
+- Update requirements to allow OpenVox 9 [\#144](https://github.com/voxpupuli/puppet-nomad/pull/144) ([sebastianrakel](https://github.com/sebastianrakel))
+- replace deprecated calls with Facter::Core::Execution [\#141](https://github.com/voxpupuli/puppet-nomad/pull/141) ([corporate-gadfly](https://github.com/corporate-gadfly))
+
+**Merged pull requests:**
+
+- puppet/hashi\_stack: Require 4.x [\#142](https://github.com/voxpupuli/puppet-nomad/pull/142) ([corporate-gadfly](https://github.com/corporate-gadfly))
+
 ## [v4.0.0](https://github.com/voxpupuli/puppet-nomad/tree/v4.0.0) (2025-12-20)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nomad/compare/v3.1.0...v4.0.0)
